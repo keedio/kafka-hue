@@ -1,4 +1,4 @@
 kafka-hue
 =========
 
-Hue application for Apache Kafka
+Hue application for Apache Kafka.
