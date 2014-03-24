@@ -1,0 +1,15 @@
+setup.py
+src/kafka/__init__.py
+src/kafka/conf.py
+src/kafka/forms.py
+src/kafka/models.py
+src/kafka/settings.py
+src/kafka/urls.py
+src/kafka/views.py
+src/kafka.egg-info/PKG-INFO
+src/kafka.egg-info/SOURCES.txt
+src/kafka.egg-info/dependency_links.txt
+src/kafka.egg-info/entry_points.txt
+src/kafka.egg-info/not-zip-safe
+src/kafka.egg-info/requires.txt
+src/kafka.egg-info/top_level.txt
