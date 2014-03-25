@@ -1,5 +1,6 @@
 <%!
   from django.utils.translation import ugettext as _
+  from kafka.conf import CLUSTERS
 %>
 
 <%!
@@ -10,7 +11,7 @@ def is_selected(section, matcher):
     return ""
 %>
 
-<%def name="header(breadcrumbs, clusters, withBody=True)">
+<%def name="header(breadcrumbs, withBody=True)">  
   <div class="container-fluid">
   <div class="row-fluid">
     <div class="card card-small">
@@ -21,12 +22,10 @@ def is_selected(section, matcher):
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            % for cluster in clusters:
+            % for cluster in CLUSTERS.get().keys():
               <li>
-                ##<a href="${ url('zookeeper:view', id=cluster['cluster']) }">
-                ## TODO - Link to a index (topology) view of the cluster. Modify view input params
-                <a href="#">
-                  ${ cluster['cluster'] }
+                <a href="${ url('kafka:cluster', cluster_id=cluster) }">
+                  ${cluster}
                 </a>
               </li>
             % endfor
@@ -50,7 +49,7 @@ def is_selected(section, matcher):
       %endif
 </%def>
 
-<%def name="menubar(section='')">
+<%def name="menubar(section='', c_id='')">
   <div class="navbar navbar-inverse navbar-fixed-top nokids">
     <div class="navbar-inner">
       <div class="container-fluid">
@@ -64,7 +63,7 @@ def is_selected(section, matcher):
              </li>
              <li class="${is_selected(section, 'Topology')}"><a href=${url('kafka:index')}>Topology</a></li>
              <li class="${is_selected(section, 'Consumer Groups')}"><a href="#">Consumer Groups</a></li>
-             <li class="${is_selected(section, 'Topics')}"><a href="#">Topics</a></li>
+             <li class="${is_selected(section, 'Topics')}"><a href="${url('kafka:topics', cluster_id=c_id)}">Topics</a></li>
           </ul>
         </div>
       </div>

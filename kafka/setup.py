@@ -29,7 +29,7 @@ setup(
   name = "kafka",
   version = "0.1",
   url = 'www.redoop.org',
-  description = 'Kafka GUI',
+  description = 'Kafka HUE integration',
   author = 'dtardon',
   packages = find_packages('src'),
   package_dir = {'': 'src'},

@@ -21,4 +21,6 @@ IS_URL_NAMESPACED = True
 
 urlpatterns = patterns('kafka.views',
   url(r'^$', 'index', name="index"),
+  url(r'^(?P<cluster_id>\w+)$', 'cluster', name="cluster"),
+  url(r'^(?P<cluster_id>\w+)/topics/$', 'topics', name="topics"),
 )

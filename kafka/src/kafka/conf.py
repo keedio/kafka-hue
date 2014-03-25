@@ -47,14 +47,20 @@ CLUSTERS = UnspecifiedConfigSection(
         ),
         BROKERS_PATH=Config(
           "brokers_path",
-          help=" Path to brokers info in Zookeeper Znode hierarchy, e.g. /brokers/ids",
+          help="Path to brokers info in Zookeeper Znode hierarchy, e.g. /brokers/ids",
           default="/brokers/ids",
           type=str,
         ),
         CONSUMERS_PATH=Config(
           "consumers_path",
-          help=" Path to consumers info in Zookeeper Znode hierarchy, e.g. /consumers",
+          help="Path to consumers info in Zookeeper Znode hierarchy, e.g. /consumers",
           default="/consumers",
+          type=str,
+        ),
+        TOPICS_PATH=Config(
+          "topics_path",
+          help="Path to topics info in Zookeeper Znode hierarchy, e.g. /brokers/topics",
+          default="/brokers/topics",
           type=str,
         ),
     )

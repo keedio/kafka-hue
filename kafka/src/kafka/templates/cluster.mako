@@ -54,9 +54,13 @@ ${commonheader("Kafka", "kafka", user) | n,unicode}
 	} );
 </script>
 
+
+## Use double hashes for a mako template comment
+## Main body
 <%
   _breadcrumbs = [
-    ["Clusters", url('kafka:index')]
+    ["Clusters", url('kafka:index')],
+    [cluster['cluster']['nice_name'].lower(), url('kafka:cluster', cluster_id=cluster['cluster']['id'])]
   ]
 %>
 
@@ -81,7 +85,8 @@ ${ kafka.menubar(section='Topology',c_id=cluster['cluster']['id']) }
 
 <div class="container-fluid">
   <div class="card">
-    	<h2 class="card-heading simple">Topology of Kakfa cluster: ${ cluster['cluster']['nice_name'] }</h2>
+  	
+    		<h2 class="card-heading simple">Topology of Kakfa cluster: ${ cluster['cluster']['nice_name'] }</h2>
 			<div class="card-body">
 		  	<div class="alert alert-info">The zookeper REST server: <b>${cluster['cluster']['zk_rest_url']}</b></div>
 

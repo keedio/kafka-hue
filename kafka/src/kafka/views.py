@@ -23,10 +23,6 @@ from kafka.conf import CLUSTERS
 from kafka.utils import get_cluster_or_404
 
 
-# ZK_HOST_PORTS="hdpnode01:2181,hdpnode02:2181,hdpnode03:2181"
-# BROKERS_PATH = "/brokers/ids"
-# CONSUMERS_PATH = "/consumers"
-
 def my_listener(state):
     if state == KazooState.LOST:
         # Register somewhere that the session was lost
@@ -42,17 +38,28 @@ def _get_topology():
 	topology = CLUSTERS.get()
 	clusters = []
 	for cluster in topology:
-		brokers = _get_brokers(cluster)
-		consumer_groups = _get_consumer_groups(cluster)
-		c = {'cluster':cluster,'brokers':brokers,'consumer_groups':consumer_groups}
+		zk = KazooClient(hosts=CLUSTERS[cluster].ZK_HOST_PORTS.get())
+		zk.add_listener(my_listener)
+		zk.start()
+		brokers = _get_brokers(zk,cluster)
+		consumer_groups = _get_consumer_groups(zk,cluster)
+		c = {'cluster':get_cluster_or_404(id=cluster),'brokers':brokers,'consumer_groups':consumer_groups}
 		clusters.append(c)
+		zk.stop()
 	return clusters
 
-def _get_brokers(cluster):
+def _get_cluster_topology(cluster):
+	zk = KazooClient(hosts=cluster['zk_host_ports'])
+	zk.add_listener(my_listener)
+	zk.start()
+	brokers = _get_brokers(zk,cluster['id'])
+	consumer_groups = _get_consumer_groups(zk,cluster['id'])
+	cluster_topology = {'cluster':cluster,'brokers':brokers,'consumer_groups':consumer_groups}
+	zk.stop()
+	return cluster_topology
+
+def _get_brokers(zk,cluster):
     brokers=[]
-    zk = KazooClient(hosts=CLUSTERS[cluster].ZK_HOST_PORTS.get())
-    zk.add_listener(my_listener)
-    zk.start()
     children = zk.get_children(CLUSTERS[cluster].BROKERS_PATH.get())
     for child in children:
         path = CLUSTERS[cluster].BROKERS_PATH.get() + "/" + child
@@ -60,27 +67,54 @@ def _get_brokers(cluster):
         d=json.loads(data)
         broker = {'host':d['host'],'port':d['port']}
         brokers.append(broker)
-    zk.stop()
     return brokers
 
-def _get_consumer_groups(cluster):
-	zk = KazooClient(hosts=CLUSTERS[cluster].ZK_HOST_PORTS.get())
-	zk.add_listener(my_listener)
-	zk.start()
+def _get_consumer_groups(zk, cluster):
 	consumer_groups = zk.get_children(CLUSTERS[cluster].CONSUMERS_PATH.get())
-	zk.stop()
 	return consumer_groups
 
+def _get_topics(cluster):
+	zk = KazooClient(hosts=cluster['zk_host_ports'])
+	zk.add_listener(my_listener)
+	zk.start()
+	topics = zk.get_children(cluster['topics_path'])
+	topic_list = []
+	for topic in topics:
+		t = {'id':topic}
+		topic_path = cluster['topics_path'] + "/" + topic
+		data, stat = zk.get(topic_path)
+		d=json.loads(data)
+		t['topic_partitions_data']=d['partitions']
+		partitions_path = topic_path + "/partitions"
+		partitions = zk.get_children(partitions_path)
+		t['partitions']=partitions
+		tpp = {}
+		p =[]
+		for partition in partitions:
+			tps = {}
+			p.append(partition.encode('ascii'))
+			partition_path = partitions_path + "/" + partition + "/state"
+			data, stat = zk.get(partition_path)
+			d = json.loads(data)
+			tps['isr'] = d['isr']
+			tps['leader'] = d['leader']
+			tpp[partition.encode('ascii')]=tps
+		t['partitions']=p	
+		t['topic_partitions_states']=tpp
+		topic_list.append(t)
+	zk.stop()
+	return topic_list
 
 def index(request):
-	# zk = KazooClient(hosts=ZK_HOST_PORTS.get())
-	# zk.add_listener(my_listener)
-	# zk.start()
-	#clusters = CLUSTERS.get()
-	# for cluster in clusters:
-	# 	consumers = _get_consumers(zk)
-	# 	brokers = _get_brokers(zk)
-	# zk.stop()
-	# return render('index.mako', request, dict(consumers=consumers,brokers=brokers))
+	# return by default the firsr cluster in the hue.ini config file
+	return render('index.mako', request, {'cluster':_get_topology()[0]})
 
-	return render('index.mako', request, {'clusters':_get_topology()})
+def topics(request, cluster_id):
+	cluster = get_cluster_or_404(id=cluster_id)
+	return render('topics.mako', request, {'cluster': cluster, 'topics':_get_topics(cluster)})
+
+def cluster(request, cluster_id):
+	c = get_cluster_or_404(id=cluster_id)
+	cluster = _get_cluster_topology(cluster=c)
+	return render('cluster.mako', request, {'cluster':cluster})
+
