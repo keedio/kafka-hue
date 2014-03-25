@@ -5,9 +5,9 @@
 %>
 <%namespace name="kafka" file="navigation_bar.mako" />
 
-${commonheader("Kafka", "kafka", user) | n,unicode}
+${commonheader("Kafka > %s" % (cluster['cluster']['nice_name']), app_name, user) | n,unicode}
 
-## DATATABLE SECTION FOR CONSUMER GROUPS
+## DATATABLE SECTION FOR CONSUMER GROUPS AND BROKERS
 
 <script src="/static/ext/js/datatables-paging-0.1.js" type="text/javascript" charset="utf-8"></script>
 
@@ -54,9 +54,6 @@ ${commonheader("Kafka", "kafka", user) | n,unicode}
 	} );
 </script>
 
-
-## Use double hashes for a mako template comment
-## Main body
 <%
   _breadcrumbs = [
     ["Clusters", url('kafka:index')],
@@ -85,7 +82,7 @@ ${ kafka.menubar(section='Topology',c_id=cluster['cluster']['id']) }
 
 <div class="container-fluid">
   <div class="card">
-  	
+
     		<h2 class="card-heading simple">Topology of Kakfa cluster: ${ cluster['cluster']['nice_name'] }</h2>
 			<div class="card-body">
 		  	<div class="alert alert-info">The zookeper REST server: <b>${cluster['cluster']['zk_rest_url']}</b></div>
@@ -150,7 +147,6 @@ ${ kafka.menubar(section='Topology',c_id=cluster['cluster']['id']) }
 					% endfor
 			    </tbody>
 		    </table>
-		</ul>
 	</div>
   </div>
 </div>

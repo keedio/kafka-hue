@@ -4,15 +4,15 @@
 %>
 <%namespace name="kafka" file="navigation_bar.mako" />
 
-${commonheader("%s > Topics" % (cluster['nice_name']), app_name, user) | n,unicode}
+${commonheader("%s > Consumer Groups" % (cluster['nice_name']), app_name, user) | n,unicode}
 
-## DATATABLE SECTION FOR TOPICS
+## DATATABLE SECTION FOR CONSUMERS
 
 <script src="/static/ext/js/datatables-paging-0.1.js" type="text/javascript" charset="utf-8"></script>
 
 <script type="text/javascript" charset="utf-8">
 	$(document).ready(function() {
-	    $('#topicsTable').dataTable( {
+	    $('#consumerGroupsTable').dataTable( {
 	    	"sPaginationType":"bootstrap",
 	    	"bLengthChange":true,
 	        "sDom": "<'row-fluid'<l><f>r>t<'row-fluid'<'dt-pages'p><'dt-records'i>>",
@@ -38,7 +38,7 @@ ${commonheader("%s > Topics" % (cluster['nice_name']), app_name, user) | n,unico
   _breadcrumbs = [
     ["Clusters", url('kafka:index')],
     [cluster['nice_name'].lower(), url('kafka:cluster', cluster_id=cluster['id'])],
-    ["Topics", url('kafka:topics', cluster_id=cluster['id'])],
+    ["Consumer Groups", url('kafka:consumer_groups', cluster_id=cluster['id'])],
   ]
 %>
 
@@ -59,42 +59,35 @@ ${commonheader("%s > Topics" % (cluster['nice_name']), app_name, user) | n,unico
 ${ kafka.header(_breadcrumbs) }
 % endif 
 
-${ kafka.menubar(section='Topics',c_id=cluster['id']) }
+${ kafka.menubar(section='Consumer Groups',c_id=cluster['id']) }
 
 <div class="container-fluid">
   <div class="card">
-    <h2 class="card-heading simple">Topics of Kakfa cluster: ${ cluster['id'] }</h2>
+    <h2 class="card-heading simple">Consumer Groups of Kakfa cluster: ${ cluster['id'] }</h2>
     <div class="card-body">
-    	<div class="alert alert-info">Searching topics from path: <b>${cluster['topics_path']}</b></div>
-    	<h4 class="card-heading simple">Topics</h4>
+    	<div class="alert alert-info">Searching Consumer Groups from path: <b>${cluster['consumers_path']}</b></div>
+    	<h4 class="card-heading simple">Consumer Groups</h4>
     	</br>
-    	<table class="table datatables table-striped table-hover table-condensed" id="topicsTable" data-tablescroller-disable="true">
-    	  <thead>
-	      	<tr>
-		        <th>Name</th>
-		        <th># Partitions</th>
-		        <th>Partitions ids</th>
-		        <th># Replicas / Partition</th>
-		        <th>Status</th>
-		      </tr>
-		    </thead>
-		    <tbody>
-	    	% for topic in topics:
-				<tr>
-					<td>${topic['id']}</td>
-					<td><span class="badge">${len(topic['partitions'])}</span></td>
-					<td>[
-						% for partition in topic['partitions']:
-							${partition}
-						% endfor
-						]
-					</td>
-					<td><span class="badge">${len(topic['topic_partitions_data'][topic['partitions'][0]])}</span</td>
-		    		<td><span class="label label-success">OK</span></td>
-				</tr>
-			% endfor
-			</tbody>
-		</table>
+    	<table class="table datatables table-striped table-hover table-condensed" id="consumerGroupsTable" data-tablescroller-disable="true">
+		    	<thead>
+			      <tr>
+			        <th>Name</th>
+			        <th>Status</th>
+			        <th># Consumers active</th>
+			        <th># Topics suscribed</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			    	% for consumer_group in consumers_groups:
+			    		<tr>
+			    			<td>${consumer_group['id']}</td>
+			    			<td><span class="label label-success">OK</span></td>
+			    			<td><span class="badge">${len(consumer_group['consumers'])}</span></td>
+			    			<td><span class="badge">${len(consumer_group['offsets'])}</span></td>
+			    		</tr>
+					% endfor
+			    </tbody>
+		    </table>
 		</br>
 	</div>
   </div>

@@ -5,9 +5,9 @@
 %>
 <%namespace name="kafka" file="navigation_bar.mako" />
 
-${commonheader("Kafka", "kafka", user) | n,unicode}
+${commonheader("Topology", app_name, user) | n,unicode}
 
-## DATATABLE SECTION FOR CONSUMER GROUPS
+## DATATABLE SECTION FOR CONSUMER GROUPS AND BROKERS
 
 <script src="/static/ext/js/datatables-paging-0.1.js" type="text/javascript" charset="utf-8"></script>
 
@@ -145,7 +145,6 @@ ${ kafka.menubar(section='Topology',c_id=cluster['cluster']['id']) }
 					% endfor
 			    </tbody>
 		    </table>
-		</ul>
 	</div>
   </div>
 </div>

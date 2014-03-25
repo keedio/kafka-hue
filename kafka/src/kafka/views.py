@@ -21,6 +21,8 @@ from kazoo.client import KazooClient, KazooState
 import json
 from kafka.conf import CLUSTERS
 from kafka.utils import get_cluster_or_404
+from kazoo.exceptions import NoNodeError
+
 
 
 def my_listener(state):
@@ -105,8 +107,72 @@ def _get_topics(cluster):
 	zk.stop()
 	return topic_list
 
+def _get_consumers(cluster):
+	zk = KazooClient(hosts=cluster['zk_host_ports'])
+	zk.add_listener(my_listener)
+	zk.start()
+	groups = _get_consumer_groups(zk,cluster['id'])
+	consumer_groups = []
+	for group in groups:
+		consumer_group = {'id':group.encode('ascii')}
+		consumers_path = cluster['consumers_path'] + "/ids"
+		try:
+			consumers = zk.get_children(consumers_path)
+		except NoNodeError:
+			consumer_group['consumers']=""
+		else:
+			consumer_group['consumers']=consumers
+		consumer_group['offsets']=_get_offsets(zk=zk, cluster=cluster, group=group)
+		consumer_group['owners']=_get_owners(zk=zk, cluster=cluster, group=group)
+		consumer_groups.append(consumer_group)
+	zk.stop()
+	return consumer_groups
+
+def _get_offsets(zk, cluster, group):
+    offsets_path = cluster['consumers_path'] + "/" + group + "/offsets"
+    offsets = []
+    try:
+        topics = zk.get_children(offsets_path)
+    except NoNodeError:
+        return offsets 
+    else:
+        for topic in topics:
+            topic_offset = {'topic':topic.encode('ascii')}            
+            topic_partitions_path = offsets_path + "/" + topic
+            topic_partitions = zk.get_children(topic_partitions_path)
+            partition_offset = {}
+            for topic_partition in topic_partitions:
+                data, stat = zk.get(topic_partitions_path+"/"+topic_partition)
+                partition_offset[topic_partition]= data
+            topic_offset['offsets']=partition_offset
+            offsets.append(topic_offset)
+    return offsets
+
+def _get_owners(zk, cluster, group):
+    owners_path = cluster['consumers_path'] + "/" + group + "/owners"
+    owners = []
+    try:
+        topics = zk.get_children(owners_path)
+    except NoNodeError:
+    	return owners
+    else:
+        for topic in topics:
+            topic_owner = {'topic':topic}
+            topic_partitions_path = owners_path + "/" + topic
+            topic_partitions = zk.get_children(topic_partitions_path)
+            partition_owner = {}
+            for topic_partition in topic_partitions:
+                data, stat = zk.get(topic_partitions_path+"/"+topic_partition)
+                partition_owner[topic_partition]=data
+            topic_owner['owners']=partition_owner
+            owners.append(topic_owner)
+    return owners
+
+
+
+
 def index(request):
-	# return by default the firsr cluster in the hue.ini config file
+	# return by default the first cluster in the hue.ini config file
 	return render('index.mako', request, {'cluster':_get_topology()[0]})
 
 def topics(request, cluster_id):
@@ -117,4 +183,9 @@ def cluster(request, cluster_id):
 	c = get_cluster_or_404(id=cluster_id)
 	cluster = _get_cluster_topology(cluster=c)
 	return render('cluster.mako', request, {'cluster':cluster})
+
+def consumer_groups(request, cluster_id):	
+	cluster = get_cluster_or_404(id=cluster_id)
+	return render('consumer_groups.mako', request, {'cluster': cluster, 'consumers_groups':_get_consumers(cluster)})
+
 
