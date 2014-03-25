@@ -79,31 +79,39 @@ def _get_topics(cluster):
 	zk = KazooClient(hosts=cluster['zk_host_ports'])
 	zk.add_listener(my_listener)
 	zk.start()
-	topics = zk.get_children(cluster['topics_path'])
 	topic_list = []
-	for topic in topics:
-		t = {'id':topic}
-		topic_path = cluster['topics_path'] + "/" + topic
-		data, stat = zk.get(topic_path)
-		d=json.loads(data)
-		t['topic_partitions_data']=d['partitions']
-		partitions_path = topic_path + "/partitions"
-		partitions = zk.get_children(partitions_path)
-		t['partitions']=partitions
-		tpp = {}
-		p =[]
-		for partition in partitions:
-			tps = {}
-			p.append(partition.encode('ascii'))
-			partition_path = partitions_path + "/" + partition + "/state"
-			data, stat = zk.get(partition_path)
-			d = json.loads(data)
-			tps['isr'] = d['isr']
-			tps['leader'] = d['leader']
-			tpp[partition.encode('ascii')]=tps
-		t['partitions']=p	
-		t['topic_partitions_states']=tpp
-		topic_list.append(t)
+	try:
+		topics = zk.get_children(cluster['topics_path'])
+	except NoNodeError:
+		return topic_list
+	else:
+		for topic in topics:
+			t = {'id':topic}
+			topic_path = cluster['topics_path'] + "/" + topic
+			data, stat = zk.get(topic_path)
+			d=json.loads(data)
+			t['topic_partitions_data']=d['partitions']
+			if len(t['topic_partitions_data'])>1:
+				partitions_path = topic_path + "/partitions"
+				partitions = zk.get_children(partitions_path)
+				t['partitions']=partitions
+				tpp = {}
+				p =[]
+				for partition in partitions:
+					tps = {}
+					p.append(partition.encode('ascii'))
+					partition_path = partitions_path + "/" + partition + "/state"
+					data, stat = zk.get(partition_path)
+					d = json.loads(data)
+					tps['isr'] = d['isr']
+					tps['leader'] = d['leader']
+					tpp[partition.encode('ascii')]=tps
+				t['partitions']=p	
+				t['topic_partitions_states']=tpp
+			else:
+				t['partitions']=t['topic_partitions_data'].keys()
+				t['topic_partitions_states']=""
+			topic_list.append(t)
 	zk.stop()
 	return topic_list
 
