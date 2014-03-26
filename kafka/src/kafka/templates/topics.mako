@@ -75,6 +75,7 @@ ${ kafka.menubar(section='Topics',c_id=cluster['id']) }
 		        <th># Partitions</th>
 		        <th>Partitions ids</th>
 		        <th># Replicas / Partition</th>
+		        <th>Partition - Replicas ids in isr</th>
 		        <th>Status</th>
 		      </tr>
 		    </thead>
@@ -90,6 +91,11 @@ ${ kafka.menubar(section='Topics',c_id=cluster['id']) }
 						]
 					</td>
 					<td><span class="badge">${len(topic['topic_partitions_data'][topic['partitions'][0]])}</span</td>
+					<td>
+						% for partition in topic['partitions']:
+							${partition} - ${topic['topic_partitions_states'][partition]['isr']}<br>
+						% endfor
+					</td>
 		    		<td><span class="label label-success">OK</span></td>
 				</tr>
 			% endfor
