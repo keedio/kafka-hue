@@ -141,7 +141,7 @@ ${ kafka.menubar(section='Topology',c_id=cluster['cluster']['id']) }
 			    <tbody>
 			    	% for consumer in cluster['consumer_groups']:
 			    		<tr>
-			    			<td>${consumer}</td>
+			    			<td><a href="${url('kafka:consumer_group', cluster_id=cluster['cluster']['id'], group_id=consumer)}">${consumer}</a></td>
 			    			<td><span class="label label-success">OK</span></td>
 			    		</tr>
 					% endfor
