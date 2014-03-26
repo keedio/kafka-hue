@@ -112,7 +112,7 @@ ${ kafka.menubar(section='Consumer Groups',c_id=cluster['id']) }
 			    </tbody>
 		    </table>
 		</br>
-		<h4 class="card-heading simple">Topics Suscribed</h4>
+		<h4 class="card-heading simple">Topics Subscribed</h4>
     	</br>
 		<table class="table datatables table-striped table-hover table-condensed" id="consumerGroupTopicsTable" data-tablescroller-disable="true">
 		    	<thead>
