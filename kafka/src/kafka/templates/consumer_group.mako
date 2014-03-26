@@ -126,7 +126,7 @@ ${ kafka.menubar(section='Consumer Groups',c_id=cluster['id']) }
 			    <tbody>
 			    	% for topic_offset in consumer_group['offsets']:
 			    		<tr>
-			    			<td><p class="text-center">${topic_offset['topic']}</p></td>
+			    			<td>${topic_offset['topic']}</td>
 			    			<td>
 			    				% for partition in topic_offset['offsets'].keys():
 			    					${partition} - ${topic_offset['offsets'][partition]}<br>

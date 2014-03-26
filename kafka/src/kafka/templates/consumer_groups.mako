@@ -74,7 +74,7 @@ ${ kafka.menubar(section='Consumer Groups',c_id=cluster['id']) }
 			        <th>Name</th>
 			        <th>Status</th>
 			        <th># Consumers active</th>
-			        <th># Topics suscribed</th>
+			        <th># Topics subscribed</th>
 			      </tr>
 			    </thead>
 			    <tbody>
