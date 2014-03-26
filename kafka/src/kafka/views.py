@@ -122,17 +122,7 @@ def _get_consumers(cluster):
 	groups = _get_consumer_groups(zk,cluster['id'])
 	consumer_groups = []
 	for group in groups:
-		consumer_group = {'id':group.encode('ascii')}
-		consumers_path = cluster['consumers_path'] + "/ids"
-		try:
-			consumers = zk.get_children(consumers_path)
-		except NoNodeError:
-			consumer_group['consumers']=""
-		else:
-			consumer_group['consumers']=consumers
-		consumer_group['offsets']=_get_offsets(zk=zk, cluster=cluster, group=group)
-		consumer_group['owners']=_get_owners(zk=zk, cluster=cluster, group=group)
-		consumer_groups.append(consumer_group)
+		consumer_groups.append(_get_consumer_group(zk=zk,cluster=cluster,group_id=group))
 	zk.stop()
 	return consumer_groups
 
@@ -176,6 +166,24 @@ def _get_owners(zk, cluster, group):
             owners.append(topic_owner)
     return owners
 
+def _get_consumer_group(zk,cluster,group_id):
+	consumer_group = {'id':group_id.encode('ascii')}
+	consumers_path = cluster['consumers_path'] + "/" + group_id + "/ids"
+	try:
+		consumers = zk.get_children(consumers_path)
+	except NoNodeError:
+		consumer_group['consumers']=""
+	else:
+		#consumer_group['consumers']=consumers
+		consumer_subscription = {}
+		for consumer in consumers:
+			data,stat = zk.get(consumers_path+"/"+consumer)
+			d = json.loads(data)
+			consumer_subscription[consumer]= d['subscription']
+		consumer_group['consumers']=consumer_subscription
+	consumer_group['offsets']=_get_offsets(zk=zk, cluster=cluster, group=group_id)
+	consumer_group['owners']=_get_owners(zk=zk, cluster=cluster, group=group_id)
+	return consumer_group
 
 
 
@@ -195,5 +203,14 @@ def cluster(request, cluster_id):
 def consumer_groups(request, cluster_id):	
 	cluster = get_cluster_or_404(id=cluster_id)
 	return render('consumer_groups.mako', request, {'cluster': cluster, 'consumers_groups':_get_consumers(cluster)})
+
+def consumer_group(request, cluster_id, group_id):	
+	cluster = get_cluster_or_404(id=cluster_id)
+	zk = KazooClient(hosts=cluster['zk_host_ports'])
+	zk.add_listener(my_listener)
+	zk.start()
+	consumer_group = _get_consumer_group(zk=zk,cluster=cluster,group_id=group_id)
+	zk.stop()
+	return render('consumer_group.mako', request, {'cluster': cluster, 'consumer_group':consumer_group})
 
 
