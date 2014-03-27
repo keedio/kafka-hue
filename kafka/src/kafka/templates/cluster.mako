@@ -2,6 +2,8 @@
   from desktop.views import commonheader, commonfooter 
   from django.utils.translation import ugettext as _
   from kafka.conf import CLUSTERS
+  import socket
+  from kafka.utils import test_connection
 %>
 <%namespace name="kafka" file="navigation_bar.mako" />
 
@@ -102,7 +104,16 @@ ${ kafka.menubar(section='Topology',c_id=cluster['cluster']['id']) }
 			    	<tr>
 			    		<td>${zookeeper.split(':')[0]}</td>
 			    		<td>${zookeeper.split(':')[1]}</td>
-			    		<td><span class="label label-success">OK</span></td>
+			    		<% 
+							error = test_connection(zookeeper.split(':')[0],int(zookeeper.split(':')[1]))
+						%>
+			    		<td>
+			    			% if not error:
+			    				<span class="label label-success">ONLINE</span>
+			    			% else:
+			    				<span class="label label-warning">OFFLINE</span>
+			    			% endif
+			    		</td>
 			    	</tr>
 			    % endfor
 			    </tbody>
@@ -123,7 +134,16 @@ ${ kafka.menubar(section='Topology',c_id=cluster['cluster']['id']) }
 					<tr>
 						<td>${broker['host']}</td>
 						<td>${broker['port']}</td>
-			    		<td><span class="label label-success">OK</span></td>
+						<% 
+							error = test_connection(broker['host'],broker['port'])
+						%>
+			    		<td>
+			    			% if not error:
+			    				<span class="label label-success">ONLINE</span>
+			    			% else:
+			    				<span class="label label-warning">OFFLINE</span>
+			    			% endif
+			    		</td>
 					</tr>
 				% endfor
 				</tbody>

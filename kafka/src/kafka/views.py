@@ -50,7 +50,7 @@ def _get_topology():
 			consumers_path = CLUSTERS[cluster].CONSUMERS_PATH.get() + "/" + consumer_group + "/ids"
 			try:
 				consumers = zk.get_children(consumers_path)
-			except :
+			except NoNodeError:
 				consumer_groups_status[consumer_group]=0 # 0 = offline
 			else:
 				consumer_groups_status[consumer_group]=len(consumers) # (not 0) =  online
@@ -70,7 +70,7 @@ def _get_cluster_topology(cluster):
 		consumers_path = cluster['consumers_path'] + "/" + consumer_group + "/ids"
 		try:
 			consumers = zk.get_children(consumers_path)
-		except :
+		except NoNodeError:
 			consumer_groups_status[consumer_group]=0 # 0 = offline
 		else:
 			consumer_groups_status[consumer_group]=len(consumers) # (not 0) =  online

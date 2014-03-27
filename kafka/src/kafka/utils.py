@@ -1,6 +1,8 @@
 from django.http import Http404
 
 from kafka.conf import CLUSTERS
+import socket
+
 
 
 def get_cluster_or_404(id):
@@ -21,3 +23,12 @@ def get_cluster_or_404(id):
   }
 
   return cluster
+
+def test_connection (host, port):
+  s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  try:
+    s.connect((host, port))
+    return
+  except socket.error:
+    return "Error"
+  s.close()
