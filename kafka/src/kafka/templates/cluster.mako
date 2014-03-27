@@ -124,6 +124,7 @@ ${ kafka.menubar(section='Topology',c_id=cluster['cluster']['id']) }
 		    <table class="table datatables table-striped table-hover table-condensed" id="brokersTable" data-tablescroller-disable="true">
 		    	  <thead>
 			      <tr>
+			      	<th>Broker ID</th>
 			        <th>Hostname</th>
 			        <th>Port</th>
 			        <th>Status</th>
@@ -132,6 +133,7 @@ ${ kafka.menubar(section='Topology',c_id=cluster['cluster']['id']) }
 			    <tbody>
 		    	% for broker in cluster['brokers']:
 					<tr>
+						<td>${broker['id']}</td>
 						<td>${broker['host']}</td>
 						<td>${broker['port']}</td>
 						<% 

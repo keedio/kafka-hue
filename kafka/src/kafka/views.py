@@ -86,7 +86,7 @@ def _get_brokers(zk,cluster):
         path = CLUSTERS[cluster].BROKERS_PATH.get() + "/" + child
         data, stat = zk.get(path)
         d=json.loads(data)
-        broker = {'host':d['host'],'port':d['port']}
+        broker = {'host':d['host'],'port':d['port'], 'id':child}
         brokers.append(broker)
     return brokers
 
