@@ -98,17 +98,19 @@ ${ kafka.menubar(section='Consumer Groups',c_id=cluster['id']) }
 			      </tr>
 			    </thead>
 			    <tbody>
-			    	% for consumer in consumer_group['consumers'].keys():
-			    		<tr>
-			    			<td>${consumer}</td>
-			    			<td>
-			    				% for topic_subscribed in consumer_group['consumers'][consumer]:
-			    					${topic_subscribed}<br>
-			    				% endfor
-			    			</td>
-			    			<td><span class="label label-success">OK</span></td>
-			    		</tr>
-					% endfor
+			    	% if consumer_group['consumers']:
+				    	% for consumer in consumer_group['consumers'].keys():
+				    		<tr>
+				    			<td>${consumer}</td>
+				    			<td>
+				    				% for topic_subscribed in consumer_group['consumers'][consumer]:
+				    					${topic_subscribed}<br>
+				    				% endfor
+				    			</td>
+				    			<td><span class="label label-success">OK</span></td>
+				    		</tr>
+						% endfor
+					% endif
 			    </tbody>
 		    </table>
 		</br>
