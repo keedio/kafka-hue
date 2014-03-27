@@ -45,7 +45,16 @@ def _get_topology():
 		zk.start()
 		brokers = _get_brokers(zk,cluster)
 		consumer_groups = _get_consumer_groups(zk,cluster)
-		c = {'cluster':get_cluster_or_404(id=cluster),'brokers':brokers,'consumer_groups':consumer_groups}
+		consumer_groups_status = {} # 0 = offline, (not 0) =  online
+		for consumer_group in consumer_groups:
+			consumers_path = CLUSTERS[cluster].CONSUMERS_PATH.get() + "/" + consumer_group + "/ids"
+			try:
+				consumers = zk.get_children(consumers_path)
+			except :
+				consumer_groups_status[consumer_group]=0 # 0 = offline
+			else:
+				consumer_groups_status[consumer_group]=len(consumers) # (not 0) =  online
+		c = {'cluster':get_cluster_or_404(id=cluster),'brokers':brokers,'consumer_groups':consumer_groups,'consumer_groups_status':consumer_groups_status}
 		clusters.append(c)
 		zk.stop()
 	return clusters
@@ -56,7 +65,17 @@ def _get_cluster_topology(cluster):
 	zk.start()
 	brokers = _get_brokers(zk,cluster['id'])
 	consumer_groups = _get_consumer_groups(zk,cluster['id'])
-	cluster_topology = {'cluster':cluster,'brokers':brokers,'consumer_groups':consumer_groups}
+	consumer_groups_status = {} # 0 = offline, (not 0) =  online
+	for consumer_group in consumer_groups:
+		consumers_path = cluster['consumers_path'] + "/" + consumer_group + "/ids"
+		try:
+			consumers = zk.get_children(consumers_path)
+		except :
+			consumer_groups_status[consumer_group]=0 # 0 = offline
+		else:
+			consumer_groups_status[consumer_group]=len(consumers) # (not 0) =  online
+
+	cluster_topology = {'cluster':cluster,'brokers':brokers,'consumer_groups':consumer_groups, 'consumer_groups_status':consumer_groups_status}
 	zk.stop()
 	return cluster_topology
 

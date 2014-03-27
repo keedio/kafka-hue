@@ -81,7 +81,13 @@ ${ kafka.menubar(section='Consumer Groups',c_id=cluster['id']) }
 			    	% for consumer_group in consumers_groups:
 			    		<tr>
 			    			<td><a href="${url('kafka:consumer_group', cluster_id=cluster['id'], group_id=consumer_group['id'])}">${consumer_group['id']}</a></td>
-			    			<td><span class="label label-success">OK</span></td>
+			    			<td>
+			    				% if len(consumer_group['consumers']) == 0:
+			    					<span class="label label-warning">OFFLINE</span>
+			    				% else:
+			    					<span class="label label-success">ONLINE</span>
+			    				% endif
+			    			</td>
 			    			<td><span class="badge">${len(consumer_group['consumers'])}</span></td>
 			    			<td><span class="badge">${len(consumer_group['offsets'])}</span></td>
 			    		</tr>

@@ -140,7 +140,13 @@ ${ kafka.menubar(section='Topology',c_id=cluster['cluster']['id']) }
 			    	% for consumer in cluster['consumer_groups']:
 			    		<tr>
 			    			<td><a href="${url('kafka:consumer_group', cluster_id=cluster['cluster']['id'], group_id=consumer)}">${consumer}</a></td>
-			    			<td><span class="label label-success">OK</span></td>
+			    			<td>
+			    				% if cluster['consumer_groups_status'][consumer] == 0:
+			    					<span class="label label-warning">OFFLINE</span>
+			    				% else:
+			    					<span class="label label-success">ONLINE</span>
+			    				% endif
+			    			</td>
 			    		</tr>
 					% endfor
 			    </tbody>
