@@ -110,26 +110,23 @@ def _get_topics(cluster):
 			data, stat = zk.get(topic_path)
 			d=json.loads(data)
 			t['topic_partitions_data']=d['partitions']
-			if len(t['topic_partitions_data'])>1:
-				partitions_path = topic_path + "/partitions"
-				partitions = zk.get_children(partitions_path)
-				t['partitions']=partitions
-				tpp = {}
-				p =[]
-				for partition in partitions:
-					tps = {}
-					p.append(partition.encode('ascii'))
-					partition_path = partitions_path + "/" + partition + "/state"
-					data, stat = zk.get(partition_path)
-					d = json.loads(data)
-					tps['isr'] = d['isr']
-					tps['leader'] = d['leader']
-					tpp[partition.encode('ascii')]=tps
-				t['partitions']=p	
-				t['topic_partitions_states']=tpp
-			else:
-				t['partitions']=t['topic_partitions_data'].keys()
-				t['topic_partitions_states']=""
+			
+			partitions_path = topic_path + "/partitions"
+			partitions = zk.get_children(partitions_path)
+			t['partitions']=partitions
+			tpp = {}
+			p =[]
+			for partition in partitions:
+				tps = {}
+				p.append(partition.encode('ascii'))
+				partition_path = partitions_path + "/" + partition + "/state"
+				data, stat = zk.get(partition_path)
+				d = json.loads(data)
+				tps['isr'] = d['isr']
+				tps['leader'] = d['leader']
+				tpp[partition.encode('ascii')]=tps
+			t['partitions']=p	
+			t['topic_partitions_states']=tpp
 			topic_list.append(t)
 	zk.stop()
 	return topic_list
