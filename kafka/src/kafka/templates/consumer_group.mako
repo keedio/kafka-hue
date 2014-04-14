@@ -102,15 +102,15 @@ ${ kafka.menubar(section='Consumer Groups',c_id=cluster['id']) }
   <div class="card">
     <h2 class="card-heading simple">${consumer_group['id']}</h2>
     <div class="card-body">
-    	<div class="alert alert-info">Searching Consumer Groups from path: <b>${cluster['consumers_path']}/${consumer_group['id']}</b></div>
-    	<h4 class="card-heading simple">Consumers</h4>
+    	<div class="alert alert-info">${ _('Searching Consumer Groups from path:') } <b>${cluster['consumers_path']}/${consumer_group['id']}</b></div>
+    	<h4 class="card-heading simple">${ _('Consumers') }</h4>
     	</br>
     	<table class="table datatables table-striped table-hover table-condensed" id="consumerGroupTable" data-tablescroller-disable="true">
 		    	<thead>
 			      <tr>
-			        <th>Name</th>
-			        <th>Topics Subscribed</th>
-			        <th>Status</th>
+			        <th>${ _('Name') }</th>
+			        <th>${ _('Topics Subscribed') }</th>
+			        <th>${ _('Status') }</th>
 			      </tr>
 			    </thead>
 			    <tbody>
@@ -123,22 +123,22 @@ ${ kafka.menubar(section='Consumer Groups',c_id=cluster['id']) }
 				    					${topic_subscribed}<br>
 				    				% endfor
 				    			</td>
-				    			<td><span class="label label-success">OK</span></td>
+				    			<td><span class="label label-success">${ _('OK') }</span></td>
 				    		</tr>
 						% endfor
 					% endif
 			    </tbody>
 		    </table>
 		</br>
-		<h4 class="card-heading simple">Topics Subscribed</h4>
+		<h4 class="card-heading simple">${ _('Topics Subscribed') }</h4>
     	</br>
 		<table class="table datatables table-striped table-hover table-condensed" id="consumerGroupTopicsTable" data-tablescroller-disable="true">
 		    	<thead>
 			      <tr>
-			        <th>Topic</th>
-			        <th>Partition - Offset</th>
-			        <th>Partition - Owner</th>
-			        <th>Status</th>
+			        <th>${ _('Topic') }</th>
+			        <th>${ _('Partition - Offset') }</th>
+			        <th>${ _('Partition - Owner') }</th>
+			        <th>${ _('Status') }</th>
 			      </tr>
 			    </thead>
 			    <tbody>
@@ -161,7 +161,7 @@ ${ kafka.menubar(section='Consumer Groups',c_id=cluster['id']) }
 			    					% endif
 			    				% endfor
 			    			</td>
-			    			<td><span class="label label-success">OK</span></td>
+			    			<td><span class="label label-success">${ _('OK') }</span></td>
 			    		</tr>
 					% endfor
 			    </tbody>

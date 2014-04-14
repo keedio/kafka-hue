@@ -79,21 +79,21 @@ ${ kafka.menubar(section='Topics',c_id=cluster['id']) }
 
 <div class="container-fluid">
   <div class="card">
-    <h2 class="card-heading simple">Topics of Kakfa cluster: ${ cluster['id'] }</h2>
+    <h2 class="card-heading simple">${ _('Topics of Kakfa cluster:') } ${ cluster['id'] }</h2>
     <div class="card-body">
-    	<div class="alert alert-info">Searching topics from path: <b>${cluster['topics_path']}</b></div>
-    	<h4 class="card-heading simple">Topics</h4>
+    	<div class="alert alert-info">${ _('Searching topics from path:') } <b>${cluster['topics_path']}</b></div>
+    	<h4 class="card-heading simple">${ _('Topics') }</h4>
     	</br>
     	<table class="table datatables table-striped table-hover table-condensed" id="topicsTable" data-tablescroller-disable="true">
     	  <thead>
 	      	<tr>
-		        <th>Name</th>
-		        <th># Partitions</th>
-		        <th>Partitions ids</th>
-		        <th># Replicas / Partition</th>
-		        <th>Partition - Replicas ids in isr</th>
-		        <th>Partition - Leader
-		        <th>Status</th>
+		        <th>${ _('Name') }</th>
+		        <th># ${ _('Partitions') }</th>
+		        <th>${ _('Partitions ids') }</th>
+		        <th># ${ _('Replicas / Partition') }</th>
+		        <th>${ _('Partition - Replicas ids in isr') }</th>
+		        <th>${ _('Partition - Leader') }</th>
+		        <th>${ _('Status') }</th>
 		      </tr>
 		    </thead>
 		    <tbody>
@@ -118,7 +118,7 @@ ${ kafka.menubar(section='Topics',c_id=cluster['id']) }
 							${partition} - ${topic['topic_partitions_states'][partition]['leader']}<br>
 						% endfor
 					</td>
-		    		<td><span class="label label-success">OK</span></td>
+		    		<td><span class="label label-success">${ _('OK') }</span></td>
 				</tr>
 			% endfor
 			</tbody>
