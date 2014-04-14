@@ -21,8 +21,9 @@ Installation
 ------------
 To get the Kafka-HUE app integrated and running in your HUE deployment (assuming hue as administrator user HUE):
 
-    $ cd $HUE_HOME/apps
     $ git clone http://github.com/danieltardon/kafka-hue.git
+    $ mv kafka-hue/kafka $HUE_HOME/apps
+    $ cd $HUE_HOME/apps
     $ sudo -E -u hue ../build/env/bin/hue create_desktop_app kafka
     $ sudo -E -u hue ../tools/app_reg/app_reg.py --install kafka --relative-paths
 
