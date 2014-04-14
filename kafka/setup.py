@@ -27,7 +27,7 @@ def expand_package_data(src_dirs, strip=""):
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 setup(
   name = "kafka",
-  version = "0.1",
+  version = "1.0",
   url = 'www.redoop.org',
   description = 'Kafka HUE integration',
   author = 'dtardon',

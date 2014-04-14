@@ -1,10 +1,12 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
-# regarding copyright ownership.  Cloudera, Inc. licenses this file
+# regarding copyright ownership.  The ASF licenses this file
 # to you under the Apache License, Version 2.0 (the
 # "License"); you may not use this file except in compliance
 # with the License.  You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+# http:# www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,13 +15,6 @@
 # limitations under the License.
 
 from desktop.lib.conf import Config, UnspecifiedConfigSection, ConfigSection
-
-# URL = Config(
-#   key="zookeeper_list",
-#   default="",
-#   help="The URL that is proxied inside the app.",
-#   type=str
-# )
 
 def coerce_string(value):
   if type(value) == list:
