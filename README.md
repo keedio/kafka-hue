@@ -53,6 +53,19 @@ Configs needed in hue.ini config file.
         # Path to consumers info in Zookeeper Znode hierarchy
         consumers_path=/consumers
 
+Compile locales
+---------------
+To compile the locales:
+
+Set the ROOT variable in the Makefile file pointing to the HUE installation path.
+
+Compile with make.
+
+    $ cd $HUE_HOME/apps/kafka
+    $ sudo -E -u hue make compile-locale
+
+Restart HUE.
+
 License
 -------
 Apache License, Version 2.0
