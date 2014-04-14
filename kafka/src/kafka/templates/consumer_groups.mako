@@ -79,18 +79,18 @@ ${ kafka.menubar(section='Consumer Groups',c_id=cluster['id']) }
 
 <div class="container-fluid">
   <div class="card">
-    <h2 class="card-heading simple">Consumer Groups of Kakfa cluster: ${ cluster['id'] }</h2>
+    <h2 class="card-heading simple">${ _('Consumer Groups of Kakfa cluster:') } ${ cluster['id'] }</h2>
     <div class="card-body">
-    	<div class="alert alert-info">Searching Consumer Groups from path: <b>${cluster['consumers_path']}</b></div>
-    	<h4 class="card-heading simple">Consumer Groups</h4>
+    	<div class="alert alert-info">${ _('Searching Consumer Groups from path:') } <b>${cluster['consumers_path']}</b></div>
+    	<h4 class="card-heading simple">${ _('Consumer Groups') }</h4>
     	</br>
     	<table class="table datatables table-striped table-hover table-condensed" id="consumerGroupsTable" data-tablescroller-disable="true">
 		    	<thead>
 			      <tr>
-			        <th>Name</th>
-			        <th>Status</th>
-			        <th># Consumers active</th>
-			        <th># Topics subscribed</th>
+			        <th>${ _('Name') }</th>
+			        <th>${ _('Status') }</th>
+			        <th># ${ _('Consumers active') }</th>
+			        <th># ${ _('Topics Subscribed') }</th>
 			      </tr>
 			    </thead>
 			    <tbody>
@@ -99,9 +99,9 @@ ${ kafka.menubar(section='Consumer Groups',c_id=cluster['id']) }
 			    			<td><a href="${url('kafka:consumer_group', cluster_id=cluster['id'], group_id=consumer_group['id'])}">${consumer_group['id']}</a></td>
 			    			<td>
 			    				% if len(consumer_group['consumers']) == 0:
-			    					<span class="label label-warning">OFFLINE</span>
+			    					<span class="label label-warning">${ _('OFFLINE') }</span>
 			    				% else:
-			    					<span class="label label-success">ONLINE</span>
+			    					<span class="label label-success">${ _('ONLINE') }</span>
 			    				% endif
 			    			</td>
 			    			<td><span class="badge">${len(consumer_group['consumers'])}</span></td>

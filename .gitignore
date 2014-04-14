@@ -1,7 +1,9 @@
 *.log
-*.pot
 *.pyc
 local_settings.py
 
 # Third party build files
 *.egg-info/
+
+# compiled locales
+*.mo
