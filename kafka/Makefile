@@ -13,6 +13,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+# Uncomment the following line to compile locales
+# ROOT=/path/to/hue
+
 ifeq ($(ROOT),)
   $(error "Error: Expect the environment variable $$ROOT to point to the Desktop installation")
 endif
