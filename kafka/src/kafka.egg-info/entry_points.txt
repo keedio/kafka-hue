@@ -1,3 +1,0 @@
-[desktop.sdk.application]
-kafka=kafka
-
