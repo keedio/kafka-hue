@@ -21,11 +21,15 @@ Installation
 ------------
 To get the Kafka-HUE app integrated and running in your HUE deployment (assuming hue as administrator user HUE):
 
+    $ sudo -E -u hue .$HUE_HOME/build/env/bin/python pip install zope.interface
+    $ sudo -E -u hue .$HUE_HOME/build/env/bin/python pip install kazoo
     $ git clone http://github.com/danieltardon/kafka-hue.git
     $ mv kafka-hue/kafka $HUE_HOME/apps
     $ cd $HUE_HOME/apps
-    $ sudo -E -u hue ../build/env/bin/hue create_desktop_app kafka
+    $ chown -R hue.hue kafka
     $ sudo -E -u hue ../tools/app_reg/app_reg.py --install kafka --relative-paths
+
+Modify the hue.ini config file as follows and restart HUE. 
 
 HUE.ini Config section
 ----------------------
