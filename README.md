@@ -57,13 +57,14 @@ Compile locales
 ---------------
 To compile the locales:
 
-1. Set the ROOT variable in the Makefile file pointing to the HUE installation path.
-2. Compile with make:
+Set the ROOT variable in the Makefile file pointing to the HUE installation path.
+
+Compile with make.
 
     $ cd $HUE_HOME/apps/kafka
     $ sudo -E -u hue make compile-locale
 
-3. Restart HUE.
+Restart HUE.
 
 License
 -------
