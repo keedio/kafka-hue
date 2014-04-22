@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hue VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-04-14 16:10+0200\n"
+"POT-Creation-Date: 2014-04-22 15:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -169,6 +169,7 @@ msgid "Broker ID"
 msgstr ""
 
 #: src/kafka/templates/cluster.mako:170
+#: src/kafka/templates/consumer_groups.mako:57
 #: src/kafka/templates/consumer_groups.mako:85
 #: src/kafka/templates/index.mako:168
 #: src/kafka/templates/navigation_bar.mako:82

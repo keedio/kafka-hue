@@ -54,7 +54,7 @@ ${commonheader("%s > Consumer Groups" % (cluster['nice_name']), app_name, user) 
   _breadcrumbs = [
     ["Clusters", url('kafka:index')],
     [cluster['nice_name'].lower(), url('kafka:cluster', cluster_id=cluster['id'])],
-    ["Consumer Groups", url('kafka:consumer_groups', cluster_id=cluster['id'])],
+    [_('Consumer Groups'), url('kafka:consumer_groups', cluster_id=cluster['id'])],
   ]
 %>
 
