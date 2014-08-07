@@ -28,13 +28,10 @@ from kazoo.exceptions import NoNodeError
 def my_listener(state):
     if state == KazooState.LOST:
         # Register somewhere that the session was lost
-        print("I'm Lost")
     elif state == KazooState.SUSPENDED:
         # Handle being disconnected from Zookeeper
-        print("I'm Suspended")
     else:
         # Handle being connected/reconnected to Zookeeper
-        print("I'm Connected/reconnected")
 
 def _get_topology():
 	topology = CLUSTERS.get()
