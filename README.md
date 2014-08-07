@@ -26,7 +26,7 @@ To get the Kafka-HUE app integrated and running in your HUE deployment:
     $ git clone http://github.com/danieltardon/kafka-hue.git
     $ mv kafka-hue/kafka $HUE_HOME/apps
     $ cd $HUE_HOME/apps
-    $ sudo -E -u hue ../tools/app_reg/app_reg.py --install kafka --relative-paths
+    $ sudo ../tools/app_reg/app_reg.py --install kafka --relative-paths
 
 Modify the hue.ini config file as follows and restart HUE. 
 
