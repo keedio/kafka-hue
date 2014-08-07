@@ -19,14 +19,13 @@ Main Stack
 
 Installation
 ------------
-To get the Kafka-HUE app integrated and running in your HUE deployment (assuming hue as administrator user HUE):
+To get the Kafka-HUE app integrated and running in your HUE deployment:
 
-    $ sudo -E -u hue .$HUE_HOME/build/env/bin/python pip install zope.interface
-    $ sudo -E -u hue .$HUE_HOME/build/env/bin/python pip install kazoo
+    $ sudo $HUE_HOME/build/env/bin/python $HUE_HOME/build/env/bin/pip install zope.interface
+    $ sudo $HUE_HOME/build/env/bin/python $HUE_HOME/build/env/bin/pip install kazoo
     $ git clone http://github.com/danieltardon/kafka-hue.git
     $ mv kafka-hue/kafka $HUE_HOME/apps
     $ cd $HUE_HOME/apps
-    $ chown -R hue.hue kafka
     $ sudo -E -u hue ../tools/app_reg/app_reg.py --install kafka --relative-paths
 
 Modify the hue.ini config file as follows and restart HUE. 
@@ -62,7 +61,7 @@ Set the ROOT variable in the Makefile file pointing to the HUE installation path
 Compile with make.
 
     $ cd $HUE_HOME/apps/kafka
-    $ sudo -E -u hue make compile-locale
+    $ sudo make compile-locale
 
 Restart HUE.
 
