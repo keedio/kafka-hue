@@ -91,7 +91,11 @@ def _get_brokers(zk,cluster):
     return brokers
 
 def _get_consumer_groups(zk, cluster):
-	consumer_groups = zk.get_children(CLUSTERS[cluster].CONSUMERS_PATH.get())
+	consumer_groups =[]
+	try:
+		consumer_groups = zk.get_children(CLUSTERS[cluster].CONSUMERS_PATH.get())
+	except NoNodeError:
+		return consumer_groups
 	return consumer_groups
 
 def _get_topics(cluster):
