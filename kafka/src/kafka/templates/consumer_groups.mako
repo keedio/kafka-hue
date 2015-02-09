@@ -24,6 +24,8 @@ ${commonheader("%s > Consumer Groups" % (cluster['nice_name']), app_name, user) 
 
 ## DATATABLE SECTION FOR CONSUMERS
 
+<link href="/kafka/static/css/kafka.css" rel="stylesheet">
+
 <script src="/static/ext/js/datatables-paging-0.1.js" type="text/javascript" charset="utf-8"></script>
 
 <script type="text/javascript" charset="utf-8">

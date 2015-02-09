@@ -1,8 +1,21 @@
-
 .kafka img.kafka_icon {
 	width: 55px;
 	height: 55px;
 	position: absolute;
 	top: 27px;
 	left: 3px;
+}
+
+.dataTables_length {
+    width: 50%;
+    float: left;
+    text-align: left;
+    vertical-align:top;
+} 
+
+.dataTables_filter {
+    width: 50%;
+    float: right;
+    text-align: right;
+    vertical-align:top;
 }
