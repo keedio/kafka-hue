@@ -27,6 +27,8 @@ ${commonheader("Topology", app_name, user) | n,unicode}
 
 ## DATATABLE SECTION FOR CONSUMER GROUPS AND BROKERS
 
+<link href="/kafka/static/css/kafka.css" rel="stylesheet">
+
 <script src="/static/ext/js/datatables-paging-0.1.js" type="text/javascript" charset="utf-8"></script>
 
 <script type="text/javascript" charset="utf-8">

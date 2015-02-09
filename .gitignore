@@ -7,3 +7,20 @@ local_settings.py
 
 # compiled locales
 *.mo
+
+__MACOSX
+.DS_Store
+
+.project
+.settings
+.classpath
+.sass-cache/
+
+# OS generated files #
+######################
+*/.DS_Store
+.DS_Store
+.DS_Store?
+.Trashes
+ehthumbs.db
+Thumbs.db
