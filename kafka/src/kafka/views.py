@@ -22,6 +22,11 @@ import json
 from kafka.conf import CLUSTERS
 from kafka.utils import get_cluster_or_404
 from kazoo.exceptions import NoNodeError
+import requests
+import ConfigParser
+from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -39,7 +44,7 @@ def my_listener(state):
 def _get_topology():
 	topology = CLUSTERS.get()
 	clusters = []
-	for cluster in topology:
+	for cluster in topology:        
 		zk = KazooClient(hosts=CLUSTERS[cluster].ZK_HOST_PORTS.get())
 		#zk.add_listener(my_listener)
 		zk.start()
@@ -205,6 +210,49 @@ def _get_consumer_group(zk,cluster,group_id):
 	consumer_group['owners']=_get_owners(zk=zk, cluster=cluster, group=group_id)
 	return consumer_group
 
+def _get_json(psUrl):
+    rJSON = requests.get(psUrl)
+    jsonObject = rJSON.json()      
+  
+    try:
+        if (len(jsonObject) > 0):
+            return jsonObject      
+        else:     
+            return []
+    except:
+        return []    
+
+def _get_dumps(psObject):    
+    jsonDumps = json.dumps(psObject).replace("\\", "\\\\")
+  
+    return jsonDumps
+
+def _get_section_ini(section):
+    dict = []
+    Config = ConfigParser.ConfigParser() 
+    Config.read("/usr/lib/hue/apps/kafka/src/kafka/metrics.ini")
+    options = Config.options(section)
+
+    for option in options:
+        try:
+            dict = Config.get(section, option)
+        except:
+            print("exception on %s!" % option)
+            dict = []
+            
+    return dict
+
+@csrf_exempt
+def changeMetric(request):
+    iResult = -1
+    sMetric = ""  
+  
+    if request.method == 'POST':
+        sMetric = request.POST['sMetric']  
+        
+        print "Metrica: ", sMetric                
+      
+    return HttpResponse(iResult, mimetype = "application/javascript")
 
 
 def index(request):
@@ -233,4 +281,66 @@ def consumer_group(request, cluster_id, group_id):
 	zk.stop()
 	return render('consumer_group.mako', request, {'cluster': cluster, 'consumer_group':consumer_group})
 
+@csrf_exempt
+def dashboard(request, cluster_id):
+    aURL = []
+    aMetrics = []
+    json0 = ""
+    jsonDumps0 = ""
+    json1 = ""
+    jsonDumps1 = ""
+    json2 = ""
+    jsonDumps2 = ""
+    json3 = ""
+    jsonDumps3 = ""
+    json4 = ""
+    jsonDumps4 = ""
+        
+    cluster = get_cluster_or_404(id=cluster_id)
+    topics = _get_topics(cluster)
+                
+    #Extract metrics from config file.
+    Config = ConfigParser.ConfigParser() 
+    Config.read("/usr/lib/hue/apps/kafka/src/kafka/metrics.ini")
+    sections = Config.sections()
+
+    if (request.method == 'POST'):
+        sHost = request.POST['txtHost']
+        sTopic = request.POST['txtTopic']
+        
+        if (sTopic == ""):
+            sTopic = "AllTopics"
+            
+        sMetric = request.POST['txtMetric']
+        
+        options = _get_section_ini(sMetric)
+        sMetric = sMetric.split(".")
+        sMetric = sMetric[0] + "." + sTopic + sMetric[1]
+        
+        for element in options.split(","):
+            aMetrics = aMetrics + [sMetric + "." + element]
+        
+        for metric in aMetrics:
+            aURL = aURL + ["http://" + sHost + "/ganglia/graph.php?r=hour&z=xlarge&c=GangliaCluster&h=" + sHost + "&v=5.767745916838E-35&m=" + metric + "&jr=&js=&ti=" + metric + "&json=1"]
+                         
+        json0 = _get_json(aURL[0])
+        jsonDumps0 = _get_dumps(json0)
+        json1 = _get_json(aURL[1])
+        jsonDumps1 = _get_dumps(json1)
+        json2 = _get_json(aURL[2])
+        jsonDumps2 = _get_dumps(json2)
+        json3 = _get_json(aURL[3])
+        jsonDumps3 = _get_dumps(json3)
+        json4 = _get_json(aURL[4])
+        jsonDumps4 = _get_dumps(json4)
+
+    return render('dashboard.mako', request, {'cluster': cluster, 
+                                              'jsonDumps0':jsonDumps0,
+                                              'jsonDumps1':jsonDumps1,
+                                              'jsonDumps2':jsonDumps2,
+                                              'jsonDumps3':jsonDumps3,
+                                              'jsonDumps4':jsonDumps4,                                               
+                                              'graphName': aMetrics,
+                                              'topics': topics,
+                                              'metrics': sections})
 
