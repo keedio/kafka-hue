@@ -15,7 +15,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.conf.urls.defaults import patterns, url
+try:
+  from django.conf.urls.defaults import patterns, url
+except:
+  from django.conf.urls import patterns, url
 
 IS_URL_NAMESPACED = True
 
