@@ -41,10 +41,18 @@ ${ graphsHUE.import_charts() }
    var sGraphs = "${graphs}"
    var sGraphsTemp = sGraphs.replace(/&quot;/ig,'"');   
    var aGraphs = sGraphsTemp.split(",");
-     
-   for (var i=0; i<Object.keys(jsonValues).length; i++) {
+   
+   console.log("111");
+   console.log(jsonValues.length);
+   console.log("222");
+   console.log(jsonValues[0]);
+   console.log("333");
+   
+   if (jsonValues.length > 0) {  
+   for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
       var d0 = new Date(1000 * jsonValues[0].datapoints[i][1]);
       aValues0.push({x: d0, y: jsonValues[0].datapoints[i][0]});
+   }
    }
    
    aData0 = [{
@@ -81,9 +89,11 @@ ${ graphsHUE.import_charts() }
    swData = sData.replace(/&quot;/ig,'"');  
    jsonValues = JSON.parse(swData);   
    
-   for (var i=0; i<Object.keys(jsonValues).length; i++) {
+   if (jsonValues.length > 0) {
+   for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
       var d1 = new Date(1000 * jsonValues[0].datapoints[i][1]);
       aValues1.push({x: d1, y: jsonValues[0].datapoints[i][0]});
+   }
    }
    
    aData1 = [{
@@ -120,9 +130,11 @@ ${ graphsHUE.import_charts() }
    swData = sData.replace(/&quot;/ig,'"');  
    jsonValues = JSON.parse(swData);   
    
-   for (var i=0; i<Object.keys(jsonValues).length; i++) {
+   if (jsonValues.length > 0) {
+   for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
       var d2 = new Date(1000 * jsonValues[0].datapoints[i][1]);
       aValues2.push({x: d2, y: jsonValues[0].datapoints[i][0]});
+   }
    }
    
    aData2 = [{
@@ -159,8 +171,10 @@ ${ graphsHUE.import_charts() }
    swData = sData.replace(/&quot;/ig,'"');  
    jsonValues = JSON.parse(swData);   
    
-   for (var i=0; i<Object.keys(jsonValues).length; i++) {
+   if (jsonValues.length > 0) {
+   for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
       aValues3.push({x: jsonValues[0].datapoints[i][1], y: jsonValues[0].datapoints[i][0]});
+   }
    }
    
    aData3 = [{
@@ -197,9 +211,11 @@ ${ graphsHUE.import_charts() }
    swData = sData.replace(/&quot;/ig,'"');  
    jsonValues = JSON.parse(swData);   
    
-   for (var i=0; i<Object.keys(jsonValues).length; i++) {
+   if (jsonValues.length > 0) {
+   for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
       var d4 = new Date(1000 * jsonValues[0].datapoints[i][1]);
       aValues4.push({x: d4, y: jsonValues[0].datapoints[i][0]});
+   }
    }
    
    aData4 = [{

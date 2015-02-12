@@ -335,9 +335,6 @@ def dashboard(request, cluster_id):
         
         for metric in aMetrics:
             aURL = aURL + ["http://" + GANGLIA_SERVER + "/ganglia/graph.php?r=" + sGranularity + "&z=xlarge&c=GangliaCluster&h=" + sHost + "&v=5.767745916838E-35&m=" + metric + "&jr=&js=&ti=" + metric + "&json=1"]                
-        
-        
-        print "URLS: ",aURL
                          
         json0 = _get_json(aURL[0])
         jsonDumps0 = _get_dumps(json0)
