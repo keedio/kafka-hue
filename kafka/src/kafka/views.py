@@ -17,6 +17,7 @@
 
 from desktop.lib.django_util import render
 import datetime
+import time
 from kazoo.client import KazooClient, KazooState
 import json
 from kafka.conf import CLUSTERS
@@ -28,7 +29,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 
-
+GANGLIA_SERVER = "vm2"
 
 def my_listener(state):
     if state == KazooState.LOST:
@@ -285,6 +286,12 @@ def consumer_group(request, cluster_id, group_id):
 def dashboard(request, cluster_id):
     aURL = []
     aMetrics = []
+    options = ""
+    sHost = ""
+    sTopic = ""
+    sMetric = ""
+    sMetricComplete = ""
+    sGranularity = ""
     json0 = ""
     jsonDumps0 = ""
     json1 = ""
@@ -298,6 +305,10 @@ def dashboard(request, cluster_id):
         
     cluster = get_cluster_or_404(id=cluster_id)
     topics = _get_topics(cluster)
+    zk = KazooClient(hosts=cluster['zk_host_ports'])
+    zk.start()
+    brokers = _get_brokers(zk,cluster['id'])
+    zk.stop()
                 
     #Extract metrics from config file.
     Config = ConfigParser.ConfigParser() 
@@ -308,20 +319,22 @@ def dashboard(request, cluster_id):
         sHost = request.POST['txtHost']
         sTopic = request.POST['txtTopic']
         
-        if (sTopic == ""):
+        if (sTopic == "All Topics"):
             sTopic = "AllTopics"
+        else:    
+            sTopic = sTopic + "-"
             
-        sMetric = request.POST['txtMetric']
-        
+        sMetric = request.POST['txtMetric']        
+        sGranularity = request.POST['txtGranularity']
         options = _get_section_ini(sMetric)
-        sMetric = sMetric.split(".")
-        sMetric = sMetric[0] + "." + sTopic + sMetric[1]
+        aMetric = sMetric.split(".")
+        sMetricComplete = aMetric[0] + "." + sTopic + aMetric[1]
         
         for element in options.split(","):
-            aMetrics = aMetrics + [sMetric + "." + element]
+            aMetrics = aMetrics + [sMetricComplete + "." + element]
         
         for metric in aMetrics:
-            aURL = aURL + ["http://" + sHost + "/ganglia/graph.php?r=hour&z=xlarge&c=GangliaCluster&h=" + sHost + "&v=5.767745916838E-35&m=" + metric + "&jr=&js=&ti=" + metric + "&json=1"]
+            aURL = aURL + ["http://" + GANGLIA_SERVER + "/ganglia/graph.php?r=" + sGranularity + "&z=xlarge&c=GangliaCluster&h=" + sHost + "&v=5.767745916838E-35&m=" + metric + "&jr=&js=&ti=" + metric + "&json=1"]                
                          
         json0 = _get_json(aURL[0])
         jsonDumps0 = _get_dumps(json0)
@@ -334,13 +347,20 @@ def dashboard(request, cluster_id):
         json4 = _get_json(aURL[4])
         jsonDumps4 = _get_dumps(json4)
 
-    return render('dashboard.mako', request, {'cluster': cluster, 
+
+    return render('dashboard.mako', request, {'cluster': cluster,
+                                              'filterHost': sHost,
+                                              'filterTopic': sTopic,
+                                              'filterMetric': sMetric,
+                                              'filterGranularity': sGranularity, 
                                               'jsonDumps0':jsonDumps0,
                                               'jsonDumps1':jsonDumps1,
                                               'jsonDumps2':jsonDumps2,
                                               'jsonDumps3':jsonDumps3,
-                                              'jsonDumps4':jsonDumps4,                                               
-                                              'graphName': aMetrics,
+                                              'jsonDumps4':jsonDumps4, 
+                                              'sMetric': sMetricComplete,                            
+                                              'graphs': options,
                                               'topics': topics,
+                                              'brokers': brokers,
                                               'metrics': sections})
 
