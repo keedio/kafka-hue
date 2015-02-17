@@ -17,9 +17,6 @@
 <%!
   from desktop.views import commonheader, commonfooter 
   from django.utils.translation import ugettext as _
-  from kafka.conf import CLUSTERS
-  import socket
-  from kafka.utils import test_connection
 %>
 
 <%namespace name="kafka" file="navigation_bar.mako" />
