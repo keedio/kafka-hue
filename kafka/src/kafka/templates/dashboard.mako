@@ -37,6 +37,8 @@ ${ graphsHUE.import_charts() }
       var sGranularity = document.getElementById("txtGranularity").value;
       var jsonDumps0;
       
+      $("#imgLoading").show();
+      
       $("#divErrorH").hide();
       $("#divErrorT").hide();
       $("#divErrorM").hide();
@@ -82,7 +84,8 @@ ${ graphsHUE.import_charts() }
                           document.getElementById('fMetric').innerHTML = document.getElementById('txtMetric').value;
                           document.getElementById('fGranularity').innerHTML = document.getElementById('txtGranularity').value;
                           //Show results.
-                          $("#divGraphs").show();                                               
+                          $("#divGraphs").show();
+                          $("#imgLoading").hide();                                               
                        },
               error: function(xhr, status, error) {
                          console.log('Status: ' + status);
@@ -461,10 +464,11 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
            </tr>
            <tr valign="top" align="right">
               <td colspan="4">
-                 <button type="button" class="btn btn-primary" onclick="SetFilterMetric()">${ _('Submit') }</button>                            
+                 <button type="button" class="btn btn-primary" onclick="SetFilterMetric()">${ _('Submit') }</button>   
+                 <img id="imgLoading" src="/static/art/spinner.gif" class="hide"/>                         
               </td>
            </tr> 
-           </table>          
+           </table>                     
            <div id="divGraphs" class="hide">
               <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
                  <tr valign="top">
