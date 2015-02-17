@@ -124,7 +124,7 @@ ${ graphsHUE.import_charts() }
                      
              graph0.yAxis                     
                    .axisLabel('Messages')                     
-                   .tickFormat(d3.format('s'));
+                   .tickFormat(d3.format('.1s'));
   
              d3.select('#graph0 svg') //Select the <svg> element you want to render the graph in.   
                .datum(aData0)         //Populate the <svg> element with graph data...
@@ -164,7 +164,7 @@ ${ graphsHUE.import_charts() }
                                                        
              graph1.yAxis 
                    .axisLabel('Messages')
-                   .tickFormat(d3.format('s'));
+                   .tickFormat(d3.format('.1s'));
   
              d3.select('#graph1 svg') //Select the <svg> element you want to render the graph in.   
                .datum(aData1)         //Populate the <svg> element with graph data...
@@ -204,7 +204,7 @@ ${ graphsHUE.import_charts() }
 
              graph2.yAxis 
                    .axisLabel('Messages')
-                   .tickFormat(d3.format('s'));
+                   .tickFormat(d3.format('.1s'));
   
              d3.select('#graph2 svg') //Select the <svg> element you want to render the graph in.   
                .datum(aData2)         //Populate the <svg> element with graph data...
@@ -243,7 +243,7 @@ ${ graphsHUE.import_charts() }
 
              graph3.yAxis 
                    .axisLabel('Messages')
-                   .tickFormat(d3.format('s'));
+                   .tickFormat(d3.format('.1s'));
   
              d3.select('#graph3 svg') //Select the <svg> element you want to render the graph in.   
                .datum(aData3)         //Populate the <svg> element with graph data...
@@ -283,7 +283,7 @@ ${ graphsHUE.import_charts() }
                   
              graph4.yAxis 
                    .axisLabel('Messages')
-                   .tickFormat(d3.format('s'));
+                   .tickFormat(d3.format('.1s'));
   
              d3.select('#graph4 svg') //Select the <svg> element you want to render the graph in.   
                .datum(aData4)         //Populate the <svg> element with graph data...
