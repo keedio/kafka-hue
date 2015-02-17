@@ -314,7 +314,103 @@ def dashboard(request, cluster_id):
     Config = ConfigParser.ConfigParser() 
     Config.read("/usr/lib/hue/apps/kafka/src/kafka/metrics.ini")
     sections = Config.sections()
+            
+    if ((request.method == 'POST') and (request.is_ajax())):
+        sHost = request.POST['txtHost']
+        sTopic = request.POST['txtTopic']
+        
+        if (sTopic == "All Topics"):
+            sTopic = "AllTopics"
+        else:    
+            sTopic = sTopic + "-"
+            
+        sMetric = request.POST['txtMetric']        
+        sGranularity = request.POST['txtGranularity']
+        options = _get_section_ini(sMetric)
+        aMetric = sMetric.split(".")
+        sMetricComplete = aMetric[0] + "." + sTopic + aMetric[1]
+        
+        for element in options.split(","):
+            aMetrics = aMetrics + [sMetricComplete + "." + element]
+        
+        for metric in aMetrics:
+            aURL = aURL + ["http://" + GANGLIA_SERVER + "/ganglia/graph.php?r=" + sGranularity + "&z=xlarge&c=GangliaCluster&h=" + sHost + "&v=5.767745916838E-35&m=" + metric + "&jr=&js=&ti=" + metric + "&json=1"]                
+        
+        data = {}
+        data['sMetric'] = sMetricComplete
+        data['sGraphs'] = options
+        data['jsonDumps0'] =  _get_dumps(_get_json(aURL[0]))
+        data['jsonDumps1'] =  _get_dumps(_get_json(aURL[1]))
+        data['jsonDumps2'] =  _get_dumps(_get_json(aURL[2]))
+        data['jsonDumps3'] =  _get_dumps(_get_json(aURL[3]))
+        data['jsonDumps4'] =  _get_dumps(_get_json(aURL[4]))
+        
+        return HttpResponse(json.dumps(data), content_type = "application/json")
+    
+    return render('dashboard.mako', request, {'cluster': cluster,
+                                              'filterHost': sHost,
+                                              'filterTopic': sTopic,
+                                              'filterMetric': sMetric,
+                                              'filterGranularity': sGranularity, 
+                                              'jsonDumps0':jsonDumps0,
+                                              'jsonDumps1':jsonDumps1,
+                                              'jsonDumps2':jsonDumps2,
+                                              'jsonDumps3':jsonDumps3,
+                                              'jsonDumps4':jsonDumps4, 
+                                              'sMetric': sMetricComplete,                            
+                                              'graphs': options,
+                                              'topics': topics,
+                                              'brokers': brokers,
+                                              'metrics': sections})
 
+
+
+
+
+
+
+
+
+"""
+@csrf_exempt
+def dashboard(request, cluster_id):
+    aURL = []
+    aMetrics = []
+    options = ""
+    sHost = ""
+    sTopic = ""
+    sMetric = ""
+    sMetricComplete = ""
+    sGranularity = ""
+    json0 = ""
+    jsonDumps0 = ""
+    json1 = ""
+    jsonDumps1 = ""
+    json2 = ""
+    jsonDumps2 = ""
+    json3 = ""
+    jsonDumps3 = ""
+    json4 = ""
+    jsonDumps4 = ""
+        
+    cluster = get_cluster_or_404(id=cluster_id)
+    topics = _get_topics(cluster)
+    zk = KazooClient(hosts=cluster['zk_host_ports'])
+    zk.start()
+    brokers = _get_brokers(zk,cluster['id'])
+    zk.stop()
+                
+    #Extract metrics from config file.
+    Config = ConfigParser.ConfigParser() 
+    Config.read("/usr/lib/hue/apps/kafka/src/kafka/metrics.ini")
+    sections = Config.sections()
+
+    if request.is_ajax():  
+        print "AJAX ..................................................................................... "
+        print request.POST
+    else:
+        print "NO AJAX"
+            
     if (request.method == 'POST'):
         sHost = request.POST['txtHost']
         sTopic = request.POST['txtTopic']
@@ -364,3 +460,5 @@ def dashboard(request, cluster_id):
                                               'brokers': brokers,
                                               'metrics': sections})
 
+
+"""

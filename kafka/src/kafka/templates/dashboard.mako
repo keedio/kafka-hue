@@ -32,214 +32,268 @@ ${commonheader("Dashboard", app_name, user) | n,unicode}
 
 ${ graphsHUE.import_charts() }
 
-<script type="text/javascript" charset="utf-8">
-   var aValues0 = [];
-   var sData = "${jsonDumps0}";
-   var swData = sData.replace(/&quot;/ig,'"');  
-   var jsonValues = JSON.parse(swData);   
-   
-   var sGraphs = "${graphs}"
-   var sGraphsTemp = sGraphs.replace(/&quot;/ig,'"');   
-   var aGraphs = sGraphsTemp.split(",");
-   
-   if (jsonValues.length > 0) {  
-      for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
-         var d0 = new Date(1000 * jsonValues[0].datapoints[i][1]);
-         aValues0.push({x: d0, y: jsonValues[0].datapoints[i][0]});
+<script type="text/javascript" charset="utf-8">      
+   function SetFilterMetric() {      
+      var sHost = document.getElementById("txtHost").value;
+      var sTopic = document.getElementById("txtTopic").value;
+      var sMetric = document.getElementById("txtMetric").value;
+      var sGranularity = document.getElementById("txtGranularity").value;
+      var jsonDumps0;
+      
+      $("#divErrorH").hide();
+      $("#divErrorT").hide();
+      $("#divErrorM").hide();
+      $("#divErrorG").hide();
+           
+      if (sHost == "") {
+         $("#divErrorH").show();
+      }   
+      else if (sTopic == "") {
+         $("#divErrorT").show();
       }
-   }
-   
-   aData0 = [{
-      values: aValues0,
-      key: aGraphs[0],
-      area: true
-    }];
-    
-   nv.addGraph(function() {
-      var graph0 = nv.models.lineChart()
-                    .margin({top: 15, right:20, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
-                    .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
-                    .transitionDuration(350)        //how fast do you want the lines to transition?
-                    .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
-                    .showYAxis(true)                //Show the y-axis
-                    .showXAxis(false);               //Show the x-axis                             
-
-                  //graph y-axis settings
-                  graph0.yAxis                     
-                       .axisLabel('Messages')                     
-                       .tickFormat(d3.format('.2e'));
-  
-                  d3.select('#graph0 svg') //Select the <svg> element you want to render the graph in.   
-                    .datum(aData0)         //Populate the <svg> element with graph data...
-                    .call(graph0);         //Finally, render the graph!
-
-                  //Update the graph when window resizes.
-                  nv.utils.windowResize(function() { graph0.update() });
-                  return graph0;
-   });
-   
-   var aValues1 = [];
-   sData = "${jsonDumps1}";
-   swData = sData.replace(/&quot;/ig,'"');  
-   jsonValues = JSON.parse(swData);   
-   
-   if (jsonValues.length > 0) {
-      for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
-         var d1 = new Date(1000 * jsonValues[0].datapoints[i][1]);
-         aValues1.push({x: d1, y: jsonValues[0].datapoints[i][0]});
+      else if (sMetric == "") {
+         $("#divErrorM").show();
       }
-   }
-   
-   aData1 = [{
-      values: aValues1,
-      key: aGraphs[1],
-      area: true
-    }];
-    
-   nv.addGraph(function() {
-      var graph1 = nv.models.lineChart()
-                    .margin({top: 15, right:20, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
-                    .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
-                    .transitionDuration(350)        //how fast do you want the lines to transition?
-                    .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
-                    .showYAxis(true)                //Show the y-axis
-                    .showXAxis(false);               //Show the x-axis 
-                                     
-                  //graph y-axis settings
-                  graph1.yAxis 
-                       .axisLabel('Messages')
-                       .tickFormat(d3.format('d'));
-  
-                  d3.select('#graph1 svg') //Select the <svg> element you want to render the graph in.   
-                    .datum(aData1)         //Populate the <svg> element with graph data...
-                    .call(graph1);         //Finally, render the graph!
-
-                  //Update the graph when window resizes.
-                  nv.utils.windowResize(function() { graph1.update() });
-                  return graph1;
-   });
-   
-   var aValues2 = [];
-   sData = "${jsonDumps2}";
-   swData = sData.replace(/&quot;/ig,'"');  
-   jsonValues = JSON.parse(swData);   
-   
-   if (jsonValues.length > 0) {
-      for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
-         var d2 = new Date(1000 * jsonValues[0].datapoints[i][1]);
-         aValues2.push({x: d2, y: jsonValues[0].datapoints[i][0]});
+      else if (sGranularity == "") {
+         $("#divErrorG").show();
       }
-   }
+      else  {                          
+         $.ajax({
+              url: "/kafka/${ cluster['id'] }/dashboard/",           
+              dataType: 'json',   
+              data: { txtHost: sHost,
+                      txtTopic: sTopic,
+                      txtMetric: sMetric,
+                      txtGranularity: sGranularity},
+              method: 'POST',
+              success: function(response) {                           
+                          jsonDumps0 = response.jsonDumps0;
+                          jsonDumps1 = response.jsonDumps1;
+                          jsonDumps2 = response.jsonDumps2;
+                          jsonDumps3 = response.jsonDumps3;
+                          jsonDumps4 = response.jsonDumps4;
+                          sGraphs = response.sGraphs;
+                          aGraphs = sGraphs.split(",");
+                          getGraph0(jsonDumps0, aGraphs[0]);
+                          getGraph1(jsonDumps1, aGraphs[1]);
+                          getGraph2(jsonDumps2, aGraphs[2]);
+                          getGraph3(jsonDumps3, aGraphs[3]);
+                          getGraph4(jsonDumps4, aGraphs[4]);
+                          document.getElementById('iMetricName').innerHTML = response.sMetric;
+                          document.getElementById('fHost').innerHTML = document.getElementById('txtHost').value;
+                          document.getElementById('fTopic').innerHTML = document.getElementById('txtTopic').value;
+                          document.getElementById('fMetric').innerHTML = document.getElementById('txtMetric').value;
+                          document.getElementById('fGranularity').innerHTML = document.getElementById('txtGranularity').value;
+                          //Show results.
+                          $("#divGraphs").show();                                               
+                       },
+              error: function(xhr, status, error) {
+                         console.log('Status: ' + status);
+                         console.log('ERROR: ' + error);
+                         console.log('InText: ' + xhr.responseText);                         
+                     }    
+          });
+       }; // ELSE.          
+   };
    
-   aData2 = [{
-      values: aValues2,
-      key: aGraphs[2],
-      area: true
-    }];
+   function getGraph0(pjson, psName) {
+      var aValues0 = [];      
+      var jsonValues = JSON.parse(pjson);   
+   
+      if (jsonValues.length > 0) {  
+         for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
+            var d0 = new Date(1000 * jsonValues[0].datapoints[i][1]);
+            aValues0.push({x: d0, y: jsonValues[0].datapoints[i][0]});
+         };
+      };
+   
+      aData0 = [{
+         values: aValues0,
+         key: psName,
+         area: true
+       }];
     
-   nv.addGraph(function() {
-      var graph2 = nv.models.lineChart()
-                    .margin({top: 15, right:20, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
-                    .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
-                    .transitionDuration(350)        //how fast do you want the lines to transition?
-                    .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
-                    .showYAxis(true)                //Show the y-axis
-                    .showXAxis(false);               //Show the x-axis                                       
-
-                  //graph y-axis settings
-                  graph2.yAxis 
-                       .axisLabel('Messages')
-                       .tickFormat(d3.format('d'));
+      nv.addGraph(function() {
+         var graph0 = nv.models.lineChart()
+                       .margin({top: 15, right:20, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
+                       .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
+                       .transitionDuration(350)        //how fast do you want the lines to transition?
+                       .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
+                       .showYAxis(true)                //Show the y-axis
+                       .showXAxis(false);               //Show the x-axis                             
+                     
+             graph0.yAxis                     
+                   .axisLabel('Messages')                     
+                   .tickFormat(d3.format('s'));
   
-                  d3.select('#graph2 svg') //Select the <svg> element you want to render the graph in.   
-                    .datum(aData2)         //Populate the <svg> element with graph data...
-                    .call(graph2);         //Finally, render the graph!
+             d3.select('#graph0 svg') //Select the <svg> element you want to render the graph in.   
+               .datum(aData0)         //Populate the <svg> element with graph data...
+               .call(graph0);         //Finally, render the graph!
 
-                  //Update the graph when window resizes.
-                  nv.utils.windowResize(function() { graph2.update() });
-                  return graph2;
-   });
+             //Update the graph when window resizes.
+             nv.utils.windowResize(function() { graph0.update() });
+             return graph0;
+      });   
+   }; // END getGraph0.
    
-   var aValues3 = [];
-   sData = "${jsonDumps3}";
-   swData = sData.replace(/&quot;/ig,'"');  
-   jsonValues = JSON.parse(swData);   
+   function getGraph1(pjson, psName) {
+      var aValues1 = [];  
+      jsonValues = JSON.parse(pjson);   
    
-   if (jsonValues.length > 0) {
-      for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
-         aValues3.push({x: jsonValues[0].datapoints[i][1], y: jsonValues[0].datapoints[i][0]});
-      }
-   }
+      if (jsonValues.length > 0) {
+         for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
+            var d1 = new Date(1000 * jsonValues[0].datapoints[i][1]);
+            aValues1.push({x: d1, y: jsonValues[0].datapoints[i][0]});
+         };
+      };
    
-   aData3 = [{
-      values: aValues3,
-      key: aGraphs[3],
-      area: true
-    }];
+      aData1 = [{
+         values: aValues1,
+         key: psName,
+         area: true
+       }];
     
-   nv.addGraph(function() {
-      var graph3 = nv.models.lineChart()
-                    .margin({top: 15, right:20, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
-                    .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
-                    .transitionDuration(350)        //how fast do you want the lines to transition?
-                    .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
-                    .showYAxis(true)                //Show the y-axis
-                    .showXAxis(false);               //Show the x-axis                                       
-
-                  //graph y-axis settings
-                  graph3.yAxis 
-                       .axisLabel('Messages')
-                       .tickFormat(d3.format('d'));
+      nv.addGraph(function() {
+         var graph1 = nv.models.lineChart()
+                       .margin({top: 15, right:20, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
+                       .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
+                       .transitionDuration(350)        //how fast do you want the lines to transition?
+                       .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
+                       .showYAxis(true)                //Show the y-axis
+                       .showXAxis(false);               //Show the x-axis 
+                                                       
+             graph1.yAxis 
+                   .axisLabel('Messages')
+                   .tickFormat(d3.format('s'));
   
-                  d3.select('#graph3 svg') //Select the <svg> element you want to render the graph in.   
-                    .datum(aData3)         //Populate the <svg> element with graph data...
-                    .call(graph3);         //Finally, render the graph!
+             d3.select('#graph1 svg') //Select the <svg> element you want to render the graph in.   
+               .datum(aData1)         //Populate the <svg> element with graph data...
+               .call(graph1);         //Finally, render the graph!
 
-                  //Update the graph when window resizes.
-                  nv.utils.windowResize(function() { graph3.update() });
-                  return graph3;
-   });
+             //Update the graph when window resizes.
+             nv.utils.windowResize(function() { graph1.update() });
+             return graph1;
+      });
+   }; // END getGraph1.  
+
+   function getGraph2(pjson, psName) {   
+      var aValues2 = [];  
+      jsonValues = JSON.parse(pjson);   
    
-   var aValues4 = [];
-   sData = "${jsonDumps4}";
-   swData = sData.replace(/&quot;/ig,'"');  
-   jsonValues = JSON.parse(swData);   
+      if (jsonValues.length > 0) {
+         for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
+            var d2 = new Date(1000 * jsonValues[0].datapoints[i][1]);
+            aValues2.push({x: d2, y: jsonValues[0].datapoints[i][0]});
+         };
+      };
    
-   if (jsonValues.length > 0) {
-      for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
-         var d4 = new Date(1000 * jsonValues[0].datapoints[i][1]);
-         aValues4.push({x: d4, y: jsonValues[0].datapoints[i][0]});
-      }
-   }
-   
-   aData4 = [{
-      values: aValues4,
-      key: aGraphs[4],
-      area: true
-    }];
+      aData2 = [{
+         values: aValues2,
+         key: psName,
+         area: true
+       }];
     
-   nv.addGraph(function() {
-      var graph4 = nv.models.lineChart()
-                    .margin({top: 15, right:20, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
-                    .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
-                    .transitionDuration(350)        //how fast do you want the lines to transition?
-                    .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
-                    .showYAxis(true)                //Show the y-axis
-                    .showXAxis(false);               //Show the x-axis                                       
+      nv.addGraph(function() {
+         var graph2 = nv.models.lineChart()
+                       .margin({top: 15, right:20, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
+                       .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
+                       .transitionDuration(350)        //how fast do you want the lines to transition?
+                       .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
+                       .showYAxis(true)                //Show the y-axis
+                       .showXAxis(false);               //Show the x-axis                                       
 
-                  //graph y-axis settings
-                  graph4.yAxis 
-                       .axisLabel('Messages')
-                       .tickFormat(d3.format('d'));
+             graph2.yAxis 
+                   .axisLabel('Messages')
+                   .tickFormat(d3.format('s'));
   
-                  d3.select('#graph4 svg') //Select the <svg> element you want to render the graph in.   
-                    .datum(aData4)         //Populate the <svg> element with graph data...
-                    .call(graph4);         //Finally, render the graph!
+             d3.select('#graph2 svg') //Select the <svg> element you want to render the graph in.   
+               .datum(aData2)         //Populate the <svg> element with graph data...
+               .call(graph2);         //Finally, render the graph!
 
-                  //Update the graph when window resizes.
-                  nv.utils.windowResize(function() { graph4.update() });
-                  return graph4;
-   });
+             //Update the graph when window resizes.
+             nv.utils.windowResize(function() { graph2.update() });
+             return graph2;
+      });
+   }; // END getGraph2.  
+   
+   function getGraph3(pjson, psName) {
+      var aValues3 = [];  
+      jsonValues = JSON.parse(pjson);   
+   
+      if (jsonValues.length > 0) {
+         for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
+            aValues3.push({x: jsonValues[0].datapoints[i][1], y: jsonValues[0].datapoints[i][0]});
+         };
+      };
+   
+      aData3 = [{
+         values: aValues3,
+         key: psName,
+         area: true
+       }];
+    
+      nv.addGraph(function() {
+         var graph3 = nv.models.lineChart()
+                       .margin({top: 15, right:20, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
+                       .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
+                       .transitionDuration(350)        //how fast do you want the lines to transition?
+                       .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
+                       .showYAxis(true)                //Show the y-axis
+                       .showXAxis(false);               //Show the x-axis                                       
+
+             graph3.yAxis 
+                   .axisLabel('Messages')
+                   .tickFormat(d3.format('s'));
+  
+             d3.select('#graph3 svg') //Select the <svg> element you want to render the graph in.   
+               .datum(aData3)         //Populate the <svg> element with graph data...
+               .call(graph3);         //Finally, render the graph!
+
+             //Update the graph when window resizes.
+             nv.utils.windowResize(function() { graph3.update() });
+             return graph3;
+      });
+   }; // END getGraph3.  
+   
+   function getGraph4(pjson, psName) {
+      var aValues4 = [];  
+      jsonValues = JSON.parse(pjson);   
+   
+      if (jsonValues.length > 0) {
+         for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
+            var d4 = new Date(1000 * jsonValues[0].datapoints[i][1]);
+            aValues4.push({x: d4, y: jsonValues[0].datapoints[i][0]});
+         };
+      }; 
+   
+      aData4 = [{
+         values: aValues4,
+         key: psName,
+         area: true
+       }];
+    
+      nv.addGraph(function() {
+         var graph4 = nv.models.lineChart()
+                        .margin({top: 15, right:20, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
+                        .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
+                        .transitionDuration(350)        //how fast do you want the lines to transition?
+                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
+                        .showYAxis(true)                //Show the y-axis
+                        .showXAxis(false);               //Show the x-axis                                       
+                  
+             graph4.yAxis 
+                   .axisLabel('Messages')
+                   .tickFormat(d3.format('s'));
+  
+             d3.select('#graph4 svg') //Select the <svg> element you want to render the graph in.   
+               .datum(aData4)         //Populate the <svg> element with graph data...
+               .call(graph4);         //Finally, render the graph!
+
+             //Update the graph when window resizes.
+             nv.utils.windowResize(function() { graph4.update() });
+             return graph4;
+      });
+   }; // END getGraph4.  
    
    function changeValue(psType, psValue) {
       var sElement = ''; 
@@ -258,7 +312,6 @@ ${ graphsHUE.import_charts() }
       }
       document.getElementById(sElement).value = psValue;
    };
-   
 </script>
 
 <%
@@ -292,7 +345,7 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
   <div class="card">
      <h2 class="card-heading simple">${ _('Dashboard of Kakfa cluster:') } ${ cluster['id'] }</h2>
      <div class="card-body">
-        <form id="frmFilterMetric" method="post">
+        <form id="frmFilterMetric" method="post" enctype="multipart/form-data" action="/kafka/${ cluster['id'] }/dashboard/">
         <table width="100%" height="100%" border="0" cellpadding="6" cellspacing="0">
            <tr valign="top">
               <td width="20%" rowspan="2">
@@ -411,52 +464,55 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
            </tr>
            <tr valign="top" align="right">
               <td colspan="4">
-                 <button type="submit" class="btn btn-primary">${ _('Submit') }</button>                            
+                 <button type="button" class="btn btn-primary" onclick="SetFilterMetric()">${ _('Submit') }</button>                            
               </td>
-           </tr>
-           % if (graphs <> ""):
-              <tr valign="top">
-                 <td colspan="4">
-                    <div class="panel panel-default">
-                       <div class="panel-heading">
-                          <i class="fa fa-tachometer fa-fw"></i> ${sMetric}
-                       </div>
-                       <div class="panel-body">
-                          <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
-                             <tr>
-                                <td width="20%">
-                                   <div id="graph0"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
-                                </td>
-                                <td width="20%">
-                                   <div id="graph1"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
-                                </td>
-                                <td width="20%">
-                                   <div id="graph2"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
-                                </td>
-                                <td width="20%">
-                                   <div id="graph3"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
-                                </td>
-                                <td width="20%">
-                                   <div id="graph4"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
-                                </td>
-                             </tr>
-                             <tr>
-                                <td colspan="5" align="center">
-                                   <span class="btn-group">
-                                      <a class="btn btn-date btn-info disabled">${filterHost}</a>
-                                      <a class="btn btn-date btn-info disabled">${filterTopic}</a>
-                                      <a class="btn btn-date btn-info disabled">${filterMetric}</a>                                                     
-                                      <a class="btn btn-date btn-info disabled">${filterGranularity}</a>
-                                   </span>
-                                </td>
-                             </tr>   
-                          </table>
-                       </div>
-                    </div>               
-                 </td>
-              </tr>
-           % endif   
-        </table>
+           </tr> 
+           </table>          
+           <div id="divGraphs" class="hide">
+              <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+                 <tr valign="top">
+                    <td colspan="4">
+                       <div class="panel panel-default">
+                          <div class="panel-heading">
+                             <i id="iMetricName" class="fa fa-tachometer fa-fw"></i>                             
+                          </div>
+                          <div class="panel-body">
+                             <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                   <td width="20%">
+                                      <div id="graph0"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                   </td>
+                                   <td width="20%">
+                                      <div id="graph1"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                   </td>
+                                   <td width="20%">
+                                      <div id="graph2"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                   </td>
+                                   <td width="20%">
+                                      <div id="graph3"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                   </td>
+                                   <td width="20%">
+                                      <div id="graph4"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                   </td>
+                                </tr>
+                                <tr>
+                                   <td colspan="5" align="center">
+                                      <span class="btn-group">
+                                         <a id="fHost" class="btn btn-date btn-info disabled"></a>
+                                         <a id="fTopic" class="btn btn-date btn-info disabled"></a>
+                                         <a id="fMetric" class="btn btn-date btn-info disabled"></a>                                                     
+                                         <a id="fGranularity" class="btn btn-date btn-info disabled"></a>
+                                      </span>
+                                   </td>
+                                </tr>   
+                             </table>
+                          </div>
+                       </div>               
+                    </td>
+                 </tr>
+              </table>
+           </div>   
+        
         </form>                                                                                               
      </div>
   </div>
