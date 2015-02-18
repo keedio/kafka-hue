@@ -22,6 +22,12 @@ def coerce_string(value):
   else:
     return value
 
+GANGLIA_SERVER = Config( "ganglia_server",
+                        help="GANGLIA Server",
+                        default="http://localhost/ganglia/graph.php?",
+                        type=str,
+                        )
+
 CLUSTERS = UnspecifiedConfigSection(
   "clusters",
   help="One entry for each Zookeeper cluster",

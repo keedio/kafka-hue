@@ -20,7 +20,8 @@ import datetime
 import time
 from kazoo.client import KazooClient, KazooState
 import json
-from kafka.conf import CLUSTERS
+from kafka.conf import CLUSTERS, GANGLIA_SERVER
+from kafka import settings
 from kafka.utils import get_cluster_or_404
 from kazoo.exceptions import NoNodeError
 import requests
@@ -29,7 +30,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 
-GANGLIA_SERVER = "vm2"
+METRICS_INI = settings.METRICS_INI
 
 def my_listener(state):
     if state == KazooState.LOST:
@@ -228,10 +229,19 @@ def _get_dumps(psObject):
   
     return jsonDumps
 
-def _get_section_ini(section):
+def _get_sections_ini():
+    Config = ConfigParser.ConfigParser() 
+    Config.read(METRICS_INI)
+    
+    try:
+        return Config.sections()
+    except:
+        return ""
+
+def _get_options_ini(section):
     dict = []
     Config = ConfigParser.ConfigParser() 
-    Config.read("/usr/lib/hue/apps/kafka/src/kafka/metrics.ini")
+    Config.read(METRICS_INI)
     options = Config.options(section)
 
     for option in options:
@@ -242,19 +252,6 @@ def _get_section_ini(section):
             dict = []
             
     return dict
-
-@csrf_exempt
-def changeMetric(request):
-    iResult = -1
-    sMetric = ""  
-  
-    if request.method == 'POST':
-        sMetric = request.POST['sMetric']  
-        
-        print "Metrica: ", sMetric                
-      
-    return HttpResponse(iResult, mimetype = "application/javascript")
-
 
 def index(request):
 	# return by default the first cluster in the hue.ini config file
@@ -286,24 +283,21 @@ def consumer_group(request, cluster_id, group_id):
 def dashboard(request, cluster_id):
     aURL = []
     aMetrics = []
-    options = ""
+    aOptions = ""
     sHost = ""
     sTopic = ""
     sMetric = ""
     sMetricComplete = ""
     sGranularity = ""
-        
+    
     cluster = get_cluster_or_404(id=cluster_id)
     topics = _get_topics(cluster)
     zk = KazooClient(hosts=cluster['zk_host_ports'])
     zk.start()
     brokers = _get_brokers(zk,cluster['id'])
     zk.stop()
-                
-    #Extract metrics from config file.
-    Config = ConfigParser.ConfigParser() 
-    Config.read("/usr/lib/hue/apps/kafka/src/kafka/metrics.ini")
-    sections = Config.sections()
+
+    sections = _get_sections_ini()
             
     if ((request.method == 'POST') and (request.is_ajax())):
         sHost = request.POST['txtHost']
@@ -316,19 +310,19 @@ def dashboard(request, cluster_id):
             
         sMetric = request.POST['txtMetric']        
         sGranularity = request.POST['txtGranularity']
-        options = _get_section_ini(sMetric)
+        aOptions = _get_options_ini(sMetric)
         aMetric = sMetric.split(".")
         sMetricComplete = aMetric[0] + "." + sTopic + aMetric[1]
         
-        for element in options.split(","):
+        for element in aOptions.split(","):
             aMetrics = aMetrics + [sMetricComplete + "." + element]
         
         for metric in aMetrics:
-            aURL = aURL + ["http://" + GANGLIA_SERVER + "/ganglia/graph.php?r=" + sGranularity + "&z=xlarge&c=GangliaCluster&h=" + sHost + "&v=5.767745916838E-35&m=" + metric + "&jr=&js=&ti=" + metric + "&json=1"]                
+            aURL = aURL + [GANGLIA_SERVER.get() + "r=" + sGranularity + "&c=GangliaCluster&h=" + sHost + "&m=" + metric + "&" + metric + "&json=1"]                
         
         data = {}
         data['sMetric'] = sMetricComplete
-        data['sGraphs'] = options
+        data['sGraphs'] = aOptions
         data['jsonDumps0'] =  _get_dumps(_get_json(aURL[0]))
         data['jsonDumps1'] =  _get_dumps(_get_json(aURL[1]))
         data['jsonDumps2'] =  _get_dumps(_get_json(aURL[2]))
