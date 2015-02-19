@@ -37,9 +37,6 @@ ${ graphsHUE.import_charts() }
       var sGranularity = document.getElementById("txtGranularity").value;
       var jsonDumps0;
       
-      $("#imgLoading").show();
-      $("#btnSubmit").hide();
-
       $("#divErrorH").hide();
       $("#divErrorT").hide();
       $("#divErrorM").hide();
@@ -57,7 +54,10 @@ ${ graphsHUE.import_charts() }
       else if (sGranularity == "") {
          $("#divErrorG").show();
       }
-      else  {                          
+      else  { 
+         $("#imgLoading").show();
+         $("#btnSubmit").hide();
+
          $.ajax({
               url: "/kafka/${ cluster['id'] }/dashboard/",           
               dataType: 'json',   
@@ -79,7 +79,6 @@ ${ graphsHUE.import_charts() }
                           getGraph2(jsonDumps2, aGraphs[2]);
                           getGraph3(jsonDumps3, aGraphs[3]);
                           getGraph4(jsonDumps4, aGraphs[4]);
-                          document.getElementById('iMetricName').innerHTML = response.sMetric;
                           document.getElementById('fHost').innerHTML = document.getElementById('txtHost').value;
                           document.getElementById('fTopic').innerHTML = document.getElementById('txtTopic').value;
                           document.getElementById('fMetric').innerHTML = document.getElementById('txtMetric').value;
@@ -117,14 +116,14 @@ ${ graphsHUE.import_charts() }
     
       nv.addGraph(function() {
          var graph0 = nv.models.lineChart()
-                       .margin({top: 15, right:20, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
+                       .margin({top: 15, right:20, left:60, bottom: 40})  //Adjust graph margins to give the x-axis some breathing room.                                  
                        .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                        .transitionDuration(350)        //how fast do you want the lines to transition?
                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
                        .tooltips(true)                 //Show tooltip.
                        .showYAxis(true)                //Show the y-axis                       
-                       .showXAxis(false);              //Show the x-axis                             
-                     
+                       .showXAxis(false);              //Show the x-axis
+
              graph0.yAxis                     
                    .axisLabel('Messages')                     
                    .tickFormat(d3.format('.1s'));
@@ -398,7 +397,7 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
                           <tr>
                              <td>
                                 <select name="idTopics" id="idTopics" style="width:100%;" multiple>
-                                   <option value="All Topics" onclick="changeValue('topic', 'All Topics')">${ _('All Topics') }</option>
+                                   <option value="All Topics" onclick="changeValue('topic', '${ _('All topics') }')">${ _('All Topics') }</option>
                                    % for topic in topics:
                                       <option value="${topic['id']}" onclick="changeValue('topic', '${topic['id']}')">${topic['id']}</option>
                                    % endfor                                         
@@ -482,7 +481,7 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
                     <td colspan="4">
                        <div class="panel panel-default">
                           <div class="panel-heading">
-                             <i id="iMetricName" class="fa fa-tachometer fa-fw"></i>                             
+                             <i class="fa fa-tachometer fa-fw"></i>${ _('Metrics of Kakfa cluster') }                             
                           </div>
                           <div class="panel-body">
                              <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
