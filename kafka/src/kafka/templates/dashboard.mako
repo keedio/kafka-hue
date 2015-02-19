@@ -116,18 +116,21 @@ ${ graphsHUE.import_charts() }
     
       nv.addGraph(function() {
          var graph0 = nv.models.lineChart()
-                       .margin({top: 15, right:20, left:60, bottom: 40})  //Adjust graph margins to give the x-axis some breathing room.                                  
+                       .margin({top: 15, right:50, left:60, bottom: 40})  //Adjust graph margins to give the x-axis some breathing room.                                  
                        .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                        .transitionDuration(350)        //how fast do you want the lines to transition?
                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
                        .tooltips(true)                 //Show tooltip.
                        .showYAxis(true)                //Show the y-axis                       
-                       .showXAxis(false);              //Show the x-axis
+                       .showXAxis(true);               //Show the x-axis
 
              graph0.yAxis                     
                    .axisLabel('Messages')                     
                    .tickFormat(d3.format('.1s'));
-  
+
+             graph0.xAxis                     
+                   .tickFormat(function(d) { return d3.time.format('%Y-%m-%d %H:%M')(new Date(d)); });
+
              d3.select('#graph0 svg') //Select the <svg> element you want to render the graph in.   
                .datum(aData0)         //Populate the <svg> element with graph data...
                .call(graph0);         //Finally, render the graph!
@@ -157,17 +160,20 @@ ${ graphsHUE.import_charts() }
     
       nv.addGraph(function() {
          var graph1 = nv.models.lineChart()
-                       .margin({top: 15, right:20, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
+                       .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
                        .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                        .transitionDuration(350)        //how fast do you want the lines to transition?
                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
                        .tooltips(true)                 //Show tooltip.
                        .showYAxis(true)                //Show the y-axis
-                       .showXAxis(false);               //Show the x-axis 
+                       .showXAxis(true);               //Show the x-axis 
                                                        
              graph1.yAxis 
                    .axisLabel('Messages')
                    .tickFormat(d3.format('.1s'));
+
+             graph1.xAxis                     
+                   .tickFormat(function(d) { return d3.time.format('%Y-%m-%d %H:%M')(new Date(d)); });
   
              d3.select('#graph1 svg') //Select the <svg> element you want to render the graph in.   
                .datum(aData1)         //Populate the <svg> element with graph data...
@@ -198,17 +204,20 @@ ${ graphsHUE.import_charts() }
     
       nv.addGraph(function() {
          var graph2 = nv.models.lineChart()
-                       .margin({top: 15, right:20, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
+                       .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
                        .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                        .transitionDuration(350)        //how fast do you want the lines to transition?
                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
                        .tooltips(true)                 //Show tooltip.
                        .showYAxis(true)                //Show the y-axis
-                       .showXAxis(false);               //Show the x-axis                                       
+                       .showXAxis(true);               //Show the x-axis                                       
 
              graph2.yAxis 
                    .axisLabel('Messages')
                    .tickFormat(d3.format('.1s'));
+
+             graph2.xAxis                  
+                   .tickFormat(function(d) { return d3.time.format('%Y-%m-%d %H:%M')(new Date(d)); });
   
              d3.select('#graph2 svg') //Select the <svg> element you want to render the graph in.   
                .datum(aData2)         //Populate the <svg> element with graph data...
@@ -238,17 +247,20 @@ ${ graphsHUE.import_charts() }
     
       nv.addGraph(function() {
          var graph3 = nv.models.lineChart()
-                       .margin({top: 15, right:20, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
+                       .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
                        .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                        .transitionDuration(350)        //how fast do you want the lines to transition?
                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
                        .tooltips(true)                 //Show tooltip.
                        .showYAxis(true)                //Show the y-axis
-                       .showXAxis(false);               //Show the x-axis                                       
+                       .showXAxis(true);               //Show the x-axis                                       
 
              graph3.yAxis 
                    .axisLabel('Messages')
                    .tickFormat(d3.format('.1s'));
+
+              graph3.xAxis         
+                   .tickFormat(function(d) { return d3.time.format('%Y-%m-%d %H:%M')(new Date(d)); });
   
              d3.select('#graph3 svg') //Select the <svg> element you want to render the graph in.   
                .datum(aData3)         //Populate the <svg> element with graph data...
@@ -279,17 +291,20 @@ ${ graphsHUE.import_charts() }
     
       nv.addGraph(function() {
          var graph4 = nv.models.lineChart()
-                        .margin({top: 15, right:20, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
+                        .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
                         .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                         .transitionDuration(350)        //how fast do you want the lines to transition?
                         .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
                         .tooltips(true)                 //Show tooltip.
                         .showYAxis(true)                //Show the y-axis
-                        .showXAxis(false);               //Show the x-axis                                       
+                        .showXAxis(true);               //Show the x-axis                                       
                   
              graph4.yAxis 
                    .axisLabel('Messages')
                    .tickFormat(d3.format('.1s'));
+
+             graph4.xAxis                                        
+                   .tickFormat(function(d) { return d3.time.format('%Y-%m-%d %H:%M')(new Date(d)); });
   
              d3.select('#graph4 svg') //Select the <svg> element you want to render the graph in.   
                .datum(aData4)         //Populate the <svg> element with graph data...
