@@ -38,7 +38,8 @@ ${ graphsHUE.import_charts() }
       var jsonDumps0;
       
       $("#imgLoading").show();
-      
+      $("#btnSubmit").hide();
+
       $("#divErrorH").hide();
       $("#divErrorT").hide();
       $("#divErrorM").hide();
@@ -85,7 +86,8 @@ ${ graphsHUE.import_charts() }
                           document.getElementById('fGranularity').innerHTML = document.getElementById('txtGranularity').value;
                           //Show results.
                           $("#divGraphs").show();
-                          $("#imgLoading").hide();                                               
+                          $("#imgLoading").hide();    
+                          $("#btnSubmit").show();                                           
                        },
               error: function(xhr, status, error) {
                          console.log('Status: ' + status);
@@ -119,8 +121,9 @@ ${ graphsHUE.import_charts() }
                        .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                        .transitionDuration(350)        //how fast do you want the lines to transition?
                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
-                       .showYAxis(true)                //Show the y-axis
-                       .showXAxis(false);               //Show the x-axis                             
+                       .tooltips(true)                 //Show tooltip.
+                       .showYAxis(true)                //Show the y-axis                       
+                       .showXAxis(false);              //Show the x-axis                             
                      
              graph0.yAxis                     
                    .axisLabel('Messages')                     
@@ -159,6 +162,7 @@ ${ graphsHUE.import_charts() }
                        .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                        .transitionDuration(350)        //how fast do you want the lines to transition?
                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
+                       .tooltips(true)                 //Show tooltip.
                        .showYAxis(true)                //Show the y-axis
                        .showXAxis(false);               //Show the x-axis 
                                                        
@@ -199,6 +203,7 @@ ${ graphsHUE.import_charts() }
                        .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                        .transitionDuration(350)        //how fast do you want the lines to transition?
                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
+                       .tooltips(true)                 //Show tooltip.
                        .showYAxis(true)                //Show the y-axis
                        .showXAxis(false);               //Show the x-axis                                       
 
@@ -238,6 +243,7 @@ ${ graphsHUE.import_charts() }
                        .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                        .transitionDuration(350)        //how fast do you want the lines to transition?
                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
+                       .tooltips(true)                 //Show tooltip.
                        .showYAxis(true)                //Show the y-axis
                        .showXAxis(false);               //Show the x-axis                                       
 
@@ -278,6 +284,7 @@ ${ graphsHUE.import_charts() }
                         .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                         .transitionDuration(350)        //how fast do you want the lines to transition?
                         .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
+                        .tooltips(true)                 //Show tooltip.
                         .showYAxis(true)                //Show the y-axis
                         .showXAxis(false);               //Show the x-axis                                       
                   
@@ -464,7 +471,7 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
            </tr>
            <tr valign="top" align="right">
               <td colspan="4">
-                 <button type="button" class="btn btn-primary" onclick="SetFilterMetric()">${ _('Submit') }</button>   
+                 <button id="btnSubmit" type="button" class="btn btn-primary" onclick="SetFilterMetric()">${ _('Submit') }</button>   
                  <img id="imgLoading" src="/static/art/spinner.gif" class="hide"/>                         
               </td>
            </tr> 
