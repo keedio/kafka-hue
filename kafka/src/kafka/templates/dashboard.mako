@@ -351,7 +351,7 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
               <td width="20%" rowspan="2">
                  <div class="panel panel-default">
                     <div class="panel-heading">
-                       <i class="fa fa-desktop fa-fw"></i> ${ _(' Host List ')}
+                       <i class="fa fa-desktop fa-fw"></i> ${ _('Host')}
                     </div>
                     <div class="panel-body">
                        <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
@@ -379,7 +379,7 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
               <td width="20%" rowspan="2">
                  <div class="panel panel-default">
                     <div class="panel-heading">
-                       <i class="fa fa-desktop fa-fw"></i> ${ _('Topic List') }
+                       <i class="fa fa-desktop fa-fw"></i> ${ _('Topics') }
                     </div>
                     <div class="panel-body">
                        <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
@@ -480,24 +480,32 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
                           <div class="panel-body">
                              <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
                                 <tr>
-                                   <td width="20%">
-                                      <div id="graph0"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
-                                   </td>
-                                   <td width="20%">
-                                      <div id="graph1"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
-                                   </td>
-                                   <td width="20%">
-                                      <div id="graph2"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
-                                   </td>
-                                   <td width="20%">
-                                      <div id="graph3"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
-                                   </td>
-                                   <td width="20%">
-                                      <div id="graph4"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                   <td colspan="3">
+                                      <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+                                         <tr>
+                                            <td width="50%">
+                                               <div id="graph0"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                            </td>                                   
+                                            <td width="50%">
+                                               <div id="graph4"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                            </td>
+                                         </tr>
+                                      </table>         
                                    </td>
                                 </tr>
                                 <tr>
-                                   <td colspan="5" align="center">
+                                   <td width="33%">
+                                      <div id="graph1"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                   </td>
+                                   <td width="34%">
+                                      <div id="graph2"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                   </td>
+                                   <td width="33%">
+                                      <div id="graph3"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                   </td>
+                                </tr>
+                                <tr>
+                                   <td colspan="3" align="center">
                                       <span class="btn-group">
                                          <a id="fHost" class="btn btn-date btn-info disabled"></a>
                                          <a id="fTopic" class="btn btn-date btn-info disabled"></a>

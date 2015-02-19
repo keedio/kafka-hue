@@ -15,7 +15,7 @@
 # limitations under the License.
 
 # Uncomment the following line to compile locales
-# ROOT=/path/to/hue
+ROOT=/usr/lib/hue
 
 ifeq ($(ROOT),)
   $(error "Error: Expect the environment variable $$ROOT to point to the Desktop installation")
