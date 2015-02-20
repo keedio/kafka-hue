@@ -21,9 +21,11 @@ import simplejson
 
 class ZooKeeper(object):
 
-    class Error(Exception): pass
+    class Error(Exception): 
+        pass
 
-    class NotFound(Error): pass
+    class NotFound(Error): 
+        pass
 
     def __init__(self, uri='http://localhost:9998'):
         self._base = uri

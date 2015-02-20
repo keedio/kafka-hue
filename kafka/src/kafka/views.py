@@ -32,7 +32,8 @@ def _get_topology():
 		zk = ZooKeeper(cluster['zk_rest_url'])
 		brokers = _get_brokers(zk,cluster)
 		consumer_groups = _get_consumer_groups(zk,cluster)
-		consumer_groups_status = {} # 0 = offline, (not 0) =  online
+		# 0 = offline, (not 0) =  online
+		consumer_groups_status = {} 
 		for consumer_group in consumer_groups:
 			consumers_path = cluster['consumers_path'] + "/" + consumer_group + "/ids"
 			consumer_groups_status[consumer_group] = zk.get(consumers_path)['numChildren']
@@ -44,7 +45,8 @@ def _get_cluster_topology(cluster):
 	zk = ZooKeeper(cluster['zk_rest_url'])
 	brokers = _get_brokers(zk,cluster)
 	consumer_groups = _get_consumer_groups(zk,cluster)
-	consumer_groups_status = {} # 0 = offline, (not 0) =  online
+	# 0 = offline, (not 0) =  online
+	consumer_groups_status = {} 
 	for consumer_group in consumer_groups:
 		consumers_path = cluster['consumers_path'] + "/" + consumer_group + "/ids"
 		consumer_groups_status[consumer_group] = zk.get(consumers_path)['numChildren']
