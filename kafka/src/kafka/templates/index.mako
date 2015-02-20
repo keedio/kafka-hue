@@ -78,7 +78,7 @@ ${commonheader("Topology", app_name, user) | n,unicode}
   ]
 %>
 
-% if not cluster:
+% if not clusters:
   <div class="container-fluid">
     <div class="card">
       <h1 class="card-heading simple">${ _('There are currently no clusters to browse.') }</h1>
@@ -95,101 +95,105 @@ ${commonheader("Topology", app_name, user) | n,unicode}
   ${ kafka.header(_breadcrumbs) }
 % endif 
 
-${ kafka.menubar(section='Topology',c_id=cluster['cluster']['id']) }
+% for cluster in clusters:
 
-<div class="container-fluid">
-  <div class="card">
-    	<h2 class="card-heading simple">${ _('Topology of Kakfa cluster:') } ${ cluster['cluster']['nice_name'] }</h2>
-			<div class="card-body">
-		  	<div class="alert alert-info">${ _('The zookeper REST server:') } <b>${cluster['cluster']['zk_rest_url']}</b></div>
+	${ kafka.menubar(section='Topology',c_id=cluster['cluster']['id']) }
 
-		  	<h4 class="card-heading simple">${ _('Zookepers') }</h4>
-		    </br>
-		    <table class="table table-hover table-striped table-condensed">
-		    	<thead>
-			      <tr>
-			        <th>${ _('Hostname') }</th>
-			        <th>${ _('Port') }</th>
-			        <th>${ _('Status') }</th>
-			      </tr>
-			    </thead>
-			    <tbody>
-			    % for zookeeper in cluster['cluster']['zk_host_ports'].split(','):
-			    	<tr>
-			    		<td>${zookeeper.split(':')[0]}</td>
-			    		<td>${zookeeper.split(':')[1]}</td>
-			    		<% 
-							error = test_connection(zookeeper.split(':')[0],int(zookeeper.split(':')[1]))
-						%>
-			    		<td>
-			    			% if not error:
-			    				<span class="label label-success">${ _('ONLINE') }</span>
-			    			% else:
-			    				<span class="label label-warning">${ _('OFFLINE') }</span>
-			    			% endif
-			    		</td>
-			    	</tr>
-			    % endfor
-			    </tbody>
-			</table>
-			</br>
-			<h4 class="card-heading simple">${ _('Brokers') }</h4>
-			</br>
-		    <table class="table datatables table-striped table-hover table-condensed" id="brokersTable" data-tablescroller-disable="true">
-		    	  <thead>
-			      <tr>
-			      	<th>${ _('Broker ID') }</th>
-			        <th>${ _('Hostname') }</th>
-			        <th>${ _('Port') }</th>
-			        <th>${ _('Status') }</th>
-			      </tr>
-			    </thead>
-			    <tbody>
-		    	% for broker in cluster['brokers']:
-					<tr>
-						<td>${broker['id']}</td>
-						<td>${broker['host']}</td>
-						<td>${broker['port']}</td>
-			    		<% 
-							error = test_connection(broker['host'],broker['port'])
-						%>
-			    		<td>
-			    			% if not error:
-			    				<span class="label label-success">${ _('ONLINE') }</span>
-			    			% else:
-			    				<span class="label label-warning">${ _('OFFLINE') }</span>
-			    			% endif
-			    		</td>
-					</tr>
-				% endfor
-				</tbody>
-			</table>
-			</br>
-		    <h4 class="card-heading simple">${ _('Consumer Groups') }</h4>
-			</br>
-		    <table class="table datatables table-striped table-hover table-condensed" id="consumerGroupsTable" data-tablescroller-disable="true">
-		    	<thead>
-			      <tr>
-			        <th>${ _('Name') }</th>
-			        <th>${ _('Status') }</th>
-			      </tr>
-			    </thead>
-			    <tbody>
-			    	% for consumer in cluster['consumer_groups']:
-			    		<tr>
-			    			<td><a href="${url('kafka:consumer_group', cluster_id=cluster['cluster']['id'], group_id=consumer)}">${consumer}</a></td>
-			    			<td>
-			    				% if cluster['consumer_groups_status'][consumer] == 0:
-			    					<span class="label label-warning">${ _('OFFLINE') }</span>
-			    				% else:
-			    					<span class="label label-success">${ _('ONLINE') }</span>
-			    				% endif
-			    			</td>
-			    		</tr>
+	<div class="container-fluid">
+	  <div class="card">
+	    	<h2 class="card-heading simple">${ _('Topology of Kakfa cluster:') } ${ cluster['cluster']['nice_name'] }</h2>
+				<div class="card-body">
+			  	<div class="alert alert-info">${ _('The zookeper REST server:') } <b>${cluster['cluster']['zk_rest_url']}</b></div>
+
+			  	<h4 class="card-heading simple">${ _('Zookepers') }</h4>
+			    </br>
+			    <table class="table table-hover table-striped table-condensed">
+			    	<thead>
+				      <tr>
+				        <th>${ _('Hostname') }</th>
+				        <th>${ _('Port') }</th>
+				        <th>${ _('Status') }</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				    % for zookeeper in cluster['cluster']['zk_host_ports'].split(','):
+				    	<tr>
+				    		<td>${zookeeper.split(':')[0]}</td>
+				    		<td>${zookeeper.split(':')[1]}</td>
+				    		<% 
+								error = test_connection(zookeeper.split(':')[0],int(zookeeper.split(':')[1]))
+							%>
+				    		<td>
+				    			% if not error:
+				    				<span class="label label-success">${ _('ONLINE') }</span>
+				    			% else:
+				    				<span class="label label-warning">${ _('OFFLINE') }</span>
+				    			% endif
+				    		</td>
+				    	</tr>
+				    % endfor
+				    </tbody>
+				</table>
+				</br>
+				<h4 class="card-heading simple">${ _('Brokers') }</h4>
+				</br>
+			    <table class="table datatables table-striped table-hover table-condensed" id="brokersTable" data-tablescroller-disable="true">
+			    	  <thead>
+				      <tr>
+				      	<th>${ _('Broker ID') }</th>
+				        <th>${ _('Hostname') }</th>
+				        <th>${ _('Port') }</th>
+				        <th>${ _('Status') }</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+			    	% for broker in cluster['brokers']:
+						<tr>
+							<td>${broker['id']}</td>
+							<td>${broker['host']}</td>
+							<td>${broker['port']}</td>
+				    		<% 
+								error = test_connection(broker['host'],broker['port'])
+							%>
+				    		<td>
+				    			% if not error:
+				    				<span class="label label-success">${ _('ONLINE') }</span>
+				    			% else:
+				    				<span class="label label-warning">${ _('OFFLINE') }</span>
+				    			% endif
+				    		</td>
+						</tr>
 					% endfor
-			    </tbody>
-		    </table>
+					</tbody>
+				</table>
+				</br>
+			    <h4 class="card-heading simple">${ _('Consumer Groups') }</h4>
+				</br>
+			    <table class="table datatables table-striped table-hover table-condensed" id="consumerGroupsTable" data-tablescroller-disable="true">
+			    	<thead>
+				      <tr>
+				        <th>${ _('Name') }</th>
+				        <th>${ _('Status') }</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				    	% for consumer in cluster['consumer_groups']:
+				    		<% print consumer %>
+				    		<tr>
+				    			<td><a href="${url('kafka:consumer_group', cluster_id=cluster['cluster']['id'], group_id=consumer)}">${consumer}</a></td>
+				    			<td>
+				    				% if cluster['consumer_groups_status'][consumer] == 0:
+				    					<span class="label label-warning">${ _('OFFLINE') }</span>
+				    				% else:
+				    					<span class="label label-success">${ _('ONLINE') }</span>
+				    				% endif
+				    			</td>
+				    		</tr>
+						% endfor
+				    </tbody>
+			    </table>
+		</div>
+	  </div>
 	</div>
-  </div>
-</div>
+% endfor
 ${commonfooter(messages) | n,unicode}
