@@ -22,6 +22,7 @@ import socket
 
 
 def get_cluster_or_404(id):
+  """ Get a cluster information from its ID or a 404 Error """
   try:
     name = id
     cluster = CLUSTERS.get()[name]
@@ -41,6 +42,7 @@ def get_cluster_or_404(id):
   return cluster
 
 def test_connection (host, port):
+  """ Test available connection of a given host and port """
   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   try:
     s.connect((host, port))

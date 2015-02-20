@@ -20,6 +20,7 @@ import simplejson
 
 
 class ZooKeeper(object):
+    """ Zoookeeper Class """
 
     class Error(Exception): 
         pass
