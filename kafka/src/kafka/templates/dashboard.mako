@@ -107,8 +107,8 @@ ${ graphsHUE.import_charts() }
    
       if (jsonValues.length > 0) {  
          for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
-            var d0 = new Date(1000 * jsonValues[0].datapoints[i][1]);
-            aValues0.push({x: d0, y: jsonValues[0].datapoints[i][0].toFixed(2)});
+            var data0 = new Date(1000 * jsonValues[0].datapoints[i][1]);
+            aValues0.push({x: data0, y: jsonValues[0].datapoints[i][0].toFixed(2)});
          };
       };
    
@@ -151,8 +151,8 @@ ${ graphsHUE.import_charts() }
    
       if (jsonValues.length > 0) {
          for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
-            var d1 = new Date(1000 * jsonValues[0].datapoints[i][1]);
-            aValues1.push({x: d1, y: jsonValues[0].datapoints[i][0].toFixed(2)});
+            var data1 = new Date(1000 * jsonValues[0].datapoints[i][1]);
+            aValues1.push({x: data1, y: jsonValues[0].datapoints[i][0].toFixed(2)});
          };
       };
    
@@ -195,8 +195,8 @@ ${ graphsHUE.import_charts() }
    
       if (jsonValues.length > 0) {
          for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
-            var d2 = new Date(1000 * jsonValues[0].datapoints[i][1]);
-            aValues2.push({x: d2, y: jsonValues[0].datapoints[i][0].toFixed(2)});
+            var data2 = new Date(1000 * jsonValues[0].datapoints[i][1]);
+            aValues2.push({x: data2, y: jsonValues[0].datapoints[i][0].toFixed(2)});
          };
       };
    
@@ -236,21 +236,21 @@ ${ graphsHUE.import_charts() }
    function getGraph3(pjson, psName) {   
       var aValues3 = [];  
       jsonValues = JSON.parse(pjson);   
-   
+
       if (jsonValues.length > 0) {
          for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
-            //var d3 = new Date(1000 * jsonValues[0].datapoints[i][1]);
-            //aValues3.push({x: d3, y: jsonValues[0].datapoints[i][0].toFixed(2)});
-            aValues3.push({x: jsonValues[0].datapoints[i][1], y: jsonValues[0].datapoints[i][0].toFixed(2)});
+            var data3 = new Date(1000 * jsonValues[0].datapoints[i][1]);
+            aValues3.push({x: data3, y: jsonValues[0].datapoints[i][0].toFixed(2)});                 
          };
       };
-   
+
+      
       aData3 = [{
          values: aValues3,
          key: psName,
          area: true
        }];
-    
+
       nv.addGraph(function() {
          var graph3 = nv.models.lineChart()
                        .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
@@ -284,8 +284,8 @@ ${ graphsHUE.import_charts() }
    
       if (jsonValues.length > 0) {
          for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
-            var d4 = new Date(1000 * jsonValues[0].datapoints[i][1]);
-            aValues4.push({x: d4, y: jsonValues[0].datapoints[i][0].toFixed(2)});
+            var data4 = new Date(1000 * jsonValues[0].datapoints[i][1]);
+            aValues4.push({x: data4, y: jsonValues[0].datapoints[i][0].toFixed(2)});
          };
       }; 
    
@@ -330,7 +330,6 @@ ${ graphsHUE.import_charts() }
       }
       if (psType == 'topic'){
          sElement = 'txtTopic';
-         console.log(psValue);
       }
       if (psType == 'metric'){
          sElement = 'txtMetric';
