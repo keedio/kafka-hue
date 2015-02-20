@@ -88,10 +88,10 @@ ${ graphsHUE.import_charts() }
                           $("#imgLoading").hide();    
                           $("#btnSubmit").show();                                           
                        },
-              error: function(xhr, status, error) {
-                         console.log('Status: ' + status);
-                         console.log('ERROR: ' + error);
-                         console.log('InText: ' + xhr.responseText);                         
+              error: function(xhr, status, error) {                         
+                         $("#imgLoading").hide();    
+                         $("#btnSubmit").show(); 
+                         $("#divURLError").show();                         
                      }    
           });
        }; // ELSE.          
@@ -491,7 +491,21 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
                  <img id="imgLoading" src="/static/art/spinner.gif" class="hide"/>                         
               </td>
            </tr> 
-           </table>                     
+           </table>   
+
+           <div id="divURLError" class="container-fluid hide">
+              <div class="card">
+                 <h1 class="card-heading simple">${ _('There are a problem with Ganglia URL.') }</h1>
+                 <div class="card-body">
+                    <p>
+                       ${ _('Please contact your administrator to solve this.') }
+                       <br/>
+                       <br/>
+                    </p>
+                 </div>
+              </div>
+           </div>
+
            <div id="divGraphs" class="hide">
               <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
                  <tr valign="top">
@@ -543,8 +557,7 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
                     </td>
                  </tr>
               </table>
-           </div>   
-        
+           </div>           
         </form>                                                                                               
      </div>
   </div>
