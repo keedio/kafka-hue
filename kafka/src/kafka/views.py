@@ -32,6 +32,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 METRICS_INI = settings.METRICS_INI
 
+#prueba
+
 def my_listener(state):
     if state == KazooState.LOST:
         # Register somewhere that the session was lost
@@ -298,12 +300,12 @@ def dashboard(request, cluster_id):
     zk.stop()
 
     sections = _get_sections_ini()
-            
+
     if ((request.method == 'POST') and (request.is_ajax())):
         sHost = request.POST['txtHost']
         sTopic = request.POST['txtTopic']
-        
-        if (sTopic == "All Topics"):
+
+        if (sTopic == "*"):
             sTopic = "AllTopics"
         else:    
             sTopic = sTopic + "-"

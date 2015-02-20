@@ -58,6 +58,10 @@ ${ graphsHUE.import_charts() }
          $("#imgLoading").show();
          $("#btnSubmit").hide();
 
+         if (sTopic = '${ _('All topics') }') {
+            sTopic = '*';
+         };
+
          $.ajax({
               url: "/kafka/${ cluster['id'] }/dashboard/",           
               dataType: 'json',   
@@ -88,7 +92,7 @@ ${ graphsHUE.import_charts() }
                           $("#imgLoading").hide();    
                           $("#btnSubmit").show();                                           
                        },
-              error: function(xhr, status, error) {                         
+              error: function(xhr, status, error) {
                          $("#imgLoading").hide();    
                          $("#btnSubmit").show(); 
                          $("#divURLError").show();                         
@@ -326,6 +330,7 @@ ${ graphsHUE.import_charts() }
       }
       if (psType == 'topic'){
          sElement = 'txtTopic';
+         console.log(psValue);
       }
       if (psType == 'metric'){
          sElement = 'txtMetric';
@@ -414,7 +419,7 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
                           <tr>
                              <td>
                                 <select name="idTopics" id="idTopics" style="width:100%;" multiple>
-                                   <option value="All Topics" onclick="changeValue('topic', '${ _('All topics') }')">${ _('All Topics') }</option>
+                                   <option value="*" onclick="changeValue('topic', '${ _('All topics') }')">${ _('All Topics') }</option>
                                    % for topic in topics:
                                       <option value="${topic['id']}" onclick="changeValue('topic', '${topic['id']}')">${topic['id']}</option>
                                    % endfor                                         
