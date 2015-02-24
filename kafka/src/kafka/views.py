@@ -35,9 +35,8 @@ def _get_topology():
 		consumer_groups = _get_consumer_groups(zk,cluster)
 		consumer_groups_status = {} 
 		for consumer_group in consumer_groups:
-			consumers_path = cluster['consumers_path'] + "/" + consumer_group + "/ids"
 			# 0 = offline, (not 0) =  online
-			consumer_groups_status[consumer_group] = zk.get(consumers_path)['numChildren']
+			consumer_groups_status[consumer_group] = zk.get(cluster['consumers_path'] + "/" + consumer_group + "/ids")['numChildren']
 		
 		c = {'cluster':cluster,'brokers':brokers,'consumer_groups':consumer_groups,'consumer_groups_status':consumer_groups_status}
 		clusters.append(c)
@@ -50,9 +49,8 @@ def _get_cluster_topology(cluster):
 	consumer_groups = _get_consumer_groups(zk,cluster)
 	consumer_groups_status = {} 
 	for consumer_group in consumer_groups:
-		consumers_path = cluster['consumers_path'] + "/" + consumer_group + "/ids"
 		# 0 = offline, (not 0) =  online
-		consumer_groups_status[consumer_group] = zk.get(consumers_path)['numChildren']
+		consumer_groups_status[consumer_group] = zk.get(cluster['consumers_path'] + "/" + consumer_group + "/ids")['numChildren']
 
 	cluster_topology = {'cluster':cluster,'brokers':brokers,'consumer_groups':consumer_groups, 'consumer_groups_status':consumer_groups_status}
 	return cluster_topology
