@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hue VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-25 11:17+0100\n"
+"POT-Creation-Date: 2015-02-25 16:13+0100\n"
 "PO-Revision-Date: 2014-04-14 15:25+0200\n"
 "Last-Translator: Daniel Tardon <dtardon@redoop.org>\n"
 "Language-Team: es <LL@li.org>\n"
@@ -101,7 +101,7 @@ msgstr "Anterior"
 #: src/kafka/templates/cluster.mako:87
 #: src/kafka/templates/consumer_group.mako:87
 #: src/kafka/templates/consumer_groups.mako:66
-#: src/kafka/templates/dashboard.mako:355 src/kafka/templates/index.mako:86
+#: src/kafka/templates/dashboard.mako:363 src/kafka/templates/index.mako:86
 #: src/kafka/templates/topics.mako:66
 msgid "There are currently no clusters to browse."
 msgstr "Actualmente no hay clusters que explorar"
@@ -109,8 +109,7 @@ msgstr "Actualmente no hay clusters que explorar"
 #: src/kafka/templates/cluster.mako:90
 #: src/kafka/templates/consumer_group.mako:90
 #: src/kafka/templates/consumer_groups.mako:69
-#: src/kafka/templates/dashboard.mako:358
-#: src/kafka/templates/dashboard.mako:505 src/kafka/templates/index.mako:89
+#: src/kafka/templates/dashboard.mako:366 src/kafka/templates/index.mako:89
 #: src/kafka/templates/topics.mako:69
 msgid "Please contact your administrator to solve this."
 msgstr "Por favor, contacte con su administrador para arreglar esto."
@@ -227,102 +226,111 @@ msgstr "Grupos de consumidores del cluster de Kafka:"
 msgid "Consumers active"
 msgstr "Consumidores activos"
 
-#: src/kafka/templates/dashboard.mako:61 src/kafka/templates/dashboard.mako:421
+#: src/kafka/templates/dashboard.mako:61 src/kafka/templates/dashboard.mako:429
 msgid "All topics"
 msgstr "Todos los tópicos"
 
-#: src/kafka/templates/dashboard.mako:373
+#: src/kafka/templates/dashboard.mako:381
 msgid "Dashboard of Kakfa cluster:"
 msgstr "Dashboard del cluster de Kafka:"
 
-#: src/kafka/templates/dashboard.mako:381
+#: src/kafka/templates/dashboard.mako:389
 msgid "Host"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:387
+#: src/kafka/templates/dashboard.mako:395
 msgid "Search for host(s)"
 msgstr "Búsqueda de Host"
 
-#: src/kafka/templates/dashboard.mako:400
+#: src/kafka/templates/dashboard.mako:408
 msgid "ERROR in HOST"
 msgstr "ERROR en HOST"
 
-#: src/kafka/templates/dashboard.mako:409
+#: src/kafka/templates/dashboard.mako:417
 #: src/kafka/templates/navigation_bar.mako:82
 #: src/kafka/templates/topics.mako:87
 msgid "Topics"
 msgstr "Tópicos"
 
-#: src/kafka/templates/dashboard.mako:415
+#: src/kafka/templates/dashboard.mako:423
 msgid "Search for topic(s)"
 msgstr "Búsqueda de tópicos"
 
-#: src/kafka/templates/dashboard.mako:421
+#: src/kafka/templates/dashboard.mako:429
 #, fuzzy
 msgid "All Topics"
 msgstr "Todos los tópicos"
 
-#: src/kafka/templates/dashboard.mako:429
+#: src/kafka/templates/dashboard.mako:437
 msgid "ERROR in TOPIC"
 msgstr "ERROR en TOPIC"
 
-#: src/kafka/templates/dashboard.mako:438
+#: src/kafka/templates/dashboard.mako:446
 msgid "Kafka Metrics"
 msgstr "Métricas de Kafka"
 
-#: src/kafka/templates/dashboard.mako:444
+#: src/kafka/templates/dashboard.mako:452
 msgid "Search for metric(s)"
 msgstr "Búsqueda de métricas"
 
-#: src/kafka/templates/dashboard.mako:457
+#: src/kafka/templates/dashboard.mako:465
 msgid "ERROR in METRICS"
 msgstr "ERROR en MÉTRICAS"
 
-#: src/kafka/templates/dashboard.mako:466
+#: src/kafka/templates/dashboard.mako:474
 msgid "Granularity"
 msgstr "Granularidad"
 
-#: src/kafka/templates/dashboard.mako:473
+#: src/kafka/templates/dashboard.mako:481
 msgid "Hour"
 msgstr "Hora"
 
-#: src/kafka/templates/dashboard.mako:474
+#: src/kafka/templates/dashboard.mako:482
 msgid "2Hour"
 msgstr "2Horas"
 
-#: src/kafka/templates/dashboard.mako:475
+#: src/kafka/templates/dashboard.mako:483
 msgid "4Hour"
 msgstr "4Horas"
 
-#: src/kafka/templates/dashboard.mako:476
+#: src/kafka/templates/dashboard.mako:484
 msgid "Day"
 msgstr "Día"
 
-#: src/kafka/templates/dashboard.mako:477
+#: src/kafka/templates/dashboard.mako:485
 msgid "Week"
 msgstr "Semana"
 
-#: src/kafka/templates/dashboard.mako:478
+#: src/kafka/templates/dashboard.mako:486
 msgid "Month"
 msgstr "Mes"
 
-#: src/kafka/templates/dashboard.mako:479
+#: src/kafka/templates/dashboard.mako:487
 msgid "Year"
 msgstr "Año"
 
-#: src/kafka/templates/dashboard.mako:485
+#: src/kafka/templates/dashboard.mako:493
 msgid "ERROR in GRANULARITY"
 msgstr "ERROR en GRANULARIDAD"
 
-#: src/kafka/templates/dashboard.mako:494
+#: src/kafka/templates/dashboard.mako:502
 msgid "Submit"
 msgstr "Enviar"
 
-#: src/kafka/templates/dashboard.mako:502
-msgid "There are a problem with Ganglia URL."
-msgstr "Hay un problema con la URL de Ganglia."
+#: src/kafka/templates/dashboard.mako:510
+#, fuzzy
+msgid "Possible errors, please contact your administrator to solve this:"
+msgstr "Por favor, contacte con su administrador para arreglar esto."
 
-#: src/kafka/templates/dashboard.mako:519
+#: src/kafka/templates/dashboard.mako:512
+msgid "Could not connect to Ganglia Server."
+msgstr "No se puede conectar con el Servidor de Ganglia."
+
+#: src/kafka/templates/dashboard.mako:513
+msgid "Metrics are missing or incorrect."
+msgstr "Las métricas no existen o son incorrectas."
+
+#: src/kafka/templates/dashboard.mako:523
 msgid "Metrics of Kakfa cluster"
 msgstr "Métricas del cluster de Kafka"
 
@@ -365,4 +373,7 @@ msgstr "Partición - Réplicas ids en isr"
 #: src/kafka/templates/topics.mako:97
 msgid "Partition - Leader"
 msgstr "Partición - Líder"
+
+#~ msgid "There are a problem with Ganglia URL."
+#~ msgstr "Hay un problema con la URL de Ganglia."
 
