@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hue VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-20 09:42+0100\n"
+"POT-Creation-Date: 2015-02-25 11:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -101,7 +101,7 @@ msgstr ""
 #: src/kafka/templates/cluster.mako:87
 #: src/kafka/templates/consumer_group.mako:87
 #: src/kafka/templates/consumer_groups.mako:66
-#: src/kafka/templates/dashboard.mako:359 src/kafka/templates/index.mako:86
+#: src/kafka/templates/dashboard.mako:355 src/kafka/templates/index.mako:86
 #: src/kafka/templates/topics.mako:66
 msgid "There are currently no clusters to browse."
 msgstr ""
@@ -109,8 +109,8 @@ msgstr ""
 #: src/kafka/templates/cluster.mako:90
 #: src/kafka/templates/consumer_group.mako:90
 #: src/kafka/templates/consumer_groups.mako:69
-#: src/kafka/templates/dashboard.mako:362
-#: src/kafka/templates/dashboard.mako:509 src/kafka/templates/index.mako:89
+#: src/kafka/templates/dashboard.mako:358
+#: src/kafka/templates/dashboard.mako:505 src/kafka/templates/index.mako:89
 #: src/kafka/templates/topics.mako:69
 msgid "Please contact your administrator to solve this."
 msgstr ""
@@ -227,101 +227,101 @@ msgstr ""
 msgid "Consumers active"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:61 src/kafka/templates/dashboard.mako:425
+#: src/kafka/templates/dashboard.mako:61 src/kafka/templates/dashboard.mako:421
 msgid "All topics"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:377
+#: src/kafka/templates/dashboard.mako:373
 msgid "Dashboard of Kakfa cluster:"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:385
+#: src/kafka/templates/dashboard.mako:381
 msgid "Host"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:391
+#: src/kafka/templates/dashboard.mako:387
 msgid "Search for host(s)"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:404
+#: src/kafka/templates/dashboard.mako:400
 msgid "ERROR in HOST"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:413
+#: src/kafka/templates/dashboard.mako:409
 #: src/kafka/templates/navigation_bar.mako:82
 #: src/kafka/templates/topics.mako:87
 msgid "Topics"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:419
+#: src/kafka/templates/dashboard.mako:415
 msgid "Search for topic(s)"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:425
+#: src/kafka/templates/dashboard.mako:421
 msgid "All Topics"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:433
+#: src/kafka/templates/dashboard.mako:429
 msgid "ERROR in TOPIC"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:442
+#: src/kafka/templates/dashboard.mako:438
 msgid "Kafka Metrics"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:448
+#: src/kafka/templates/dashboard.mako:444
 msgid "Search for metric(s)"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:461
+#: src/kafka/templates/dashboard.mako:457
 msgid "ERROR in METRICS"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:470
+#: src/kafka/templates/dashboard.mako:466
 msgid "Granularity"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:477
+#: src/kafka/templates/dashboard.mako:473
 msgid "Hour"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:478
+#: src/kafka/templates/dashboard.mako:474
 msgid "2Hour"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:479
+#: src/kafka/templates/dashboard.mako:475
 msgid "4Hour"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:480
+#: src/kafka/templates/dashboard.mako:476
 msgid "Day"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:481
+#: src/kafka/templates/dashboard.mako:477
 msgid "Week"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:482
+#: src/kafka/templates/dashboard.mako:478
 msgid "Month"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:483
+#: src/kafka/templates/dashboard.mako:479
 msgid "Year"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:489
+#: src/kafka/templates/dashboard.mako:485
 msgid "ERROR in GRANULARITY"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:498
+#: src/kafka/templates/dashboard.mako:494
 msgid "Submit"
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:506
+#: src/kafka/templates/dashboard.mako:502
 msgid "There are a problem with Ganglia URL."
 msgstr ""
 
-#: src/kafka/templates/dashboard.mako:523
+#: src/kafka/templates/dashboard.mako:519
 msgid "Metrics of Kakfa cluster"
 msgstr ""
 
