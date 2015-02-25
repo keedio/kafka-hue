@@ -71,26 +71,34 @@ ${ graphsHUE.import_charts() }
                       txtGranularity: sGranularity},
               method: 'POST',
               success: function(response) {                           
-                          jsonDumps0 = response.jsonDumps0;
-                          jsonDumps1 = response.jsonDumps1;
-                          jsonDumps2 = response.jsonDumps2;
-                          jsonDumps3 = response.jsonDumps3;
-                          jsonDumps4 = response.jsonDumps4;
-                          sGraphs = response.sGraphs;
-                          aGraphs = sGraphs.split(",");
-                          getGraph0(jsonDumps0, aGraphs[0]);
-                          getGraph1(jsonDumps1, aGraphs[1]);
-                          getGraph2(jsonDumps2, aGraphs[2]);
-                          getGraph3(jsonDumps3, aGraphs[3]);
-                          getGraph4(jsonDumps4, aGraphs[4]);
-                          document.getElementById('fHost').innerHTML = document.getElementById('txtHost').value;
-                          document.getElementById('fTopic').innerHTML = document.getElementById('txtTopic').value;
-                          document.getElementById('fMetric').innerHTML = document.getElementById('txtMetric').value;
-                          document.getElementById('fGranularity').innerHTML = document.getElementById('txtGranularity').value;
-                          //Show results.
-                          $("#divGraphs").show();
-                          $("#imgLoading").hide();    
-                          $("#btnSubmit").show();                                           
+                          if (response.status === undefined) {
+                            $("#imgLoading").hide();    
+                            $("#btnSubmit").show(); 
+                            $("#divURLError").show();
+                          }
+                          else {
+                            jsonDumps0 = response.jsonDumps0;
+                            jsonDumps1 = response.jsonDumps1;
+                            jsonDumps2 = response.jsonDumps2;
+                            jsonDumps3 = response.jsonDumps3;
+                            jsonDumps4 = response.jsonDumps4;
+                            sGraphs = response.sGraphs;
+                            aGraphs = sGraphs.split(",");
+                            getGraph0(jsonDumps0, aGraphs[0]);
+                            getGraph1(jsonDumps1, aGraphs[1]);
+                            getGraph2(jsonDumps2, aGraphs[2]);
+                            getGraph3(jsonDumps3, aGraphs[3]);
+                            getGraph4(jsonDumps4, aGraphs[4]);
+                            document.getElementById('fHost').innerHTML = document.getElementById('txtHost').value;
+                            document.getElementById('fTopic').innerHTML = document.getElementById('txtTopic').value;
+                            document.getElementById('fMetric').innerHTML = document.getElementById('txtMetric').value;
+                            document.getElementById('fGranularity').innerHTML = document.getElementById('txtGranularity').value;
+                            //Show results.
+                            $("#divURLError").hide();
+                            $("#divGraphs").show();
+                            $("#imgLoading").hide();    
+                            $("#btnSubmit").show();                            
+                          }  
                        },
               error: function(xhr, status, error) {
                          $("#imgLoading").hide();    
@@ -497,17 +505,13 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
            </tr> 
            </table>   
 
-           <div id="divURLError" class="container-fluid hide">
-              <div class="card">
-                 <h1 class="card-heading simple">${ _('There are a problem with Ganglia URL.') }</h1>
-                 <div class="card-body">
-                    <p>
-                       ${ _('Please contact your administrator to solve this.') }
-                       <br/>
-                       <br/>
-                    </p>
-                 </div>
-              </div>
+           <div id="divURLError" class="alert hide">
+              <i class="fa fa-exclamation-triangle"></i>
+                 ${ _('Possible errors, please contact your administrator to solve this:') }
+                 <ul>
+                    <li>${ _('Could not connect to Ganglia Server.') }</li>
+                    <li>${ _('Metrics are missing or incorrect.') }</li>
+                 </ul>
            </div>
 
            <div id="divGraphs" class="hide">

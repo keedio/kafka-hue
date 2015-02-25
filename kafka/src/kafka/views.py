@@ -46,27 +46,29 @@ def my_listener(state):
         print("I'm Connected/reconnected")
 
 def _get_topology():
-	topology = CLUSTERS.get()
-	clusters = []
-	for cluster in topology:        
-		zk = KazooClient(hosts=CLUSTERS[cluster].ZK_HOST_PORTS.get())
-		#zk.add_listener(my_listener)
-		zk.start()
-		brokers = _get_brokers(zk,cluster)
-		consumer_groups = _get_consumer_groups(zk,cluster)
-		consumer_groups_status = {} # 0 = offline, (not 0) =  online
-		for consumer_group in consumer_groups:
-			consumers_path = CLUSTERS[cluster].CONSUMERS_PATH.get() + "/" + consumer_group + "/ids"
-			try:
-				consumers = zk.get_children(consumers_path)
-			except NoNodeError:
-				consumer_groups_status[consumer_group]=0 # 0 = offline
-			else:
-				consumer_groups_status[consumer_group]=len(consumers) # (not 0) =  online
-		c = {'cluster':get_cluster_or_404(id=cluster),'brokers':brokers,'consumer_groups':consumer_groups,'consumer_groups_status':consumer_groups_status}
-		clusters.append(c)
-		zk.stop()
-	return clusters
+    topology = CLUSTERS.get()
+    clusters=[]
+    
+    for cluster in topology: 
+        zk = KazooClient(hosts=CLUSTERS[cluster].ZK_HOST_PORTS.get())
+        #zk.add_listener(my_listener)
+        zk.start()
+        brokers = _get_brokers(zk,cluster)
+        consumer_groups = _get_consumer_groups(zk,cluster)
+        consumer_groups_status = {} # 0 = offline, (not 0) =  online
+        for consumer_group in consumer_groups:
+        	consumers_path = CLUSTERS[cluster].CONSUMERS_PATH.get() + "/" + consumer_group + "/ids"
+        	try:
+        		consumers = zk.get_children(consumers_path)
+        	except NoNodeError:
+        		consumer_groups_status[consumer_group]=0 # 0 = offline
+        	else:
+        		consumer_groups_status[consumer_group]=len(consumers) # (not 0) =  online
+        c = {'cluster':get_cluster_or_404(id=cluster),'brokers':brokers,'consumer_groups':consumer_groups,'consumer_groups_status':consumer_groups_status}
+        clusters.append(c)
+        zk.stop()
+      
+    return clusters
 
 def _get_cluster_topology(cluster):
 	zk = KazooClient(hosts=cluster['zk_host_ports'])
@@ -256,8 +258,8 @@ def _get_options_ini(section):
     return dict
 
 def index(request):
-	# return by default the first cluster in the hue.ini config file
-	return render('index.mako', request, {'cluster':_get_topology()[0]})
+    # return by default the first cluster in the hue.ini config file
+    return render('index.mako', request, {'cluster':_get_topology()[0]})
 
 def topics(request, cluster_id):
 	cluster = get_cluster_or_404(id=cluster_id)
@@ -321,7 +323,7 @@ def dashboard(request, cluster_id):
         
         for metric in aMetrics:
             aURL = aURL + [GANGLIA_SERVER.get() + "r=" + sGranularity + "&c=GangliaCluster&h=" + sHost + "&m=" + metric + "&" + metric + "&json=1"]                
-        
+
         data = {}
         data['sMetric'] = sMetricComplete
         data['sGraphs'] = aOptions
@@ -330,7 +332,8 @@ def dashboard(request, cluster_id):
         data['jsonDumps2'] =  _get_dumps(_get_json(aURL[2]))
         data['jsonDumps3'] =  _get_dumps(_get_json(aURL[3]))
         data['jsonDumps4'] =  _get_dumps(_get_json(aURL[4]))
-        
+        data['status'] = 0
+
         return HttpResponse(json.dumps(data), content_type = "application/json")
     
     return render('dashboard.mako', request, {'cluster': cluster,
