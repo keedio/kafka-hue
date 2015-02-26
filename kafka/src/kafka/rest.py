@@ -28,8 +28,15 @@ class ZooKeeper(object):
     class NotFound(Error): 
         pass
 
+    class RESTError(Error):
+        pass
+
     def __init__(self, uri='http://localhost:9998'):
         self._base = uri
+        try:
+            self.get("/")
+        except ZooKeeper.NotFound:
+            raise ZooKeeper.RESTError
 
     def get(self, path):
         """ Get a node """
@@ -47,10 +54,15 @@ class ZooKeeper(object):
     def get_children_paths(self, path, uris=False):
         """ Get the paths for children nodes """
         url = "%s/znodes/v1%s?view=children" % (self._base, path)
-        resp = self._do_get(url)
-        for child in resp.get('children', []):
-            yield child if not uris else resp['child_uri_template']\
-              .replace('{child}', urllib2.quote(child))
+        try:
+            resp = self._do_get(url)
+            for child in resp.get('children', []):
+                yield child if not uris else resp['child_uri_template']\
+                  .replace('{child}', urllib2.quote(child))
+        
+        except ZooKeeper.NotFound:
+            raise
+
 
     def _do_get(self, uri):
         """ Send a GET request and convert errors to exceptions """
@@ -59,9 +71,12 @@ class ZooKeeper(object):
             resp = simplejson.load(req)
 
             if 'Error' in resp:
-               raise ZooKeeper.Error(resp['Error'])
+                raise ZooKeeper.Error(resp['Error'])
 
             return resp
+        except urllib2.URLError:
+            raise ZooKeeper.NotFound(uri)
+
         except urllib2.HTTPError, e:
             if e.code == 404:
                 raise ZooKeeper.NotFound(uri)

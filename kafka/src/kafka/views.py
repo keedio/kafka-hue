@@ -30,6 +30,25 @@ def _get_topology():
 	clusters = []
 	for c in topology:
 		cluster = get_cluster_or_404(c)
+		try:
+			zk = ZooKeeper(cluster['zk_rest_url'])
+			brokers = _get_brokers(zk,cluster)
+			consumer_groups = _get_consumer_groups(zk,cluster)
+			consumer_groups_status = {} 
+			for consumer_group in consumer_groups:
+				# 0 = offline, (not 0) =  online
+				consumer_groups_status[consumer_group] = zk.get(cluster['consumers_path'] + "/" + consumer_group + "/ids")['numChildren']
+			
+			c = {'cluster':cluster,'brokers':brokers,'consumer_groups':consumer_groups,'consumer_groups_status':consumer_groups_status, 'error':0}
+			
+		except ZooKeeper.RESTError:
+			c = {'cluster':cluster,'brokers':[],'consumer_groups':[],'consumer_groups_status':[], 'error':1}
+		clusters.append(c)
+	return clusters
+
+def _get_cluster_topology(cluster):
+	""" Method to get the topology of a given cluster """
+	try:
 		zk = ZooKeeper(cluster['zk_rest_url'])
 		brokers = _get_brokers(zk,cluster)
 		consumer_groups = _get_consumer_groups(zk,cluster)
@@ -37,22 +56,10 @@ def _get_topology():
 		for consumer_group in consumer_groups:
 			# 0 = offline, (not 0) =  online
 			consumer_groups_status[consumer_group] = zk.get(cluster['consumers_path'] + "/" + consumer_group + "/ids")['numChildren']
-		
-		c = {'cluster':cluster,'brokers':brokers,'consumer_groups':consumer_groups,'consumer_groups_status':consumer_groups_status}
-		clusters.append(c)
-	return clusters
 
-def _get_cluster_topology(cluster):
-	""" Method to get the topology of a given cluster """
-	zk = ZooKeeper(cluster['zk_rest_url'])
-	brokers = _get_brokers(zk,cluster)
-	consumer_groups = _get_consumer_groups(zk,cluster)
-	consumer_groups_status = {} 
-	for consumer_group in consumer_groups:
-		# 0 = offline, (not 0) =  online
-		consumer_groups_status[consumer_group] = zk.get(cluster['consumers_path'] + "/" + consumer_group + "/ids")['numChildren']
-
-	cluster_topology = {'cluster':cluster,'brokers':brokers,'consumer_groups':consumer_groups, 'consumer_groups_status':consumer_groups_status}
+		cluster_topology = {'cluster':cluster,'brokers':brokers,'consumer_groups':consumer_groups, 'consumer_groups_status':consumer_groups_status,'error':0}
+	except ZooKeeper.RESTError:
+		cluster_topology = {'cluster':cluster,'brokers':[],'consumer_groups':[], 'consumer_groups_status':[],'error':1}
 	return cluster_topology
 
 def _get_brokers(zk,cluster):
@@ -77,12 +84,17 @@ def _get_consumer_groups(zk, cluster):
 
 def _get_topics(cluster):
 	""" Method to get the topic list of a given cluster """
-	zk = ZooKeeper(cluster['zk_rest_url'])
+
 	topic_list = []
+	error = 0
 	try:
+		zk = ZooKeeper(cluster['zk_rest_url'])
 		topics = zk.get_children_paths(cluster['topics_path'])
+	except ZooKeeper.RESTError:
+		error = 1
+		return topic_list, error
 	except ZooKeeper.NotFound:
-		return topic_list
+		return topic_list, error
 	else:
 		for topic in topics:
 			t = {'id':topic}
@@ -106,17 +118,20 @@ def _get_topics(cluster):
 			t['partitions']=p	
 			t['topic_partitions_states']=tpp
 			topic_list.append(t)
-	return topic_list
+	return topic_list, error 
 
 def _get_consumers(cluster):
 	""" Method to get the consumers of a given cluster """
-	zk = ZooKeeper(cluster['zk_rest_url'])
-	groups = _get_consumer_groups(zk,cluster)
 	consumer_groups = []
-	for group in groups:
-		consumer_groups.append(_get_consumer_group(zk=zk,cluster=cluster,group_id=group))
-	
-	return consumer_groups
+	error=0
+	try:
+		zk = ZooKeeper(cluster['zk_rest_url'])
+		groups = _get_consumer_groups(zk,cluster)
+		for group in groups:
+			consumer_groups.append(_get_consumer_group(zk=zk,cluster=cluster,group_id=group))
+	except ZooKeeper.RESTError:
+		error = 1
+	return consumer_groups,error
 
 def _get_offsets(zk, cluster, group):
 	""" Method to get the offsets of a given cluster and consumers group """
@@ -187,7 +202,8 @@ def index(request):
 def topics(request, cluster_id):
 	""" Topics view. Returns the topics list of a given cluster """
 	cluster = get_cluster_or_404(id=cluster_id)
-	return render('topics.mako', request, {'cluster': cluster, 'topics':_get_topics(cluster)})
+	topics,error = _get_topics(cluster)
+	return render('topics.mako', request, {'cluster': cluster, 'topics':topics, 'error':error})
 
 def cluster(request, cluster_id):
 	""" Cluster detail view. Returns the cluster detailed topology """
@@ -198,14 +214,20 @@ def cluster(request, cluster_id):
 def consumer_groups(request, cluster_id):	
 	""" Consumers groups view. Returns the consumers groups list and their info of a given cluster """
 	cluster = get_cluster_or_404(id=cluster_id)
-	return render('consumer_groups.mako', request, {'cluster': cluster, 'consumers_groups':_get_consumers(cluster)})
+	consumers_groups, error = _get_consumers(cluster)
+	return render('consumer_groups.mako', request, {'cluster': cluster, 'consumers_groups':consumers_groups, 'error':error})
 
 def consumer_group(request, cluster_id, group_id):	
 	""" Consumers Group detail view. Returns the detailed view of a given consumers group """
 	cluster = get_cluster_or_404(id=cluster_id)
-	zk = ZooKeeper(cluster['zk_rest_url'])
-	consumer_group = _get_consumer_group(zk=zk,cluster=cluster,group_id=group_id)
-	return render('consumer_group.mako', request, {'cluster': cluster, 'consumer_group':consumer_group})
+	consumer_group = {}
+	error = 0
+	try:
+		zk = ZooKeeper(cluster['zk_rest_url'])
+		consumer_group = _get_consumer_group(zk=zk,cluster=cluster,group_id=group_id)
+	except ZooKeeper.RESTError:
+		error = 1
+	return render('consumer_group.mako', request, {'cluster': cluster, 'consumer_group':consumer_group, 'error':error})
 
 
 
