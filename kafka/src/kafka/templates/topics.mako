@@ -35,6 +35,8 @@ ${commonheader("%s > Topics" % (cluster['nice_name']), app_name, user) | n,unico
 	    	"bLengthChange":true,
 	        "sDom": "<'row-fluid'<l><f>r>t<'row-fluid'<'dt-pages'p><'dt-records'i>>",
 	        "oLanguage":{
+	            "sLengthMenu":"${_('Show _MENU_ entries')}",
+	            "sSearch":"${_('Search')}",
 		        "sEmptyTable":"${_('No data available')}",
 		        "sInfo":"${_('Showing _START_ to _END_ of _TOTAL_ entries')}",
 		        "sInfoEmpty":"${_('Showing 0 to 0 of 0 entries')}",
@@ -56,7 +58,7 @@ ${commonheader("%s > Topics" % (cluster['nice_name']), app_name, user) | n,unico
   _breadcrumbs = [
     ["Clusters", url('kafka:index')],
     [cluster['nice_name'].lower(), url('kafka:cluster', cluster_id=cluster['id'])],
-    ["Topics", url('kafka:topics', cluster_id=cluster['id'])],
+    [_('Topics'), url('kafka:topics', cluster_id=cluster['id'])],
   ]
 %>
 

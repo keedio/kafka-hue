@@ -426,7 +426,9 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
                           <tr>
                              <td>
                                 <select name="idTopics" id="idTopics" style="width:100%;" multiple>
-                                   <option value="*" onclick="changeValue('topic', '${ _('All topics') }')">${ _('All Topics') }</option>
+                                   <option value="*" onclick="changeValue('topic', '${ _('All topics') }')">
+                                      ${ _('All Topics') }
+                                   </option>
                                    % for topic in topics:
                                       <option value="${topic['id']}" onclick="changeValue('topic', '${topic['id']}')">${topic['id']}</option>
                                    % endfor                                         
