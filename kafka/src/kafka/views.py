@@ -17,7 +17,7 @@
 
 from desktop.lib.django_util import render
 import json
-from kafka.conf import CLUSTERS, GANGLIA_SERVER
+from kafka.conf import CLUSTERS
 from kafka.utils import get_cluster_or_404
 from kafka.rest import ZooKeeper
 import base64
@@ -201,45 +201,44 @@ def _get_consumer_group(zk,cluster,group_id):
 	return consumer_group
 
 def _get_json(psUrl):
-    rJSON = requests.get(psUrl)
-    jsonObject = rJSON.json()      
-  
-    try:
-        if (len(jsonObject) > 0):
-            return jsonObject      
-        else:     
-            return []
-    except:
-        return []    
+	rJSON = requests.get(psUrl)
+	jsonObject = rJSON.json()      
+
+	try:
+		if (len(jsonObject) > 0):
+			return jsonObject
+		else:
+			return []
+	except:
+		return []    
 
 def _get_dumps(psObject):    
-    jsonDumps = json.dumps(psObject).replace("\\", "\\\\")
-  
-    return jsonDumps
+	jsonDumps = json.dumps(psObject).replace("\\", "\\\\")
+	return jsonDumps
 
 def _get_sections_ini():
-    Config = ConfigParser.ConfigParser() 
-    Config.read(METRICS_INI)
-    
-    try:
-        return Config.sections()
-    except:
-        return ""
+	Config = ConfigParser.ConfigParser() 
+	Config.read(METRICS_INI)
+
+	try:
+		return Config.sections()
+	except:
+		return ""
 
 def _get_options_ini(section):
-    dict = []
-    Config = ConfigParser.ConfigParser() 
-    Config.read(METRICS_INI)
-    options = Config.options(section)
+	dict = []
+	Config = ConfigParser.ConfigParser() 
+	Config.read(METRICS_INI)
+	options = Config.options(section)
 
-    for option in options:
-        try:
-            dict = Config.get(section, option)
-        except:
-            print("exception on %s!" % option)
-            dict = []
-            
-    return dict
+	for option in options:
+		try:
+			dict = Config.get(section, option)
+		except:
+			print("exception on %s!" % option)
+			dict = []
+
+	return dict
 
 
 def index(request):
@@ -277,65 +276,69 @@ def consumer_group(request, cluster_id, group_id):
 	return render('consumer_group.mako', request, {'cluster': cluster, 'consumer_group':consumer_group, 'error':error})
 
 def dashboard(request, cluster_id):
-    aURL = []
-    aMetrics = []
-    aOptions = ""
-    sHost = ""
-    sTopic = ""
-    sMetric = ""
-    sMetricComplete = ""
-    sGranularity = ""
+	aURL = []
+	aMetrics = []
+	aOptions = ""
+	sHost = ""
+	sTopic = ""
+	sMetric = ""
+	sMetricComplete = ""
+	sGranularity = ""
     
-    cluster = get_cluster_or_404(id=cluster_id)
-    topics, error_zk_topics = _get_topics(cluster)
+	cluster = get_cluster_or_404(id=cluster_id)
+	topics, error_zk_topics = _get_topics(cluster)
     
-    error_zk_brokers = 0
-    brokers=[]
+	error_zk_brokers = 0
+	brokers=[]
 
-    try:
-    	zk = ZooKeeper(cluster['zk_rest_url'])
-    	brokers = _get_brokers(zk,cluster)
-    except ZooKeeper.RESTError:
-    	error_zk_brokers = 1
+	try:	
+		zk = ZooKeeper(cluster['zk_rest_url'])
+		brokers = _get_brokers(zk,cluster)
+	except ZooKeeper.RESTError:
+		error_zk_brokers = 1
 
-    sections = _get_sections_ini()
+	sections = _get_sections_ini()
+	
+	if ((request.method == 'POST') and (request.is_ajax())):
+		sHost = request.POST['txtHost']
+		sTopic = request.POST['txtTopic']
 
-    if ((request.method == 'POST') and (request.is_ajax())):
-        sHost = request.POST['txtHost']
-        sTopic = request.POST['txtTopic']
-
-        if (sTopic == "*"):
-            sTopic = "AllTopics"
-        else:    
-            sTopic = sTopic + "-"
+		if (sTopic == "*"):
+			sTopic = "AllTopics"
+		else:
+			sTopic = sTopic + "-"
             
-        sMetric = request.POST['txtMetric']        
-        sGranularity = request.POST['txtGranularity']
-        aOptions = _get_options_ini(sMetric)
-        aMetric = sMetric.split(".")
-        sMetricComplete = aMetric[0] + "." + sTopic + aMetric[1]
+		sMetric = request.POST['txtMetric']        
+		sGranularity = request.POST['txtGranularity']
+		aOptions = _get_options_ini(sMetric)
+		aMetric = sMetric.split(".")
+		sMetricComplete = aMetric[0] + "." + sTopic + aMetric[1]
         
-        for element in aOptions.split(","):
-            aMetrics = aMetrics + [sMetricComplete + "." + element]
+		for element in aOptions.split(","):
+			aMetrics = aMetrics + [sMetricComplete + "." + element]
         
-        for metric in aMetrics:
-            aURL = aURL + [GANGLIA_SERVER.get() + "r=" + sGranularity + "&c=GangliaCluster&h=" + sHost + "&m=" + metric + "&" + metric + "&json=1"]                
+		for metric in aMetrics:
+			print metric
+			# aURL = aURL + [GANGLIA_SERVER.get() + "r=" + sGranularity + "&c=GangliaCluster&h=" + sHost + "&m=" + metric + "&" + metric + "&json=1"]                
+			#/ganglia/graph.php?
+			print cluster
+			aURL = aURL + [cluster['ganglia_server'] + "/ganglia/graph.php?" + "r=" + sGranularity + "&c=GangliaCluster&h=" + sHost + "&m=" + metric + "&" + metric + "&json=1"]                
 
-        data = {}
-        data['sMetric'] = sMetricComplete
-        data['sGraphs'] = aOptions
-        data['jsonDumps0'] =  _get_dumps(_get_json(aURL[0]))
-        data['jsonDumps1'] =  _get_dumps(_get_json(aURL[1]))
-        data['jsonDumps2'] =  _get_dumps(_get_json(aURL[2]))
-        data['jsonDumps3'] =  _get_dumps(_get_json(aURL[3]))
-        data['jsonDumps4'] =  _get_dumps(_get_json(aURL[4]))
-        data['status'] = 0
+		data = {}
+		data['sMetric'] = sMetricComplete
+		data['sGraphs'] = aOptions
+		data['jsonDumps0'] =  _get_dumps(_get_json(aURL[0]))
+		data['jsonDumps1'] =  _get_dumps(_get_json(aURL[1]))
+		data['jsonDumps2'] =  _get_dumps(_get_json(aURL[2]))
+		data['jsonDumps3'] =  _get_dumps(_get_json(aURL[3]))
+		data['jsonDumps4'] =  _get_dumps(_get_json(aURL[4]))
+		data['status'] = 0
 
-        return HttpResponse(json.dumps(data), content_type = "application/json")
+		return HttpResponse(json.dumps(data), content_type = "application/json")
     
-    return render('dashboard.mako', request, {'cluster': cluster,
-                                              'topics': topics,
-                                              'brokers': brokers,
-                                              'metrics': sections,
-                                              'error_zk_topics':error_zk_topics,
-                                              'error_zk_brokers':error_zk_brokers})
+	return render('dashboard.mako', request, {'cluster': cluster,
+												'topics': topics,
+												'brokers': brokers,
+												'metrics': sections,
+												'error_zk_topics':error_zk_topics,
+												'error_zk_brokers':error_zk_brokers})

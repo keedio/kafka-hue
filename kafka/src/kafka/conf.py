@@ -22,11 +22,6 @@ def coerce_string(value):
   else:
     return value
 
-GANGLIA_SERVER = Config( "ganglia_server",
-                        help="GANGLIA Server",
-                        default="http://localhost/ganglia/graph.php?",
-                        type=str,
-                        )
 
 CLUSTERS = UnspecifiedConfigSection(
   "clusters",
@@ -62,6 +57,11 @@ CLUSTERS = UnspecifiedConfigSection(
           "topics_path",
           help="Path to topics info in Zookeeper Znode hierarchy, e.g. /brokers/topics",
           default="/brokers/topics",
+          type=str,
+        ),
+        GANGLIA_SERVER = Config( "ganglia_server",
+          help="GANGLIA Server",
+          default="http://localhost",
           type=str,
         ),
     )
