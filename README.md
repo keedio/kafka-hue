@@ -56,13 +56,13 @@ Configs needed in hue.ini config file.
         # Path to consumers info in Zookeeper Znode hierarchy
         consumers_path=/consumers
 
-	# Ganglia Server
+        # Ganglia Server
         # e.g. http://localhost
-	ganglia_server=http://localhost
+        ganglia_server=http://localhost
 
-      	# Ganglia Data Source
-	# e.g. GangliaCluster
-      	ganglia_data_source=GangliaCluster
+        # Ganglia Data Source
+        # e.g. GangliaCluster
+        ganglia_data_source=GangliaCluster
 
 
 Metrics.ini Config file
