@@ -294,7 +294,7 @@ def dashboard(request, cluster_id):
 
     try:
     	zk = ZooKeeper(cluster['zk_rest_url'])
-    	brokers = _get_brokers(zk,cluster['id'])
+    	brokers = _get_brokers(zk,cluster)
     except ZooKeeper.RESTError:
     	error_zk_brokers = 1
 
