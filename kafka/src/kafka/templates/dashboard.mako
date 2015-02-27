@@ -380,6 +380,20 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
   <div class="card">
      <h2 class="card-heading simple">${ _('Dashboard of Kakfa cluster:') } ${ cluster['id'] }</h2>
      <div class="card-body">
+          % if error_zk_topics == 0 and error_zk_brokers == 0:
+            <div class="alert alert-info">${ _('The zookeper REST server:') } <b>${cluster['zk_rest_url']}</b></div>
+          % else:
+            <div class="alert alert-error">
+              ${ _('Error connecting to the zookeper REST server:') } <b>${cluster['zk_rest_url']}</b><br>
+              % if error_zk_brokers == 1:
+                ${ _('Can\'t retrive brokers list.') } <br>
+              % endif
+              % if error_zk_topics == 1:
+                ${ _('Can\'t retrive topics list.') } <br>
+              % endif
+              ${ _('Please contact your administrator to solve this.') }
+            </div>  
+          % endif
         <form id="frmFilterMetric" method="post" enctype="multipart/form-data" action="/kafka/${ cluster['id'] }/dashboard/">
         <table width="100%" height="100%" border="0" cellpadding="6" cellspacing="0">
            <tr valign="top">
