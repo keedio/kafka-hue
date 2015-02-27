@@ -38,6 +38,8 @@ ${commonheader("Kafka > %s" % (cluster['cluster']['nice_name']), app_name, user)
 	    	"bLengthChange":true,
 	        "sDom": "<'row-fluid'<l><f>r>t<'row-fluid'<'dt-pages'p><'dt-records'i>>",
 	        "oLanguage":{
+	            "sLengthMenu":"${_('Show _MENU_ entries')}",
+	            "sSearch":"${_('Search')}",
 		        "sEmptyTable":"${_('No data available')}",
 		        "sInfo":"${_('Showing _START_ to _END_ of _TOTAL_ entries')}",
 		        "sInfoEmpty":"${_('Showing 0 to 0 of 0 entries')}",
@@ -58,6 +60,8 @@ ${commonheader("Kafka > %s" % (cluster['cluster']['nice_name']), app_name, user)
 	    	"bLengthChange":true,
 	        "sDom": "<'row-fluid'<l><f>r>t<'row-fluid'<'dt-pages'p><'dt-records'i>>",
 	        "oLanguage":{
+	            "sLengthMenu":"${_('Show _MENU_ entries')}",
+	            "sSearch":"${_('Search')}",
 		        "sEmptyTable":"${_('No data available')}",
 		        "sInfo":"${_('Showing _START_ to _END_ of _TOTAL_ entries')}",
 		        "sInfoEmpty":"${_('Showing 0 to 0 of 0 entries')}",
