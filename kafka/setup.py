@@ -30,7 +30,7 @@ setup(
   version = "2.0",
   url = 'www.keedio.com',
   description = 'Kafka HUE integration',
-  author = 'dtardon',
+  author = 'dtardon@keedio.com',
   packages = find_packages('src'),
   package_dir = {'': 'src'},
   install_requires = ['setuptools', 'desktop'],
