@@ -318,11 +318,7 @@ def dashboard(request, cluster_id):
 			aMetrics = aMetrics + [sMetricComplete + "." + element]
         
 		for metric in aMetrics:
-			print metric
-			# aURL = aURL + [GANGLIA_SERVER.get() + "r=" + sGranularity + "&c=GangliaCluster&h=" + sHost + "&m=" + metric + "&" + metric + "&json=1"]                
-			#/ganglia/graph.php?
-			print cluster
-			aURL = aURL + [cluster['ganglia_server'] + "/ganglia/graph.php?" + "r=" + sGranularity + "&c=GangliaCluster&h=" + sHost + "&m=" + metric + "&" + metric + "&json=1"]                
+			aURL = aURL + [cluster['ganglia_server'] + "/ganglia/graph.php?" + "r=" + sGranularity + "&c=" + cluster['ganglia_data_source'] + "&h=" + sHost + "&m=" + metric + "&" + metric + "&json=1"]                
 
 		data = {}
 		data['sMetric'] = sMetricComplete

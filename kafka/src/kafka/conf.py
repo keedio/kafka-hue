@@ -64,6 +64,11 @@ CLUSTERS = UnspecifiedConfigSection(
           default="http://localhost",
           type=str,
         ),
+        GANGLIA_DATA_SOURCE = Config( "ganglia_data_source",
+          help="Ganglia Data Source",
+          default="my cluster",
+          type=str,
+        ),
     )
   )
 )

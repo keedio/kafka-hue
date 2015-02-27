@@ -38,6 +38,7 @@ def get_cluster_or_404(id):
     'consumers_path' : cluster.CONSUMERS_PATH.get(),
     'topics_path' : cluster.TOPICS_PATH.get(),
     'ganglia_server' : cluster.GANGLIA_SERVER.get(),
+    'ganglia_data_source' : cluster.GANGLIA_DATA_SOURCE.get(),
   }
 
   return cluster
