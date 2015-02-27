@@ -101,9 +101,9 @@ ${commonheader("Topology", app_name, user) | n,unicode}
   ${ kafka.header(_breadcrumbs) }
 % endif 
 
-% for cluster in clusters:
+${ kafka.menubar(section='Topology',c_id=clusters[0]['cluster']['id']) }
 
-	${ kafka.menubar(section='Topology',c_id=cluster['cluster']['id']) }
+% for cluster in clusters:
 
 	<div class="container-fluid">
 	  <div class="card">
