@@ -6,8 +6,6 @@ Kafka-HUE is a [HUE](http://www.gethue.com) application to admin and manage a po
 Requirements
 ------------
 - [HUE 3.5.0](http://www.gethue.com)
-- [Kazoo 1.3.1](http://github.com/python-zk/kazoo)
-- [Zope Interface -4.1.1](http://pypi.python.org/pypi/zope.interface/4.1.1)
 
 Main Stack
 ----------
@@ -21,8 +19,6 @@ Installation
 ------------
 To get the Kafka-HUE app integrated and running in your HUE deployment:
 
-    $ sudo $HUE_HOME/build/env/bin/python $HUE_HOME/build/env/bin/pip install zope.interface
-    $ sudo $HUE_HOME/build/env/bin/python $HUE_HOME/build/env/bin/pip install kazoo
     $ git clone http://github.com/danieltardon/kafka-hue.git
     $ mv kafka-hue/kafka $HUE_HOME/apps
     $ cd $HUE_HOME/apps
@@ -71,4 +67,4 @@ Apache License, Version 2.0
 http://www.apache.org/licenses/LICENSE-2.0
 
 --
-Daniel Tardón <dtardon@redoop.org>
+Daniel Tardón <dtardon@keedio.org>

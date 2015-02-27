@@ -81,51 +81,60 @@ ${ kafka.menubar(section='Topics',c_id=cluster['id']) }
 
 <div class="container-fluid">
   <div class="card">
-    <h2 class="card-heading simple">${ _('Topics of Kakfa cluster:') } ${ cluster['id'] }</h2>
+    <h2 class="card-heading simple">${ _('Topics of Kakfa cluster:') } ${ cluster['nice_name'] }</h2>
     <div class="card-body">
-    	<div class="alert alert-info">${ _('Searching topics from path:') } <b>${cluster['topics_path']}</b></div>
-    	<h4 class="card-heading simple">${ _('Topics') }</h4>
-    	</br>
-    	<table class="table datatables table-striped table-hover table-condensed" id="topicsTable" data-tablescroller-disable="true">
-    	  <thead>
-	      	<tr>
-		        <th>${ _('Name') }</th>
-		        <th># ${ _('Partitions') }</th>
-		        <th>${ _('Partitions ids') }</th>
-		        <th># ${ _('Replicas / Partition') }</th>
-		        <th>${ _('Partition - Replicas ids in isr') }</th>
-		        <th>${ _('Partition - Leader') }</th>
-		        <th>${ _('Status') }</th>
-		      </tr>
-		    </thead>
-		    <tbody>
-	    	% for topic in topics:
-				<tr>
-					<td>${topic['id']}</td>
-					<td><span class="badge">${len(topic['partitions'])}</span></td>
-					<td>[
-						% for partition in topic['partitions']:
-							${partition}
-						% endfor
-						]
-					</td>
-					<td><span class="badge">${len(topic['topic_partitions_data'][topic['partitions'][0]])}</span</td>
-					<td>
-						% for partition in topic['partitions']:
-							${partition} - ${topic['topic_partitions_states'][partition]['isr']}<br>
-						% endfor
-					</td>
-					<td>
-						% for partition in topic['partitions']:
-							${partition} - ${topic['topic_partitions_states'][partition]['leader']}<br>
-						% endfor
-					</td>
-		    		<td><span class="label label-success">${ _('OK') }</span></td>
-				</tr>
-			% endfor
-			</tbody>
-		</table>
-		</br>
+
+    	% if error == 1 :
+			<div class="alert alert-error">
+	  			${ _('Error connecting to the zookeper REST server:') } <b>${cluster['zk_rest_url']}</b><br>
+	  			${ _('Please contact your administrator to solve this.') }
+	  		</div>		
+
+		% else:
+	    	<div class="alert alert-info">${ _('Searching topics from path:') } <b>${cluster['topics_path']}</b></div>
+	    	<h4 class="card-heading simple">${ _('Topics') }</h4>
+	    	</br>
+	    	<table class="table datatables table-striped table-hover table-condensed" id="topicsTable" data-tablescroller-disable="true">
+	    	  <thead>
+		      	<tr>
+			        <th>${ _('Name') }</th>
+			        <th># ${ _('Partitions') }</th>
+			        <th>${ _('Partitions ids') }</th>
+			        <th># ${ _('Replicas / Partition') }</th>
+			        <th>${ _('Partition - Replicas ids in isr') }</th>
+			        <th>${ _('Partition - Leader') }</th>
+			        <th>${ _('Status') }</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+		    	% for topic in topics:
+					<tr>
+						<td>${topic['id']}</td>
+						<td><span class="badge">${len(topic['partitions'])}</span></td>
+						<td>[
+							% for partition in topic['partitions']:
+								${partition}
+							% endfor
+							]
+						</td>
+						<td><span class="badge">${len(topic['topic_partitions_data'][topic['partitions'][0]])}</span</td>
+						<td>
+							% for partition in topic['partitions']:
+								${partition} - ${topic['topic_partitions_states'][partition]['isr']}<br>
+							% endfor
+						</td>
+						<td>
+							% for partition in topic['partitions']:
+								${partition} - ${topic['topic_partitions_states'][partition]['leader']}<br>
+							% endfor
+						</td>
+			    		<td><span class="label label-success">${ _('OK') }</span></td>
+					</tr>
+				% endfor
+				</tbody>
+			</table>
+			</br>
+		% endif
 	</div>
   </div>
 </div>

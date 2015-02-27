@@ -38,7 +38,7 @@ def is_selected(section, matcher):
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            % for cluster in CLUSTERS.get().keys():
+            % for cluster in CLUSTERS.get().keys(): 
               <li>
                 <a href="${ url('kafka:cluster', cluster_id=cluster) }">
                   ${cluster}

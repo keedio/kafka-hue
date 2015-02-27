@@ -24,5 +24,5 @@ urlpatterns = patterns('kafka.views',
   url(r'^(?P<cluster_id>\w+)$', 'cluster', name="cluster"),
   url(r'^(?P<cluster_id>\w+)/topics/$', 'topics', name="topics"),
   url(r'^(?P<cluster_id>\w+)/consumer_groups/$', 'consumer_groups', name="consumer_groups"),
-  url(r'^(?P<cluster_id>\w+)/consumer_group/(?P<group_id>.+)$', 'consumer_group', name="consumer_group"),
+  url(r'^(?P<cluster_id>\w+)/consumer_group/(?P<group_id>.+)$', 'consumer_group', name="consumer_group"),  
 )
