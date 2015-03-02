@@ -161,7 +161,7 @@ ${ graphsHUE.import_charts() }
          var graph0 = nv.models.lineChart()
                        .noData("${ _('No data available') }")
                        .margin({top: 15, right:50, left:60, bottom: 40})  //Adjust graph margins to give the x-axis some breathing room.                                  
-                       .useInteractiveGuideline(false)  //We want nice looking tooltips and a guideline!
+                       .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                        .transitionDuration(350)        //how fast do you want the lines to transition?
                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
                        .tooltips(true)                 //Show tooltip.
@@ -602,10 +602,14 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
                                       <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
                                          <tr>
                                             <td width="50%">
-                                               <div id="graph0"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                              <div style="position:relative">
+                                                 <div id="graph0"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                              </div>
                                             </td>                                   
                                             <td width="50%">
-                                               <div id="graph4"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                              <div style="position:relative">
+                                                <div id="graph4"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                              </div>
                                             </td>
                                          </tr>
                                       </table>         
@@ -613,13 +617,19 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
                                 </tr>
                                 <tr>
                                    <td width="33%">
-                                      <div id="graph1"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                      <div style="position:relative">
+                                        <div id="graph1"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                      </div>
                                    </td>
                                    <td width="34%">
+                                    <div style="position:relative">
                                       <div id="graph2"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                    </div>
                                    </td>
                                    <td width="33%">
+                                    <div style="position:relative">
                                       <div id="graph3"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                    </div>
                                    </td>
                                 </tr>
                                 <tr>
