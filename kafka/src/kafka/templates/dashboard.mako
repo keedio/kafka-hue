@@ -77,6 +77,7 @@ ${ graphsHUE.import_charts() }
                             $("#divURLError").show();
                           }
                           else {
+                            sGranularity = response.sGranularity;
                             jsonDumps0 = response.jsonDumps0;
                             jsonDumps1 = response.jsonDumps1;
                             jsonDumps2 = response.jsonDumps2;
@@ -84,11 +85,11 @@ ${ graphsHUE.import_charts() }
                             jsonDumps4 = response.jsonDumps4;
                             sGraphs = response.sGraphs;
                             aGraphs = sGraphs.split(",");
-                            getGraph0(jsonDumps0, aGraphs[0]);
-                            getGraph1(jsonDumps1, aGraphs[1]);
-                            getGraph2(jsonDumps2, aGraphs[2]);
-                            getGraph3(jsonDumps3, aGraphs[3]);
-                            getGraph4(jsonDumps4, aGraphs[4]);
+                            getGraph0(jsonDumps0, aGraphs[0], getGranularity(sGranularity));
+                            getGraph1(jsonDumps1, aGraphs[1], getGranularity(sGranularity));
+                            getGraph2(jsonDumps2, aGraphs[2], getGranularity(sGranularity));
+                            getGraph3(jsonDumps3, aGraphs[3], getGranularity(sGranularity));
+                            getGraph4(jsonDumps4, aGraphs[4], getGranularity(sGranularity));
                             document.getElementById('fHost').innerHTML = document.getElementById('txtHost').value;
                             document.getElementById('fTopic').innerHTML = document.getElementById('txtTopic').value;
                             document.getElementById('fMetric').innerHTML = document.getElementById('txtMetric').value;
@@ -109,14 +110,44 @@ ${ graphsHUE.import_charts() }
        }; // ELSE.          
    };
    
-   function getGraph0(pjson, psName) {
-      var aValues0 = [];      
+   function getGranularity(psInterval) {
+    var sResult = '';
+    if (psInterval == "hour"){
+      sResult = '%H:%M';
+    };
+    if (psInterval == "2hr"){
+      sResult = '%H:%M';
+    }
+    if (psInterval == "4hr"){
+      sResult = '%H:%M';
+    }
+    if (psInterval == "day"){
+      sResult = '%H:%M';
+    }
+    if (psInterval == "week"){
+      sResult = '%d';
+    }
+    if (psInterval == "month"){
+      sResult = '%d';
+    }
+    if (psInterval == "year"){
+      sResult = '%m';
+    }
+    return sResult;
+   }
+
+   function getGraph0(pjson, psName, psInterval) {
+      var aValues0 = [];  
+      var iMax0 = 1;    
       var jsonValues = JSON.parse(pjson);   
    
       if (jsonValues.length > 0) {  
          for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
             var data0 = new Date(1000 * jsonValues[0].datapoints[i][1]);
             aValues0.push({x: data0, y: jsonValues[0].datapoints[i][0].toFixed(2)});
+            if (jsonValues[0].datapoints[i][0] > iMax0) {
+              iMax0 = jsonValues[0].datapoints[i][0];
+            }
          };
       };
    
@@ -128,20 +159,22 @@ ${ graphsHUE.import_charts() }
     
       nv.addGraph(function() {
          var graph0 = nv.models.lineChart()
+                       .noData("${ _('No data available') }")
                        .margin({top: 15, right:50, left:60, bottom: 40})  //Adjust graph margins to give the x-axis some breathing room.                                  
-                       .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
+                       .useInteractiveGuideline(false)  //We want nice looking tooltips and a guideline!
                        .transitionDuration(350)        //how fast do you want the lines to transition?
                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
                        .tooltips(true)                 //Show tooltip.
                        .showYAxis(true)                //Show the y-axis                       
-                       .showXAxis(true);               //Show the x-axis
+                       .showXAxis(true)               //Show the x-axis
+                       .forceY([0,iMax0]); 
 
              graph0.yAxis                     
                    .axisLabel('Messages')                     
                    .tickFormat(d3.format('.1s'));
 
              graph0.xAxis                     
-                   .tickFormat(function(d) { return d3.time.format('%Y-%m-%d %H:%M')(new Date(d)); });
+                   .tickFormat(function(d) { return d3.time.format(psInterval)(new Date(d)); });
 
              d3.select('#graph0 svg') //Select the <svg> element you want to render the graph in.   
                .datum(aData0)         //Populate the <svg> element with graph data...
@@ -153,39 +186,45 @@ ${ graphsHUE.import_charts() }
       });   
    }; // END getGraph0.
    
-   function getGraph1(pjson, psName) {
+   function getGraph1(pjson, psName, psInterval) {
       var aValues1 = [];  
+      var iMax1 = 1;
       jsonValues = JSON.parse(pjson);   
    
       if (jsonValues.length > 0) {
          for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
             var data1 = new Date(1000 * jsonValues[0].datapoints[i][1]);
             aValues1.push({x: data1, y: jsonValues[0].datapoints[i][0].toFixed(2)});
+            if (jsonValues[0].datapoints[i][0] > iMax1) {
+              iMax1 = jsonValues[0].datapoints[i][0];
+            }
          };
       };
-   
+
       aData1 = [{
          values: aValues1,
          key: psName,
          area: true
        }];
-    
+    console.log(iMax1);
       nv.addGraph(function() {
          var graph1 = nv.models.lineChart()
+                       .noData("${ _('No data available') }")
                        .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
                        .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                        .transitionDuration(350)        //how fast do you want the lines to transition?
                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
                        .tooltips(true)                 //Show tooltip.
                        .showYAxis(true)                //Show the y-axis
-                       .showXAxis(true);               //Show the x-axis 
+                       .showXAxis(true)               //Show the x-axis 
+                       .forceY([0,iMax1]);  
                                                        
              graph1.yAxis 
                    .axisLabel('Messages')
                    .tickFormat(d3.format('.1s'));
 
              graph1.xAxis                     
-                   .tickFormat(function(d) { return d3.time.format('%Y-%m-%d %H:%M')(new Date(d)); });
+                   .tickFormat(function(d) { return d3.time.format(psInterval)(new Date(d)); });
   
              d3.select('#graph1 svg') //Select the <svg> element you want to render the graph in.   
                .datum(aData1)         //Populate the <svg> element with graph data...
@@ -197,14 +236,18 @@ ${ graphsHUE.import_charts() }
       });
    }; // END getGraph1.  
 
-   function getGraph2(pjson, psName) {   
+   function getGraph2(pjson, psName, psInterval) {   
       var aValues2 = [];  
+      var iMax2 = 1;
       jsonValues = JSON.parse(pjson);   
    
       if (jsonValues.length > 0) {
          for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
             var data2 = new Date(1000 * jsonValues[0].datapoints[i][1]);
             aValues2.push({x: data2, y: jsonValues[0].datapoints[i][0].toFixed(2)});
+            if (jsonValues[0].datapoints[i][0] > iMax2) {
+              iMax2 = jsonValues[0].datapoints[i][0];
+            }
          };
       };
    
@@ -216,20 +259,22 @@ ${ graphsHUE.import_charts() }
     
       nv.addGraph(function() {
          var graph2 = nv.models.lineChart()
+                       .noData("${ _('No data available') }")
                        .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
                        .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                        .transitionDuration(350)        //how fast do you want the lines to transition?
                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
                        .tooltips(true)                 //Show tooltip.
                        .showYAxis(true)                //Show the y-axis
-                       .showXAxis(true);               //Show the x-axis                                       
+                       .showXAxis(true)                //Show the x-axis                                       
+                       .forceY([0,iMax2]); 
 
              graph2.yAxis 
                    .axisLabel('Messages')
                    .tickFormat(d3.format('.1s'));
 
              graph2.xAxis                  
-                   .tickFormat(function(d) { return d3.time.format('%Y-%m-%d %H:%M')(new Date(d)); });
+                   .tickFormat(function(d) { return d3.time.format(psInterval)(new Date(d)); });
   
              d3.select('#graph2 svg') //Select the <svg> element you want to render the graph in.   
                .datum(aData2)         //Populate the <svg> element with graph data...
@@ -241,14 +286,18 @@ ${ graphsHUE.import_charts() }
       });
    }; // END getGraph2.  
    
-   function getGraph3(pjson, psName) {   
-      var aValues3 = [];  
+   function getGraph3(pjson, psName, psInterval) {   
+      var aValues3 = []; 
+      var iMax3 = 1; 
       jsonValues = JSON.parse(pjson);   
 
       if (jsonValues.length > 0) {
          for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
             var data3 = new Date(1000 * jsonValues[0].datapoints[i][1]);
-            aValues3.push({x: data3, y: jsonValues[0].datapoints[i][0].toFixed(2)});                 
+            aValues3.push({x: data3, y: jsonValues[0].datapoints[i][0].toFixed(2)});             
+            if (jsonValues[0].datapoints[i][0] > iMax3) {
+              iMax3 = jsonValues[0].datapoints[i][0];
+            }    
          };
       };
 
@@ -261,20 +310,22 @@ ${ graphsHUE.import_charts() }
 
       nv.addGraph(function() {
          var graph3 = nv.models.lineChart()
+                       .noData("${ _('No data available') }")
                        .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
                        .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                        .transitionDuration(350)        //how fast do you want the lines to transition?
                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
                        .tooltips(true)                 //Show tooltip.
                        .showYAxis(true)                //Show the y-axis
-                       .showXAxis(true);               //Show the x-axis                                       
+                       .showXAxis(true)                //Show the x-axis                                       
+                       .forceY([0,iMax3]); 
 
              graph3.yAxis 
                    .axisLabel('Messages')
                    .tickFormat(d3.format('.1s'));
 
              graph3.xAxis                  
-                   .tickFormat(function(d) { return d3.time.format('%Y-%m-%d %H:%M')(new Date(d)); });
+                   .tickFormat(function(d) { return d3.time.format(psInterval)(new Date(d)); });
   
              d3.select('#graph3 svg') //Select the <svg> element you want to render the graph in.   
                .datum(aData3)         //Populate the <svg> element with graph data...
@@ -286,14 +337,18 @@ ${ graphsHUE.import_charts() }
       });
    }; // END getGraph3.  
    
-   function getGraph4(pjson, psName) {
-      var aValues4 = [];  
+   function getGraph4(pjson, psName, psInterval) {
+      var aValues4 = []; 
+      var iMax4 = 1; 
       jsonValues = JSON.parse(pjson);   
    
       if (jsonValues.length > 0) {
          for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
             var data4 = new Date(1000 * jsonValues[0].datapoints[i][1]);
             aValues4.push({x: data4, y: jsonValues[0].datapoints[i][0].toFixed(2)});
+            if (jsonValues[0].datapoints[i][0] > iMax4) {
+              iMax4 = jsonValues[0].datapoints[i][0];
+            }
          };
       }; 
    
@@ -305,20 +360,22 @@ ${ graphsHUE.import_charts() }
     
       nv.addGraph(function() {
          var graph4 = nv.models.lineChart()
+                        .noData("${ _('No data available') }")
                         .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
                         .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
                         .transitionDuration(350)        //how fast do you want the lines to transition?
                         .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
                         .tooltips(true)                 //Show tooltip.
                         .showYAxis(true)                //Show the y-axis
-                        .showXAxis(true);               //Show the x-axis                                       
+                        .showXAxis(true)                //Show the x-axis                                       
+                        .forceY([0,iMax4]); 
                   
              graph4.yAxis 
                    .axisLabel('Messages')
                    .tickFormat(d3.format('.1s'));
 
              graph4.xAxis                                        
-                   .tickFormat(function(d) { return d3.time.format('%Y-%m-%d %H:%M')(new Date(d)); });
+                   .tickFormat(function(d) { return d3.time.format(psInterval)(new Date(d)); });
   
              d3.select('#graph4 svg') //Select the <svg> element you want to render the graph in.   
                .datum(aData4)         //Populate the <svg> element with graph data...
