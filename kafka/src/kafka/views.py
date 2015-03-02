@@ -287,7 +287,7 @@ def dashboard(request, cluster_id):
     
 	cluster = get_cluster_or_404(id=cluster_id)
 	topics, error_zk_topics = _get_topics(cluster)
-    
+	
 	error_zk_brokers = 0
 	brokers=[]
 
@@ -316,13 +316,14 @@ def dashboard(request, cluster_id):
         
 		for element in aOptions.split(","):
 			aMetrics = aMetrics + [sMetricComplete + "." + element]
-        
+
 		for metric in aMetrics:
-			aURL = aURL + [cluster['ganglia_server'] + "/ganglia/graph.php?" + "r=" + sGranularity + "&c=" + cluster['ganglia_data_source'] + "&h=" + sHost + "&m=" + metric + "&" + metric + "&json=1"]                
+			aURL = aURL + [cluster['ganglia_server'] + "/ganglia/graph.php?" + "r=" + sGranularity + "&c=" + cluster['ganglia_data_source'] + "&h=" + sHost + "&m=" + metric + "&" + metric + "&json=1"]
 
 		data = {}
 		data['sMetric'] = sMetricComplete
 		data['sGraphs'] = aOptions
+		data['sGranularity'] = sGranularity
 		data['jsonDumps0'] =  _get_dumps(_get_json(aURL[0]))
 		data['jsonDumps1'] =  _get_dumps(_get_json(aURL[1]))
 		data['jsonDumps2'] =  _get_dumps(_get_json(aURL[2]))
