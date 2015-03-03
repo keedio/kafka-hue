@@ -156,18 +156,22 @@ ${ graphsHUE.import_charts() }
          key: psName,
          area: true
        }];
-    
-      nv.addGraph(function() {
-         var graph0 = nv.models.lineChart()
-                       .noData("${ _('No data available') }")
-                       .margin({top: 15, right:50, left:60, bottom: 40})  //Adjust graph margins to give the x-axis some breathing room.                                  
-                       .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
-                       .transitionDuration(350)        //how fast do you want the lines to transition?
-                       .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
-                       .tooltips(true)                 //Show tooltip.
-                       .showYAxis(true)                //Show the y-axis                       
-                       .showXAxis(true)               //Show the x-axis
-                       .forceY([0,iMax0]); 
+      
+      if (aData0[0].values.length > 0){
+        $("#divNoData0").hide();
+        $("#graph0").show();
+
+        nv.addGraph(function() {
+          var graph0 = nv.models.lineChart()
+                         .noData("${ _('No data available') }")
+                         .margin({top: 15, right:50, left:60, bottom: 40})  //Adjust graph margins to give the x-axis some breathing room.                                  
+                         .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
+                         .transitionDuration(350)        //how fast do you want the lines to transition?
+                         .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
+                         .tooltips(true)                 //Show tooltip.
+                         .showYAxis(true)                //Show the y-axis                       
+                         .showXAxis(true)               //Show the x-axis
+                         .forceY([0,iMax0]); 
 
              graph0.yAxis                     
                    .axisLabel('Messages')                     
@@ -183,7 +187,12 @@ ${ graphsHUE.import_charts() }
              //Update the graph when window resizes.
              nv.utils.windowResize(function() { graph0.update() });
              return graph0;
-      });   
+        });
+      }
+      else{
+          $("#divNoData0").show();
+          $("#graph0").hide();
+      }   
    }; // END getGraph0.
    
    function getGraph1(pjson, psName, psInterval) {
@@ -206,18 +215,22 @@ ${ graphsHUE.import_charts() }
          key: psName,
          area: true
        }];
-    console.log(iMax1);
-      nv.addGraph(function() {
-         var graph1 = nv.models.lineChart()
-                       .noData("${ _('No data available') }")
-                       .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
-                       .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
-                       .transitionDuration(350)        //how fast do you want the lines to transition?
-                       .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
-                       .tooltips(true)                 //Show tooltip.
-                       .showYAxis(true)                //Show the y-axis
-                       .showXAxis(true)               //Show the x-axis 
-                       .forceY([0,iMax1]);  
+
+      if (aData1[0].values.length > 0){
+        $("#divNoData1").hide();
+        $("#graph1").show();
+      
+        nv.addGraph(function() {
+          var graph1 = nv.models.lineChart()
+                         .noData("${ _('No data available') }")
+                         .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
+                         .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
+                         .transitionDuration(350)        //how fast do you want the lines to transition?
+                         .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
+                         .tooltips(true)                 //Show tooltip.
+                         .showYAxis(true)                //Show the y-axis
+                         .showXAxis(true)               //Show the x-axis 
+                         .forceY([0,iMax1]);  
                                                        
              graph1.yAxis 
                    .axisLabel('Messages')
@@ -233,7 +246,12 @@ ${ graphsHUE.import_charts() }
              //Update the graph when window resizes.
              nv.utils.windowResize(function() { graph1.update() });
              return graph1;
-      });
+        });
+      }
+      else {
+          $("#divNoData1").show();
+          $("#graph1").hide();
+      }
    }; // END getGraph1.  
 
    function getGraph2(pjson, psName, psInterval) {   
@@ -257,17 +275,21 @@ ${ graphsHUE.import_charts() }
          area: true
        }];
     
-      nv.addGraph(function() {
-         var graph2 = nv.models.lineChart()
-                       .noData("${ _('No data available') }")
-                       .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
-                       .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
-                       .transitionDuration(350)        //how fast do you want the lines to transition?
-                       .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
-                       .tooltips(true)                 //Show tooltip.
-                       .showYAxis(true)                //Show the y-axis
-                       .showXAxis(true)                //Show the x-axis                                       
-                       .forceY([0,iMax2]); 
+      if (aData2[0].values.length > 0){
+          $("#divNoData2").hide();
+          $("#graph2").show();
+
+          nv.addGraph(function() {
+            var graph2 = nv.models.lineChart()
+                           .noData("${ _('No data available') }")
+                           .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
+                           .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
+                           .transitionDuration(350)        //how fast do you want the lines to transition?
+                           .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
+                           .tooltips(true)                 //Show tooltip.
+                           .showYAxis(true)                //Show the y-axis
+                           .showXAxis(true)                //Show the x-axis                                       
+                           .forceY([0,iMax2]); 
 
              graph2.yAxis 
                    .axisLabel('Messages')
@@ -283,7 +305,12 @@ ${ graphsHUE.import_charts() }
              //Update the graph when window resizes.
              nv.utils.windowResize(function() { graph2.update() });
              return graph2;
-      });
+        });
+      }
+      else {
+          $("#divNoData2").show();
+          $("#graph2").hide();
+      }
    }; // END getGraph2.  
    
    function getGraph3(pjson, psName, psInterval) {   
@@ -308,17 +335,21 @@ ${ graphsHUE.import_charts() }
          area: true
        }];
 
-      nv.addGraph(function() {
-         var graph3 = nv.models.lineChart()
-                       .noData("${ _('No data available') }")
-                       .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
-                       .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
-                       .transitionDuration(350)        //how fast do you want the lines to transition?
-                       .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
-                       .tooltips(true)                 //Show tooltip.
-                       .showYAxis(true)                //Show the y-axis
-                       .showXAxis(true)                //Show the x-axis                                       
-                       .forceY([0,iMax3]); 
+      if (aData3[0].values.length > 0){
+          $("#divNoData3").hide();
+          $("#graph3").show();
+           
+          nv.addGraph(function() {
+            var graph3 = nv.models.lineChart()
+                           .noData("${ _('No data available') }")
+                           .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
+                           .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
+                           .transitionDuration(350)        //how fast do you want the lines to transition?
+                           .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
+                           .tooltips(true)                 //Show tooltip.
+                           .showYAxis(true)                //Show the y-axis
+                           .showXAxis(true)                //Show the x-axis                                       
+                           .forceY([0,iMax3]); 
 
              graph3.yAxis 
                    .axisLabel('Messages')
@@ -334,7 +365,12 @@ ${ graphsHUE.import_charts() }
              //Update the graph when window resizes.
              nv.utils.windowResize(function() { graph3.update() });
              return graph3;
-      });
+        });
+      }
+      else {
+          $("#divNoData3").show();
+          $("#graph3").hide();
+      }
    }; // END getGraph3.  
    
    function getGraph4(pjson, psName, psInterval) {
@@ -357,18 +393,22 @@ ${ graphsHUE.import_charts() }
          key: psName,
          area: true
        }];
-    
-      nv.addGraph(function() {
-         var graph4 = nv.models.lineChart()
-                        .noData("${ _('No data available') }")
-                        .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
-                        .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
-                        .transitionDuration(350)        //how fast do you want the lines to transition?
-                        .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
-                        .tooltips(true)                 //Show tooltip.
-                        .showYAxis(true)                //Show the y-axis
-                        .showXAxis(true)                //Show the x-axis                                       
-                        .forceY([0,iMax4]); 
+
+      if (aData4[0].values.length > 0){
+          $("#divNoData4").hide();
+          $("#graph4").show();
+
+          nv.addGraph(function() {
+            var graph4 = nv.models.lineChart()
+                           .noData("${ _('No data available') }")
+                           .margin({top: 15, right:50, left:60, bottom: 40})            //Adjust graph margins to give the x-axis some breathing room.
+                           .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
+                           .transitionDuration(350)        //how fast do you want the lines to transition?
+                           .showLegend(true)               //Show the legend, allowing users to turn on/off line series.
+                           .tooltips(true)                 //Show tooltip.
+                           .showYAxis(true)                //Show the y-axis
+                           .showXAxis(true)                //Show the x-axis                                       
+                           .forceY([0,iMax4]); 
                   
              graph4.yAxis 
                    .axisLabel('Messages')
@@ -384,7 +424,12 @@ ${ graphsHUE.import_charts() }
              //Update the graph when window resizes.
              nv.utils.windowResize(function() { graph4.update() });
              return graph4;
-      });
+        });
+      }
+      else {
+          $("#divNoData4").show();
+          $("#graph4").hide();
+      }
    }; // END getGraph4.  
    
    function changeValue(psType, psValue) {
@@ -432,6 +477,30 @@ ${ graphsHUE.import_charts() }
 % endif 
 
 ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
+
+<!-- Div Error when no data in some graph. -->
+<%def name="divErrorNoData(psGraph, psName)">
+  <div id="divNoData${psGraph}" class="alert hide">
+    <table align="center" valign="middle" width="90%" height="100%" border="0" cellpadding="6" cellspacing="0">
+       <tr>
+          <td>
+              <i class="fa fa-exclamation-triangle"></i>
+              ${ _('No data available for ') } <b>${psName} ${ _('Graph. ') }</b>${ _('Suggestions') }
+          </td>
+       </tr>
+       <tr>
+          <td>
+            <ul>
+              <li>${ _('Try different host.') }</li>
+              <li>${ _('Try different topic.') }</li>
+              <li>${ _('Try different metric.') }</li>
+              <li>${ _('Try different granularity.') }</li>
+            </ul>
+          </td>
+       </tr>
+    </table>    
+  </div>
+</%def>
 
 <div class="container-fluid">
   <div class="card">
@@ -588,7 +657,7 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
            </div>
 
            <div id="divGraphs" class="hide">
-              <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+              <table width="100%" border="0" cellpadding="0" cellspacing="0">
                  <tr valign="top">
                     <td colspan="4">
                        <div class="panel panel-default">
@@ -596,19 +665,21 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
                              <i class="fa fa-tachometer fa-fw"></i>${ _('Metrics of Kakfa cluster') }                             
                           </div>
                           <div class="panel-body">
-                             <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+                             <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                 <tr>
                                    <td colspan="3">
-                                      <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+                                      <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                          <tr>
                                             <td width="50%">
                                               <div style="position:relative">
-                                                 <div id="graph0"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                                 <div id="graph0"><svg style="min-height: 180px; margin: 10px auto"></svg></div>                                                 
+                                                 ${divErrorNoData(0, 'Count')}
                                               </div>
                                             </td>                                   
                                             <td width="50%">
                                               <div style="position:relative">
                                                 <div id="graph4"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                                ${divErrorNoData(4, 'MeanRate')}
                                               </div>
                                             </td>
                                          </tr>
@@ -619,16 +690,19 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
                                    <td width="33%">
                                       <div style="position:relative">
                                         <div id="graph1"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                        ${divErrorNoData(1, 'OneMinuteRate')}
                                       </div>
                                    </td>
                                    <td width="34%">
                                     <div style="position:relative">
                                       <div id="graph2"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                      ${divErrorNoData(2, 'FiveMinuteRate')}
                                     </div>
                                    </td>
                                    <td width="33%">
                                     <div style="position:relative">
                                       <div id="graph3"><svg style="min-height: 180px; margin: 10px auto"></svg></div>
+                                      ${divErrorNoData(3, 'FifteenMinuteRate')}
                                     </div>
                                    </td>
                                 </tr>
