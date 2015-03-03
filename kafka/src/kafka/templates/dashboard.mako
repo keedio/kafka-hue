@@ -25,11 +25,18 @@
 ${commonheader("Dashboard", app_name, user) | n,unicode}
 
 <link href="/kafka/static/css/kafka.css" rel="stylesheet">
-<script src="/static/ext/js/datatables-paging-0.1.js" type="text/javascript" charset="utf-8"></script>
 
 ${ graphsHUE.import_charts() }
 
-<script type="text/javascript" charset="utf-8">      
+<script type="text/javascript" charset="utf-8">  
+   
+   $(document).ready(function () {
+      $("a.btn-date").click(function () {
+          $("a.btn-date").not(this).removeClass("active");
+          $(this).toggleClass("active");
+      });
+   });
+
    function SetFilterMetric() {      
       var sHost = document.getElementById("txtHost").value;
       var sTopic = document.getElementById("txtTopic").value;
@@ -618,11 +625,11 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
                     <div class="panel-body">
                        <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
                           <tr>
-                             <td>
-                                <span class="btn-group" style="float:left">
+                             <td>                                
+                                <span class="btn-group" style="float:left">                               
                                    <a class="btn btn-date btn-info" onclick="changeValue('granularity', 'hour')">${ _('Hour') }</a>
                                    <a class="btn btn-date btn-info" onclick="changeValue('granularity', '2hr')">${ _('2Hour') }</a>
-                                   <a class="btn btn-date btn-info" onclick="changeValue('granularity', '4hr')">${ _('4Hour') }</a>                                                     
+                                   <a class="btn btn-date btn-info" onclick="changeValue('granularity', '4hr')">${ _('4Hour') }</a>
                                    <a class="btn btn-date btn-info" onclick="changeValue('granularity', 'day')">${ _('Day') }</a>
                                    <a class="btn btn-date btn-info" onclick="changeValue('granularity', 'week')">${ _('Week') }</a>
                                    <a class="btn btn-date btn-info" onclick="changeValue('granularity', 'month')">${ _('Month') }</a>
