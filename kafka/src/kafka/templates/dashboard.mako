@@ -118,27 +118,27 @@ ${ graphsHUE.import_charts() }
    };
    
    function getGranularity(psInterval) {
-    var sResult = '';
+    var sResult = "";
     if (psInterval == "hour"){
-      sResult = '%H:%M';
+      sResult = "%H:%M";
     };
     if (psInterval == "2hr"){
-      sResult = '%H:%M';
+      sResult = "%H:%M";
     }
     if (psInterval == "4hr"){
-      sResult = '%H:%M';
+      sResult = "%H:%M";
     }
     if (psInterval == "day"){
-      sResult = '%H:%M';
+      sResult = "%a %H:%M";
     }
     if (psInterval == "week"){
-      sResult = '%d';
+      sResult = "%a";
     }
     if (psInterval == "month"){
-      sResult = '%d';
+      sResult = "${ _('Week') } %U";
     }
     if (psInterval == "year"){
-      sResult = '%m';
+      sResult = "%b";
     }
     return sResult;
    }
