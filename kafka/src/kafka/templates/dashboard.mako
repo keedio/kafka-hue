@@ -515,6 +515,16 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
      <div class="card-body">
           % if error_zk_topics == 0 and error_zk_brokers == 0:
             <div class="alert alert-info">${ _('The zookeper REST server:') } <b>${cluster['zk_rest_url']}</b></div>
+            % if not brokers:
+              <div class="alert alert-error">
+                ${ _('Can\'t retrive brokers list.') } <br>
+              </div>
+            % endif
+            % if not topics:
+              <div class="alert alert-error">
+                ${ _('Can\'t retrive topics list.') } <br>
+              </div>
+            % endif  
           % else:
             <div class="alert alert-error">
               ${ _('Error connecting to the zookeper REST server:') } <b>${cluster['zk_rest_url']}</b><br>
@@ -573,9 +583,11 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
                           <tr>
                              <td>
                                 <select name="idTopics" id="idTopics" style="width:100%;" multiple>
-                                   <option value="*" onclick="changeValue('topic', '${ _('All topics') }')">
-                                      ${ _('All Topics') }
-                                   </option>
+                                   % if topics:
+                                      <option value="*" onclick="changeValue('topic', '${ _('All topics') }')">
+                                        ${ _('All Topics') }
+                                      </option>
+                                   % endif
                                    % for topic in topics:
                                       <option value="${topic['id']}" onclick="changeValue('topic', '${topic['id']}')">${topic['id']}</option>
                                    % endfor                                         
