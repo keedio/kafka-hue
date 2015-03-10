@@ -300,7 +300,7 @@ def dashboard(request, cluster_id):
 
 	sections = _get_sections_ini()
 	
-	if (request.method == 'POST') and (request.is_ajax()):
+	if request.method == 'POST') and request.is_ajax():
 		sHost = request.POST['txtHost']
 		sTopic = request.POST['txtTopic']
 
