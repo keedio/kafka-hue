@@ -205,7 +205,7 @@ def _get_json(psUrl):
 	jsonObject = rJSON.json()      
 
 	try:
-		if (len(jsonObject) > 0):
+		if len(jsonObject) > 0:
 			return jsonObject
 		else:
 			return []
@@ -300,11 +300,11 @@ def dashboard(request, cluster_id):
 
 	sections = _get_sections_ini()
 	
-	if ((request.method == 'POST') and (request.is_ajax())):
+	if (request.method == 'POST') and (request.is_ajax()):
 		sHost = request.POST['txtHost']
 		sTopic = request.POST['txtTopic']
 
-		if (sTopic == "*"):
+		if sTopic == "*":
 			sTopic = "AllTopics"
 		else:
 			sTopic = sTopic + "-"
