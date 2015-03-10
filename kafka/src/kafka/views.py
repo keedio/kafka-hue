@@ -284,7 +284,8 @@ def dashboard(request, cluster_id):
 	sMetric = ""
 	sMetricComplete = ""
 	sGranularity = ""
-    
+	sDataSource = ""
+
 	cluster = get_cluster_or_404(id=cluster_id)
 	topics, error_zk_topics = _get_topics(cluster)
 	
@@ -317,8 +318,10 @@ def dashboard(request, cluster_id):
 		for element in aOptions.split(","):
 			aMetrics = aMetrics + [sMetricComplete + "." + element]
 
+		sDataSource = cluster['ganglia_data_source'].replace(" ", "+")
+
 		for metric in aMetrics:
-			aURL = aURL + [cluster['ganglia_server'] + "/ganglia/graph.php?" + "r=" + sGranularity + "&c=" + cluster['ganglia_data_source'] + "&h=" + sHost + "&m=" + metric + "&" + metric + "&json=1"]
+			aURL = aURL + [cluster['ganglia_server'] + "/ganglia/graph.php?" + "r=" + sGranularity + "&c=" + sDataSource + "&h=" + sHost + "&m=" + metric + "&" + metric + "&json=1"]
 
 		data = {}
 		data['sMetric'] = sMetricComplete
