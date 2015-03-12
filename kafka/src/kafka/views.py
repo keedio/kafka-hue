@@ -302,17 +302,12 @@ def dashboard(request, cluster_id):
 	
 	if request.method == 'POST' and request.is_ajax():
 		sHost = request.POST['txtHost']
-		sTopic = request.POST['txtTopic']
-
-		if sTopic == "*":
-			sTopic = "AllTopics"
-		else:
-			sTopic = sTopic + "-"
-            
+		sTopic = request.POST['txtTopic']	
 		sMetric = request.POST['txtMetric']        
 		sGranularity = request.POST['txtGranularity']
 		aOptions = _get_options_ini(sMetric)
 		aMetric = sMetric.split(".")
+		sTopic = "AllTopics" if sTopic == "*" else sTopic + "-"
 		sMetricComplete = aMetric[0] + "." + sTopic + aMetric[1]
         
 		for element in aOptions.split(","):
@@ -321,7 +316,7 @@ def dashboard(request, cluster_id):
 		sDataSource = cluster['ganglia_data_source'].replace(" ", "+")
 
 		for metric in aMetrics:
-			aURL = aURL + [cluster['ganglia_server'] + "/ganglia/graph.php?" + "r=" + sGranularity + "&c=" + sDataSource + "&h=" + sHost + "&m=" + metric + "&" + metric + "&json=1"]
+			aURL = aURL + [cluster['ganglia_server'] + "/ganglia/graph.php?" + "r=" + sGranularity + "&c=" + sDataSource + "&h=" + sHost + "&m=" + metric + "&json=1"]
 
 		data = {}
 		data['sMetric'] = sMetricComplete

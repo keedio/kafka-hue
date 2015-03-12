@@ -65,7 +65,7 @@ ${ graphsHUE.import_charts() }
          $("#imgLoading").show();
          $("#btnSubmit").hide();
 
-         if (sTopic = '${ _('All topics') }') {
+         if (sTopic == '${ _('All topics') }') {
             sTopic = '*';
          };
 
