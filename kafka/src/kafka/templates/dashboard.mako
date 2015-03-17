@@ -25,11 +25,44 @@
 ${commonheader("Dashboard", app_name, user) | n,unicode}
 
 <link href="/kafka/static/css/kafka.css" rel="stylesheet">
+<script type="text/javascript" src="/kafka/static/js/jquery.smart_autocomplete.js"></script>
 
 ${ graphsHUE.import_charts() }
 
+<style>
+    ul.smart_autocomplete_container li {list-style: none; cursor: pointer;}
+    li.smart_autocomplete_highlight {background-color: #F6F6F6;}
+    ul.smart_autocomplete_container { margin: 0; padding: 5px; background-color: #DBDBDB; min-height: 100px;}
+</style>
+
 <script type="text/javascript" charset="utf-8">  
+
+   $(function(){
+         
+        $("#txtHost").smartAutoComplete({ 
+          source: "/kafka/${ cluster['id'] }/getjson/broker", 
+          maxResults: 5,
+          delay: 100,
+          forceSelect: true
+        });
+
+        $("#txtTopic").smartAutoComplete({
+          source: "/kafka/${ cluster['id'] }/getjson/topic",  
+          maxResults: 5, 
+          delay: 100 ,
+          forceSelect: true
+        });
+
+        $("#txtMetric").smartAutoComplete({ 
+          source: "/kafka/${ cluster['id'] }/getjson/metric", 
+          maxResults: 5,
+          delay: 100,
+          forceSelect: true
+        });
+    });
+
    
+
    $(document).ready(function () {
       $("a.btn-date").click(function () {
           $("a.btn-date").not(this).removeClass("active");
@@ -81,6 +114,7 @@ ${ graphsHUE.import_charts() }
                           if (response.status === undefined) {
                             $("#imgLoading").hide();    
                             $("#btnSubmit").show(); 
+                            $("#divGraphs").hide();
                             $("#divURLError").show();
                           }
                           else {
@@ -111,6 +145,7 @@ ${ graphsHUE.import_charts() }
               error: function(xhr, status, error) {
                          $("#imgLoading").hide();    
                          $("#btnSubmit").show(); 
+                         $("#divGraphs").hide();
                          $("#divURLError").show();                         
                      }    
           });
@@ -524,7 +559,12 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
               <div class="alert alert-error">
                 ${ _('Can\'t retrive topics list.') } <br>
               </div>
-            % endif  
+            % endif
+            % if metrics == []:
+              <div class="alert alert-error">
+                ${ _('Can\'t retrive metrics list.') } <br>
+              </div>
+            % endif    
           % else:
             <div class="alert alert-error">
               ${ _('Error connecting to the zookeper REST server:') } <b>${cluster['zk_rest_url']}</b><br>
@@ -577,7 +617,7 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
                        <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
                           <tr>
                              <td>
-                                <input id="txtTopic" name="txtTopic" type="text" placeholder="${ _('Search for topic(s)') }" style="width:90%;">
+                                <input id="txtTopic" name="txtTopic" type="text" autocomplete="off" placeholder="${ _('Search for topic(s)') }" style="width:90%;">
                              </td>
                           </tr>
                           <tr>

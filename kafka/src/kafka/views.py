@@ -222,7 +222,7 @@ def _get_sections_ini():
 
 	try:
 		return Config.sections()
-	except:
+	except ZooKeeper.NotFound:
 		return ""
 
 def _get_options_ini(section):
@@ -240,6 +240,26 @@ def _get_options_ini(section):
 
 	return dict
 
+def _get_json_type(request, cluster_id, type):
+	data = []
+	try:	
+		cluster = get_cluster_or_404(id=cluster_id)
+
+		if (type == "broker"):
+			zk = ZooKeeper(cluster['zk_rest_url'])
+			brokers = _get_brokers(zk,cluster)
+			for broker in brokers:
+				data.append(broker['host'])
+		if (type == "topic"):
+			topics, error_zk_topics = _get_topics(cluster)
+			for topic in topics:
+				data.append(topic['id'])
+		if (type == "metric"):
+			data = _get_sections_ini()
+	except ZooKeeper.RESTError:
+		error_zk_brokers = 1
+
+	return HttpResponse(_get_dumps(data), content_type = "application/json")
 
 def index(request):
 	""" Main view. Returns the topology of every kafka cluster defined in the hue.ini file """
