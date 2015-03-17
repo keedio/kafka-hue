@@ -245,16 +245,16 @@ def _get_json_type(request, cluster_id, type):
 	try:	
 		cluster = get_cluster_or_404(id=cluster_id)
 
-		if (type == "broker"):
+		if type == "broker":
 			zk = ZooKeeper(cluster['zk_rest_url'])
 			brokers = _get_brokers(zk,cluster)
 			for broker in brokers:
 				data.append(broker['host'])
-		if (type == "topic"):
+		if type == "topic":
 			topics, error_zk_topics = _get_topics(cluster)
 			for topic in topics:
 				data.append(topic['id'])
-		if (type == "metric"):
+		if type == "metric":
 			data = _get_sections_ini()
 	except ZooKeeper.RESTError:
 		error_zk_brokers = 1
