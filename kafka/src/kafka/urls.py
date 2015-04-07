@@ -15,7 +15,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.conf.urls.defaults import patterns, url
+try:
+  from django.conf.urls.defaults import patterns, url
+except:
+  from django.conf.urls import patterns, url
 
 IS_URL_NAMESPACED = True
 
@@ -25,4 +28,6 @@ urlpatterns = patterns('kafka.views',
   url(r'^(?P<cluster_id>\w+)/topics/$', 'topics', name="topics"),
   url(r'^(?P<cluster_id>\w+)/consumer_groups/$', 'consumer_groups', name="consumer_groups"),
   url(r'^(?P<cluster_id>\w+)/consumer_group/(?P<group_id>.+)$', 'consumer_group', name="consumer_group"),
+  url(r'^(?P<cluster_id>\w+)/dashboard/$', 'dashboard', name="dashboard"),
+  url(r'^(?P<cluster_id>\w+)/getjson/(?P<type>.+)/$', '_get_json_type', name="_get_json_type"),
 )

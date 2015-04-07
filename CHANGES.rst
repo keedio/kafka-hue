@@ -1,6 +1,32 @@
 Changelog
 =========
 
+2.0.0 (20-02-2015)
+----------------
+
+Features
+********
+
+- Zookeeper REST server API usage. 
+- Custom Dashboard based on Kafka JMX metrics published in Ganglia
+
+Bug Handling
+************
+- Issue #18: Justify Right for "Search" DataTable Box
+- Issue #21: Show X-Axis Legend
+- Issue #23: Header don't show name correctly
+- Issue #24: Block submit button while not show graphics in dashboard.
+- Issue #25: Fix internalization messages
+- Issue #26: Format/Size in Y-Axis in dashboard
+- Issue #28: Error in "FifteenMinuteRate Graph" in date format
+- Issue #29: Error in dashboard when Ganglia URL is not correct.
+- Issue #30: In dashboard, filter "All topics" not working correctly
+- Issue #32: Fix compile locales
+- Issue #33: Ganglia URL incorrect
+- Issue #34: Tests - Fix compile locales
+- Issue #38: Include name of Ganglia Cluster in Hue.ini
+
+
 1.0 (14-04-2014)
 ----------------
 

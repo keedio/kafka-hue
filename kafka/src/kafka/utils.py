@@ -22,6 +22,7 @@ import socket
 
 
 def get_cluster_or_404(id):
+  """ Get a cluster information from its ID or a 404 Error """
   try:
     name = id
     cluster = CLUSTERS.get()[name]
@@ -36,11 +37,14 @@ def get_cluster_or_404(id):
     'brokers_path' : cluster.BROKERS_PATH.get(),
     'consumers_path' : cluster.CONSUMERS_PATH.get(),
     'topics_path' : cluster.TOPICS_PATH.get(),
+    'ganglia_server' : cluster.GANGLIA_SERVER.get(),
+    'ganglia_data_source' : cluster.GANGLIA_DATA_SOURCE.get(),
   }
 
   return cluster
 
 def test_connection (host, port):
+  """ Test available connection of a given host and port """
   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   try:
     s.connect((host, port))

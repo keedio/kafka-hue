@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hue VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-04-22 15:53+0200\n"
+"POT-Creation-Date: 2015-03-17 17:05+0100\n"
 "PO-Revision-Date: 2014-04-14 15:36+0200\n"
 "Last-Translator: Daniel TArdon <dtardon@redoop.org>\n"
 "Language-Team: en <LL@li.org>\n"
@@ -17,251 +17,440 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: src/kafka/templates/cluster.mako:39 src/kafka/templates/cluster.mako:59
-#: src/kafka/templates/consumer_group.mako:36
-#: src/kafka/templates/consumer_group.mako:56
-#: src/kafka/templates/consumer_groups.mako:36
-#: src/kafka/templates/index.mako:39 src/kafka/templates/index.mako:59
-#: src/kafka/templates/topics.mako:36
+#: src/kafka/templates/cluster.mako:41 src/kafka/templates/cluster.mako:63
+#: src/kafka/templates/consumer_group.mako:42
+#: src/kafka/templates/consumer_group.mako:64
+#: src/kafka/templates/consumer_groups.mako:38
+#: src/kafka/templates/index.mako:41 src/kafka/templates/index.mako:63
+#: src/kafka/templates/topics.mako:38
+msgid "Show _MENU_ entries"
+msgstr ""
+
+#: src/kafka/templates/cluster.mako:42 src/kafka/templates/cluster.mako:64
+#: src/kafka/templates/consumer_group.mako:43
+#: src/kafka/templates/consumer_group.mako:65
+#: src/kafka/templates/consumer_groups.mako:39
+#: src/kafka/templates/index.mako:42 src/kafka/templates/index.mako:64
+#: src/kafka/templates/topics.mako:39
+msgid "Search"
+msgstr ""
+
+#: src/kafka/templates/cluster.mako:43 src/kafka/templates/cluster.mako:65
+#: src/kafka/templates/cluster.mako:210 src/kafka/templates/cluster.mako:214
+#: src/kafka/templates/consumer_group.mako:44
+#: src/kafka/templates/consumer_group.mako:66
+#: src/kafka/templates/consumer_groups.mako:40
+#: src/kafka/templates/dashboard.mako:208
+#: src/kafka/templates/dashboard.mako:267
+#: src/kafka/templates/dashboard.mako:326
+#: src/kafka/templates/dashboard.mako:386
+#: src/kafka/templates/dashboard.mako:445 src/kafka/templates/index.mako:43
+#: src/kafka/templates/index.mako:65 src/kafka/templates/index.mako:212
+#: src/kafka/templates/index.mako:216 src/kafka/templates/topics.mako:40
 msgid "No data available"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:40 src/kafka/templates/cluster.mako:60
-#: src/kafka/templates/consumer_group.mako:37
-#: src/kafka/templates/consumer_group.mako:57
-#: src/kafka/templates/consumer_groups.mako:37
-#: src/kafka/templates/index.mako:40 src/kafka/templates/index.mako:60
-#: src/kafka/templates/topics.mako:37
+#: src/kafka/templates/cluster.mako:44 src/kafka/templates/cluster.mako:66
+#: src/kafka/templates/consumer_group.mako:45
+#: src/kafka/templates/consumer_group.mako:67
+#: src/kafka/templates/consumer_groups.mako:41
+#: src/kafka/templates/index.mako:44 src/kafka/templates/index.mako:66
+#: src/kafka/templates/topics.mako:41
 msgid "Showing _START_ to _END_ of _TOTAL_ entries"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:41 src/kafka/templates/cluster.mako:61
-#: src/kafka/templates/consumer_group.mako:38
-#: src/kafka/templates/consumer_group.mako:58
-#: src/kafka/templates/consumer_groups.mako:38
-#: src/kafka/templates/index.mako:41 src/kafka/templates/index.mako:61
-#: src/kafka/templates/topics.mako:38
+#: src/kafka/templates/cluster.mako:45 src/kafka/templates/cluster.mako:67
+#: src/kafka/templates/consumer_group.mako:46
+#: src/kafka/templates/consumer_group.mako:68
+#: src/kafka/templates/consumer_groups.mako:42
+#: src/kafka/templates/index.mako:45 src/kafka/templates/index.mako:67
+#: src/kafka/templates/topics.mako:42
 msgid "Showing 0 to 0 of 0 entries"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:42 src/kafka/templates/cluster.mako:62
-#: src/kafka/templates/consumer_group.mako:39
-#: src/kafka/templates/consumer_group.mako:59
-#: src/kafka/templates/consumer_groups.mako:39
-#: src/kafka/templates/index.mako:42 src/kafka/templates/index.mako:62
-#: src/kafka/templates/topics.mako:39
+#: src/kafka/templates/cluster.mako:46 src/kafka/templates/cluster.mako:68
+#: src/kafka/templates/consumer_group.mako:47
+#: src/kafka/templates/consumer_group.mako:69
+#: src/kafka/templates/consumer_groups.mako:43
+#: src/kafka/templates/index.mako:46 src/kafka/templates/index.mako:68
+#: src/kafka/templates/topics.mako:43
 msgid "(filtered from _MAX_ total entries)"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:43 src/kafka/templates/cluster.mako:63
-#: src/kafka/templates/consumer_group.mako:40
-#: src/kafka/templates/consumer_group.mako:60
-#: src/kafka/templates/consumer_groups.mako:40
-#: src/kafka/templates/index.mako:43 src/kafka/templates/index.mako:63
-#: src/kafka/templates/topics.mako:40
+#: src/kafka/templates/cluster.mako:47 src/kafka/templates/cluster.mako:69
+#: src/kafka/templates/consumer_group.mako:48
+#: src/kafka/templates/consumer_group.mako:70
+#: src/kafka/templates/consumer_groups.mako:44
+#: src/kafka/templates/index.mako:47 src/kafka/templates/index.mako:69
+#: src/kafka/templates/topics.mako:44
 msgid "No matching records"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:45 src/kafka/templates/cluster.mako:65
-#: src/kafka/templates/consumer_group.mako:42
-#: src/kafka/templates/consumer_group.mako:62
-#: src/kafka/templates/consumer_groups.mako:42
-#: src/kafka/templates/index.mako:45 src/kafka/templates/index.mako:65
-#: src/kafka/templates/topics.mako:42
+#: src/kafka/templates/cluster.mako:49 src/kafka/templates/cluster.mako:71
+#: src/kafka/templates/consumer_group.mako:50
+#: src/kafka/templates/consumer_group.mako:72
+#: src/kafka/templates/consumer_groups.mako:46
+#: src/kafka/templates/index.mako:49 src/kafka/templates/index.mako:71
+#: src/kafka/templates/topics.mako:46
 msgid "First"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:46 src/kafka/templates/cluster.mako:66
-#: src/kafka/templates/consumer_group.mako:43
-#: src/kafka/templates/consumer_group.mako:63
-#: src/kafka/templates/consumer_groups.mako:43
-#: src/kafka/templates/index.mako:46 src/kafka/templates/index.mako:66
-#: src/kafka/templates/topics.mako:43
+#: src/kafka/templates/cluster.mako:50 src/kafka/templates/cluster.mako:72
+#: src/kafka/templates/consumer_group.mako:51
+#: src/kafka/templates/consumer_group.mako:73
+#: src/kafka/templates/consumer_groups.mako:47
+#: src/kafka/templates/index.mako:50 src/kafka/templates/index.mako:72
+#: src/kafka/templates/topics.mako:47
 msgid "Last"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:47 src/kafka/templates/cluster.mako:67
-#: src/kafka/templates/consumer_group.mako:44
-#: src/kafka/templates/consumer_group.mako:64
-#: src/kafka/templates/consumer_groups.mako:44
-#: src/kafka/templates/index.mako:47 src/kafka/templates/index.mako:67
-#: src/kafka/templates/topics.mako:44
+#: src/kafka/templates/cluster.mako:51 src/kafka/templates/cluster.mako:73
+#: src/kafka/templates/consumer_group.mako:52
+#: src/kafka/templates/consumer_group.mako:74
+#: src/kafka/templates/consumer_groups.mako:48
+#: src/kafka/templates/index.mako:51 src/kafka/templates/index.mako:73
+#: src/kafka/templates/topics.mako:48
 msgid "Next"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:48 src/kafka/templates/cluster.mako:68
-#: src/kafka/templates/consumer_group.mako:45
-#: src/kafka/templates/consumer_group.mako:65
-#: src/kafka/templates/consumer_groups.mako:45
-#: src/kafka/templates/index.mako:48 src/kafka/templates/index.mako:68
-#: src/kafka/templates/topics.mako:45
+#: src/kafka/templates/cluster.mako:52 src/kafka/templates/cluster.mako:74
+#: src/kafka/templates/consumer_group.mako:53
+#: src/kafka/templates/consumer_group.mako:75
+#: src/kafka/templates/consumer_groups.mako:49
+#: src/kafka/templates/index.mako:52 src/kafka/templates/index.mako:74
+#: src/kafka/templates/topics.mako:49
 msgid "Previous"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:85
-#: src/kafka/templates/consumer_group.mako:85
-#: src/kafka/templates/consumer_groups.mako:64
-#: src/kafka/templates/index.mako:84 src/kafka/templates/topics.mako:64
+#: src/kafka/templates/cluster.mako:91
+#: src/kafka/templates/consumer_group.mako:107
+#: src/kafka/templates/consumer_groups.mako:68
+#: src/kafka/templates/dashboard.mako:507 src/kafka/templates/index.mako:90
+#: src/kafka/templates/topics.mako:68
 msgid "There are currently no clusters to browse."
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:88
-#: src/kafka/templates/consumer_group.mako:88
-#: src/kafka/templates/consumer_groups.mako:67
-#: src/kafka/templates/index.mako:87 src/kafka/templates/topics.mako:67
+#: src/kafka/templates/cluster.mako:94 src/kafka/templates/cluster.mako:117
+#: src/kafka/templates/consumer_group.mako:110
+#: src/kafka/templates/consumer_group.mako:133
+#: src/kafka/templates/consumer_groups.mako:71
+#: src/kafka/templates/consumer_groups.mako:91
+#: src/kafka/templates/dashboard.mako:510
+#: src/kafka/templates/dashboard.mako:577 src/kafka/templates/index.mako:93
+#: src/kafka/templates/index.mako:118 src/kafka/templates/topics.mako:71
+#: src/kafka/templates/topics.mako:92
 msgid "Please contact your administrator to solve this."
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:104 src/kafka/templates/index.mako:102
+#: src/kafka/templates/cluster.mako:110 src/kafka/templates/index.mako:110
 msgid "Topology of Kakfa cluster:"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:106 src/kafka/templates/index.mako:104
+#: src/kafka/templates/cluster.mako:113 src/kafka/templates/dashboard.mako:552
+#: src/kafka/templates/index.mako:114
 msgid "The zookeper REST server:"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:108 src/kafka/templates/index.mako:106
+#: src/kafka/templates/cluster.mako:116
+#: src/kafka/templates/consumer_group.mako:132
+#: src/kafka/templates/consumer_groups.mako:90
+#: src/kafka/templates/dashboard.mako:570 src/kafka/templates/index.mako:117
+#: src/kafka/templates/topics.mako:91
+msgid "Error connecting to the zookeper REST server:"
+msgstr ""
+
+#: src/kafka/templates/cluster.mako:120 src/kafka/templates/index.mako:122
 msgid "Zookepers"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:113 src/kafka/templates/cluster.mako:144
-#: src/kafka/templates/index.mako:111 src/kafka/templates/index.mako:142
+#: src/kafka/templates/cluster.mako:125 src/kafka/templates/cluster.mako:157
+#: src/kafka/templates/index.mako:127 src/kafka/templates/index.mako:159
 msgid "Hostname"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:114 src/kafka/templates/cluster.mako:145
-#: src/kafka/templates/index.mako:112 src/kafka/templates/index.mako:143
+#: src/kafka/templates/cluster.mako:126 src/kafka/templates/cluster.mako:158
+#: src/kafka/templates/index.mako:128 src/kafka/templates/index.mako:160
 msgid "Port"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:115 src/kafka/templates/cluster.mako:146
-#: src/kafka/templates/cluster.mako:176
-#: src/kafka/templates/consumer_group.mako:113
-#: src/kafka/templates/consumer_group.mako:141
-#: src/kafka/templates/consumer_groups.mako:91
-#: src/kafka/templates/index.mako:113 src/kafka/templates/index.mako:144
-#: src/kafka/templates/index.mako:174 src/kafka/templates/topics.mako:96
+#: src/kafka/templates/cluster.mako:127 src/kafka/templates/cluster.mako:159
+#: src/kafka/templates/cluster.mako:189
+#: src/kafka/templates/consumer_group.mako:145
+#: src/kafka/templates/consumer_group.mako:173
+#: src/kafka/templates/consumer_groups.mako:102
+#: src/kafka/templates/index.mako:129 src/kafka/templates/index.mako:161
+#: src/kafka/templates/index.mako:191 src/kafka/templates/topics.mako:108
 msgid "Status"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:128 src/kafka/templates/cluster.mako:160
-#: src/kafka/templates/cluster.mako:187
-#: src/kafka/templates/consumer_groups.mako:104
-#: src/kafka/templates/index.mako:126 src/kafka/templates/index.mako:158
-#: src/kafka/templates/index.mako:185
+#: src/kafka/templates/cluster.mako:140 src/kafka/templates/cluster.mako:173
+#: src/kafka/templates/cluster.mako:200
+#: src/kafka/templates/consumer_groups.mako:115
+#: src/kafka/templates/index.mako:142 src/kafka/templates/index.mako:175
+#: src/kafka/templates/index.mako:202
 msgid "ONLINE"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:130 src/kafka/templates/cluster.mako:162
-#: src/kafka/templates/cluster.mako:185
-#: src/kafka/templates/consumer_groups.mako:102
-#: src/kafka/templates/index.mako:128 src/kafka/templates/index.mako:160
-#: src/kafka/templates/index.mako:183
+#: src/kafka/templates/cluster.mako:142 src/kafka/templates/cluster.mako:175
+#: src/kafka/templates/cluster.mako:198
+#: src/kafka/templates/consumer_groups.mako:113
+#: src/kafka/templates/index.mako:144 src/kafka/templates/index.mako:177
+#: src/kafka/templates/index.mako:200
 msgid "OFFLINE"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:138 src/kafka/templates/index.mako:136
+#: src/kafka/templates/cluster.mako:151 src/kafka/templates/cluster.mako:208
+#: src/kafka/templates/index.mako:153 src/kafka/templates/index.mako:210
 msgid "Brokers"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:143 src/kafka/templates/index.mako:141
+#: src/kafka/templates/cluster.mako:156 src/kafka/templates/index.mako:158
 msgid "Broker ID"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:170
-#: src/kafka/templates/consumer_groups.mako:57
-#: src/kafka/templates/consumer_groups.mako:85
-#: src/kafka/templates/index.mako:168
-#: src/kafka/templates/navigation_bar.mako:82
+#: src/kafka/templates/cluster.mako:183 src/kafka/templates/cluster.mako:212
+#: src/kafka/templates/consumer_groups.mako:61
+#: src/kafka/templates/consumer_groups.mako:96
+#: src/kafka/templates/index.mako:185 src/kafka/templates/index.mako:214
+#: src/kafka/templates/navigation_bar.mako:81
 msgid "Consumer Groups"
 msgstr ""
 
-#: src/kafka/templates/cluster.mako:175
-#: src/kafka/templates/consumer_group.mako:111
-#: src/kafka/templates/consumer_groups.mako:90
-#: src/kafka/templates/index.mako:173 src/kafka/templates/topics.mako:90
+#: src/kafka/templates/cluster.mako:188
+#: src/kafka/templates/consumer_group.mako:143
+#: src/kafka/templates/consumer_groups.mako:101
+#: src/kafka/templates/index.mako:190 src/kafka/templates/topics.mako:102
 msgid "Name"
 msgstr ""
 
-#: src/kafka/templates/consumer_group.mako:105
-#: src/kafka/templates/consumer_groups.mako:84
+#: src/kafka/templates/consumer_group.mako:137
+#: src/kafka/templates/consumer_groups.mako:95
 msgid "Searching Consumer Groups from path:"
 msgstr ""
 
-#: src/kafka/templates/consumer_group.mako:106
+#: src/kafka/templates/consumer_group.mako:138
 msgid "Consumers"
 msgstr ""
 
-#: src/kafka/templates/consumer_group.mako:112
-#: src/kafka/templates/consumer_group.mako:133
-#: src/kafka/templates/consumer_groups.mako:93
+#: src/kafka/templates/consumer_group.mako:144
+#: src/kafka/templates/consumer_group.mako:165
+#: src/kafka/templates/consumer_groups.mako:104
 msgid "Topics Subscribed"
 msgstr ""
 
-#: src/kafka/templates/consumer_group.mako:126
-#: src/kafka/templates/consumer_group.mako:164
-#: src/kafka/templates/topics.mako:121
+#: src/kafka/templates/consumer_group.mako:158
+#: src/kafka/templates/consumer_group.mako:196
+#: src/kafka/templates/topics.mako:133
 msgid "OK"
 msgstr ""
 
-#: src/kafka/templates/consumer_group.mako:138
+#: src/kafka/templates/consumer_group.mako:170
 msgid "Topic"
 msgstr ""
 
-#: src/kafka/templates/consumer_group.mako:139
+#: src/kafka/templates/consumer_group.mako:171
 msgid "Partition - Offset"
 msgstr ""
 
-#: src/kafka/templates/consumer_group.mako:140
+#: src/kafka/templates/consumer_group.mako:172
 msgid "Partition - Owner"
 msgstr ""
 
-#: src/kafka/templates/consumer_groups.mako:82
+#: src/kafka/templates/consumer_groups.mako:86
 msgid "Consumer Groups of Kakfa cluster:"
 msgstr ""
 
-#: src/kafka/templates/consumer_groups.mako:92
+#: src/kafka/templates/consumer_groups.mako:103
 msgid "Consumers active"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:101
+#: src/kafka/templates/dashboard.mako:627
+msgid "All topics"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:173
+#: src/kafka/templates/dashboard.mako:686
+msgid "Week"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:530
+msgid "No data available for "
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:530
+msgid "Graph. "
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:530
+msgid "Suggestions"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:536
+msgid "Try different host."
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:537
+msgid "Try different topic."
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:538
+msgid "Try different metric."
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:539
+msgid "Try different granularity."
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:549
+msgid "Dashboard of Kakfa cluster:"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:555
+#: src/kafka/templates/dashboard.mako:572
+msgid "Can't retrive brokers list."
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:560
+#: src/kafka/templates/dashboard.mako:575
+msgid "Can't retrive topics list."
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:565
+msgid "Can't retrive metrics list."
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:586
+msgid "Host"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:592
+msgid "Search for host(s)"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:605
+msgid "ERROR in HOST"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:614
+#: src/kafka/templates/navigation_bar.mako:82
+#: src/kafka/templates/topics.mako:61 src/kafka/templates/topics.mako:97
+msgid "Topics"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:620
+msgid "Search for topic(s)"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:628
+msgid "All Topics"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:638
+msgid "ERROR in TOPIC"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:647
+msgid "Kafka Metrics"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:653
+msgid "Search for metric(s)"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:666
+msgid "ERROR in METRICS"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:675
+msgid "Granularity"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:682
+msgid "Hour"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:683
+msgid "2Hour"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:684
+msgid "4Hour"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:685
+msgid "Day"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:687
+msgid "Month"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:688
+msgid "Year"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:694
+msgid "ERROR in GRANULARITY"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:703
+msgid "Submit"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:711
+msgid "Possible errors, please contact your administrator to solve this:"
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:713
+msgid "Could not connect to Ganglia Server."
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:714
+msgid "Metrics are missing or incorrect."
+msgstr ""
+
+#: src/kafka/templates/dashboard.mako:724
+msgid "Metrics of Kakfa cluster"
 msgstr ""
 
 #: src/kafka/templates/navigation_bar.mako:37
 msgid "Go to cluster"
 msgstr ""
 
-#: src/kafka/templates/navigation_bar.mako:81
+#: src/kafka/templates/navigation_bar.mako:80
 msgid "Topology"
 msgstr ""
 
 #: src/kafka/templates/navigation_bar.mako:83
-#: src/kafka/templates/topics.mako:85
-msgid "Topics"
+msgid "Dashboard"
 msgstr ""
 
-#: src/kafka/templates/topics.mako:82
+#: src/kafka/templates/topics.mako:86
 msgid "Topics of Kakfa cluster:"
 msgstr ""
 
-#: src/kafka/templates/topics.mako:84
+#: src/kafka/templates/topics.mako:96
 msgid "Searching topics from path:"
 msgstr ""
 
-#: src/kafka/templates/topics.mako:91
+#: src/kafka/templates/topics.mako:103
 msgid "Partitions"
 msgstr ""
 
-#: src/kafka/templates/topics.mako:92
+#: src/kafka/templates/topics.mako:104
 msgid "Partitions ids"
 msgstr ""
 
-#: src/kafka/templates/topics.mako:93
+#: src/kafka/templates/topics.mako:105
 msgid "Replicas / Partition"
 msgstr ""
 
-#: src/kafka/templates/topics.mako:94
+#: src/kafka/templates/topics.mako:106
 msgid "Partition - Replicas ids in isr"
 msgstr ""
 
-#: src/kafka/templates/topics.mako:95
+#: src/kafka/templates/topics.mako:107
 msgid "Partition - Leader"
 msgstr ""
 
