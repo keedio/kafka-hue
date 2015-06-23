@@ -1,6 +1,14 @@
 Changelog
 =========
 
+2.1.0 (23-06-2015)
+----------------
+
+Features
+********
+
+- Export dataTables in JSON, XLS, CSV and PDF formats.
+
 2.0.0 (20-02-2015)
 ----------------
 

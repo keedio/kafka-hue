@@ -15,6 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import csv
+import logging
+
+from reportlab.lib.pagesizes import A4, inch, portrait, landscape
+from reportlab.platypus import SimpleDocTemplate, Table
+from reportlab.lib import colors
+
 from desktop.lib.django_util import render
 import json
 from kafka.conf import CLUSTERS
@@ -28,6 +35,7 @@ from django.http import HttpResponse
 
 
 METRICS_INI = settings.METRICS_INI
+logger = logging.getLogger(__name__)
 
 def _get_topology():
 	""" Method to get the entire Kafka clusters (defined in hue.ini) topology """
@@ -260,6 +268,98 @@ def _get_json_type(request, cluster_id, type):
 		error_zk_brokers = 1
 
 	return HttpResponse(_get_dumps(data), content_type = "application/json")
+
+def download(request):  
+	if request.method == 'POST':
+		aHeaders = []
+		aData = []
+		aLine = []
+		elements = []
+		tmpDict = []
+		bIsString = False
+		response = HttpResponse('')
+
+		data = request.POST['pData'] \
+			.replace("u", "") \
+			.replace("'", '"') \
+			.replace("None", '"None"') \
+			.replace("False", '"False"') \
+			.replace("True", '"True"') \
+			.replace("Tre", '"Tre"')
+
+		file_format = 'csv' if 'csv' in request.POST else 'xls' if 'xls' in request.POST else 'json' if 'json' in request.POST else 'pdf'
+
+		try:
+			if len(json.loads(data)) == 0:
+				jsonData = [{"Data": "No data available"}]
+				aHeaders = ["NoData"]
+			else:
+				jsonData = json.loads(data)
+
+				
+				for element in jsonData[0]:
+					aHeaders.append(element)
+		except Exception, e:
+			logger.exception("Exception while processing data type")
+			bIsString = True
+
+		#Output File Format.
+		if file_format in ('csv','xls'):      
+			if file_format == 'csv':
+				contenttype = 'text/csv'
+			else:
+				contenttype = 'application/ms-excel'
+
+			response = HttpResponse(content_type=contenttype)
+			response['Content-Disposition'] = 'attachment; filename=%s_%s.%s' % ('file', file_format, file_format)        
+			writer = csv.writer(response)
+
+			if bIsString == False:
+				writer.writerow(aHeaders)
+				for element in jsonData:        
+					aLine = []
+					for line in element:
+						aLine.append(element[line])
+					writer.writerow(aLine)
+			else:				
+				writer.writerow([data])
+
+		if file_format == 'json':
+			contenttype = 'application/json'
+			response = HttpResponse(data, content_type=contenttype)
+			response['Content-Disposition'] = 'attachment; filename=%s_%s.%s' % ('file', file_format, file_format)
+
+		if file_format == 'pdf':        
+			contenttype = 'application/pdf'
+			response = HttpResponse(content_type=contenttype)
+			doc = SimpleDocTemplate(response, pagesize = landscape(A4))
+			elements = []
+			aStyle = [('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+						('BOX', (0,0), (-1,-1), 0.25, colors.black),
+						('ALIGN',(0,-1),(-1,-1),'CENTER'),
+						('VALIGN',(0,-1),(-1,-1),'MIDDLE'),]
+
+			#For incorrect data. 
+			if bIsString == False:
+				if str(jsonData).find("[", 1) == -1: 
+					aData.append(aHeaders)
+
+					for element in jsonData:        
+						aLine = []
+						for line in element:
+							aLine.append(element[line])            
+						aData.append(aLine)
+		
+					t = Table(aData, style = aStyle)
+				else:
+					t = Table([['ERROR'],['ERROR in table format']], style = aStyle)
+			else:
+				t = Table([['Header'],[data]], style = aStyle)
+
+			elements.append(t)
+			doc.build(elements)
+
+	return response 
 
 def index(request):
 	""" Main view. Returns the topology of every kafka cluster defined in the hue.ini file """

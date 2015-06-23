@@ -18,7 +18,9 @@
   from desktop.views import commonheader, commonfooter 
   from django.utils.translation import ugettext as _
 %>
+
 <%namespace name="kafka" file="navigation_bar.mako" />
+<%namespace name="Templates" file="templates.mako" />
 
 ${commonheader("%s > Topics" % (cluster['nice_name']), app_name, user) | n,unicode}
 
@@ -94,48 +96,63 @@ ${ kafka.menubar(section='Topics',c_id=cluster['id']) }
 
 		% else:
 	    	<div class="alert alert-info">${ _('Searching topics from path:') } <b>${cluster['topics_path']}</b></div>
-	    	<h4 class="card-heading simple">${ _('Topics') }</h4>
-	    	</br>
-	    	<table class="table datatables table-striped table-hover table-condensed" id="topicsTable" data-tablescroller-disable="true">
-	    	  <thead>
-		      	<tr>
-			        <th>${ _('Name') }</th>
-			        <th># ${ _('Partitions') }</th>
-			        <th>${ _('Partitions ids') }</th>
-			        <th># ${ _('Replicas / Partition') }</th>
-			        <th>${ _('Partition - Replicas ids in isr') }</th>
-			        <th>${ _('Partition - Leader') }</th>
-			        <th>${ _('Status') }</th>
-			      </tr>
-			    </thead>
-			    <tbody>
-		    	% for topic in topics:
-					<tr>
-						<td>${topic['id']}</td>
-						<td><span class="badge">${len(topic['partitions'])}</span></td>
-						<td>[
-							% for partition in topic['partitions']:
-								${partition}
+	    	
+			<table style="width: 100%">
+		  		<tr>
+		  			<td>
+						<h4 class="card-heading simple">${ _('Topics') }</h4>		  				
+		  			</td>
+		  		</tr>
+		  		<tr>
+		  			<td>
+		  				${Templates.frmExport(topics)}
+		  			</td>
+		  		</tr>
+		  		<tr>
+		  			<td>
+		  				<table class="table datatables table-striped table-hover table-condensed" id="topicsTable" data-tablescroller-disable="true">
+				    	  <thead>
+					      	<tr>
+						        <th>${ _('Name') }</th>
+						        <th># ${ _('Partitions') }</th>
+						        <th>${ _('Partitions ids') }</th>
+						        <th># ${ _('Replicas / Partition') }</th>
+						        <th>${ _('Partition - Replicas ids in isr') }</th>
+						        <th>${ _('Partition - Leader') }</th>
+						        <th>${ _('Status') }</th>
+						      </tr>
+						    </thead>
+						    <tbody>
+					    	% for topic in topics:
+								<tr>
+									<td>${topic['id']}</td>
+									<td><span class="badge">${len(topic['partitions'])}</span></td>
+									<td>[
+										% for partition in topic['partitions']:
+											${partition}
+										% endfor
+										]
+									</td>
+									<td><span class="badge">${len(topic['topic_partitions_data'][topic['partitions'][0]])}</span</td>
+									<td>
+										% for partition in topic['partitions']:
+											${partition} - ${topic['topic_partitions_states'][partition]['isr']}<br>
+										% endfor
+									</td>
+									<td>
+										% for partition in topic['partitions']:
+											${partition} - ${topic['topic_partitions_states'][partition]['leader']}<br>
+										% endfor
+									</td>
+						    		<td><span class="label label-success">${ _('OK') }</span></td>
+								</tr>
 							% endfor
-							]
-						</td>
-						<td><span class="badge">${len(topic['topic_partitions_data'][topic['partitions'][0]])}</span</td>
-						<td>
-							% for partition in topic['partitions']:
-								${partition} - ${topic['topic_partitions_states'][partition]['isr']}<br>
-							% endfor
-						</td>
-						<td>
-							% for partition in topic['partitions']:
-								${partition} - ${topic['topic_partitions_states'][partition]['leader']}<br>
-							% endfor
-						</td>
-			    		<td><span class="label label-success">${ _('OK') }</span></td>
-					</tr>
-				% endfor
-				</tbody>
-			</table>
-			</br>
+							</tbody>
+						</table>
+		  			</td>
+		  		</tr>
+		  	</table>
+
 		% endif
 	</div>
   </div>

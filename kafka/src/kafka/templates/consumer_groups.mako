@@ -18,7 +18,9 @@
   from desktop.views import commonheader, commonfooter 
   from django.utils.translation import ugettext as _
 %>
+
 <%namespace name="kafka" file="navigation_bar.mako" />
+<%namespace name="Templates" file="templates.mako" />
 
 ${commonheader("%s > Consumer Groups" % (cluster['nice_name']), app_name, user) | n,unicode}
 
@@ -93,34 +95,50 @@ ${ kafka.menubar(section='Consumer Groups',c_id=cluster['id']) }
 	  	% else:
 
 	    	<div class="alert alert-info">${ _('Searching Consumer Groups from path:') } <b>${cluster['consumers_path']}</b></div>
-	    	<h4 class="card-heading simple">${ _('Consumer Groups') }</h4>
-	    	</br>
-	    	<table class="table datatables table-striped table-hover table-condensed" id="consumerGroupsTable" data-tablescroller-disable="true">
-			    	<thead>
-				      <tr>
-				        <th>${ _('Name') }</th>
-				        <th>${ _('Status') }</th>
-				        <th># ${ _('Consumers active') }</th>
-				        <th># ${ _('Topics Subscribed') }</th>
-				      </tr>
-				    </thead>
-				    <tbody>
-				    	% for consumer_group in consumers_groups:
-				    		<tr>
-				    			<td><a href="${url('kafka:consumer_group', cluster_id=cluster['id'], group_id=consumer_group['id'])}">${consumer_group['id']}</a></td>
-				    			<td>
-				    				% if len(consumer_group['consumers']) == 0:
-				    					<span class="label label-warning">${ _('OFFLINE') }</span>
-				    				% else:
-				    					<span class="label label-success">${ _('ONLINE') }</span>
-				    				% endif
-				    			</td>
-				    			<td><span class="badge">${len(consumer_group['consumers'])}</span></td>
-				    			<td><span class="badge">${len(consumer_group['offsets'])}</span></td>
-				    		</tr>
-						% endfor
-				    </tbody>
-			    </table>
+
+	    	<table style="width: 100%">
+		  		<tr>
+		  			<td>
+		  				<h4 class="card-heading simple">${ _('Consumer Groups') }</h4>
+		  			</td>
+		  		</tr>
+		  		<tr>
+		  			<td>
+		  				${Templates.frmExport(consumers_groups)}
+		  			</td>
+		  		</tr>
+		  		<tr>
+		  			<td>
+		  				<table class="table datatables table-striped table-hover table-condensed" id="consumerGroupsTable" data-tablescroller-disable="true">
+					    	<thead>
+						      <tr>
+						        <th>${ _('Name') }</th>
+						        <th>${ _('Status') }</th>
+						        <th># ${ _('Consumers active') }</th>
+						        <th># ${ _('Topics Subscribed') }</th>
+						      </tr>
+						    </thead>
+						    <tbody>
+						    	% for consumer_group in consumers_groups:
+						    		<tr>
+						    			<td><a href="${url('kafka:consumer_group', cluster_id=cluster['id'], group_id=consumer_group['id'])}">${consumer_group['id']}</a></td>
+						    			<td>
+						    				% if len(consumer_group['consumers']) == 0:
+						    					<span class="label label-warning">${ _('OFFLINE') }</span>
+						    				% else:
+						    					<span class="label label-success">${ _('ONLINE') }</span>
+						    				% endif
+						    			</td>
+						    			<td><span class="badge">${len(consumer_group['consumers'])}</span></td>
+						    			<td><span class="badge">${len(consumer_group['offsets'])}</span></td>
+						    		</tr>
+								% endfor
+						    </tbody>
+					    </table>
+		  			</td>
+		  		</tr>
+		  	</table>
+
 		% endif
 		</br>
 	</div>
