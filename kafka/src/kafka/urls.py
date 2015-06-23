@@ -30,4 +30,5 @@ urlpatterns = patterns('kafka.views',
   url(r'^(?P<cluster_id>\w+)/consumer_group/(?P<group_id>.+)$', 'consumer_group', name="consumer_group"),
   url(r'^(?P<cluster_id>\w+)/dashboard/$', 'dashboard', name="dashboard"),
   url(r'^(?P<cluster_id>\w+)/getjson/(?P<type>.+)/$', '_get_json_type', name="_get_json_type"),
+  url(r'^download/$', 'download', name='download'),
 )
