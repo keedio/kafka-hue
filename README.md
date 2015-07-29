@@ -7,6 +7,7 @@ Features
 --------
    * Multi cluster support
    * Cluster Overview (Brokers, Topics, Consumers, etc.)
+   * Create new topic in Kafka using Thrift.
    * Custom Dashboards based on Ganglia metrics. Configure Kafka to export JMX metrics to Ganglia and Kafka-HUE will be able to show all of those metrics specifiying them in a config file (metrics.ini).
 
 Requirements
