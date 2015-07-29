@@ -15,6 +15,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
+
+import sys,os
+import json
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../gen-py'))
+from topics import *
+from topics.ttypes import *
+
+from thrift import Thrift
+from thrift.transport import TSocket
+from thrift.transport import TTransport
+from thrift.protocol import TBinaryProtocol
+
+from desktop.lib.exceptions_renderable import PopupException
+
 import csv
 import logging
 
@@ -31,7 +46,7 @@ import base64
 from kafka import settings
 import requests
 import ConfigParser
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 
 METRICS_INI = settings.METRICS_INI
@@ -268,6 +283,37 @@ def _get_json_type(request, cluster_id, type):
 		error_zk_brokers = 1
 
 	return HttpResponse(_get_dumps(data), content_type = "application/json")
+
+def _create_topic(request):
+	if request.method == 'POST' and request.is_ajax():
+		sHostname = request.POST['psHostname']
+		sZookeepers = request.POST['psZookeepers']
+		iReplicationFactor = int(request.POST['piReplicationFactor'])
+		iPartitions = int(request.POST['piPartitions'])
+		sTopicName = request.POST['psTopicName']
+		response = {'status': -1, 'output': -1}
+
+		try:
+			#Make socket.
+			socket = TSocket.TSocket(sHostname, 9090)
+			#Buffering is critical. Raw sockets are very slow.
+			transport = TTransport.TBufferedTransport(socket)
+			#Wrap in a protocol.
+			protocol = TBinaryProtocol.TBinaryProtocol(transport)
+			client = Topics.Client(protocol)
+			transport.open()
+			response['output'] = client.createTopic(sZookeepers, iReplicationFactor, iPartitions, sTopicName)
+			response['status'] = 0
+			transport.close()
+
+		except Thrift.TException, tx:
+			logger.exception("_create_topic ERROR: %s" % (tx.message))
+			response['output'] = tx.message
+			response['status'] = -1
+
+		return HttpResponse(json.dumps(response), content_type = "text/plain")
+
+	return render('topics.mako', request, {})
 
 def download(request):  
 	if request.method == 'POST':

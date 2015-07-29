@@ -30,3 +30,85 @@
     </form>
   </div>
 </%def>
+
+<!-- Show an error -->
+<%def name="divERROR(psError)">
+  <div id="divError" class="hide" style="position: absolute; left: 10px;">
+    <span class="label label-important"> ${ _('ERROR in form. ') } ${psError} </span>
+  </div>
+</%def>
+
+<!-- New Window Modal. Create a topic -->
+<%def name="tblCreateTopic()">
+   <div class="modal hide fade" id="tblCreateTopic" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+         <form id="frmCreateTopic" method="post" enctype="multipart/form-data" action="/kafka/_create_topic/">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h3>${ _('Create a Topic') } </b></h3>
+               </div>
+               <div class="modal-body controls">
+                <table width="97%" height="100%" border="0" cellpadding="6" cellspacing="0">
+                  <tr>
+                    <td colspan="2">
+                      <label>${ _('Hostname') }</label>
+                      <input type="text" id="sHostName" class="input-large search-query" placeholder="${_('Hostname or URL of Kafka Server')}" style="width: 100%;">
+                      <div id="divErrorHostname" class="hide">
+                        <span class="label label-important"> ${ _('Select a hostname or url for the kafka server. ') } </span>
+                      </div>
+                    </td>                    
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <label>${ _('Topic') }</label>
+                      <input type="text" id="sTopicName" class="input-large search-query" placeholder="${_('Name of the topic')}" style="width: 100%;">
+                      <div id="divErrorTopic" class="hide">
+                        <span class="label label-important"> ${ _('Select a name for the topic. ') } </span>
+                      </div>
+                    </td>                    
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <label>${ _('Zookeepers') }</label>
+                      <input type="text" id="sZookeepers" class="input-large search-query" placeholder="${_('List of zookeepers. E.G. localhost:2181')}" style="width: 100%;">
+                      <div id="divErrorZookeeper" class="hide">
+                        <span class="label label-important"> ${ _('Select a zookeeper(s). ') }</span>
+                      </div>
+                    </td>                    
+                  </tr>
+                  <tr>
+                    <td>
+                      <label>${ _('Set Replication Factor') }</label>
+                      <input type="number" id="iReplicationFactor" min="1" value=1 style="width: 90%;"/>
+                      <div id="divErrorReplication" class="hide">
+                        <span class="label label-important"> ${ _('Select a replication factor. By default is 1. ') }</span>
+                      </div>
+                    </td>
+                    <td>
+                      <label>${ _('Set Partitions') }</label>
+                      <input type="number" id="iPartitions" min="1" value=1 style="width: 100%;"/>
+                      <div id="divErrorPartitions" class="hide">
+                        <span class="label label-important"> ${ _('Select partition(s). By default is 1. ') } </span>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+               </div>
+               <div class="modal-footer">  
+                  <div id="divError" class="hide" style="position: absolute; left: 10px;">
+                    <span id="spnError" class="label label-important"> ${ _('ERROR when create topic ') }  </span>                    
+                  </div>
+                  <div id="divResult" class="hide" style="position: absolute; left: 10px;">
+                    <span id="spnResult" class="label label-info"> </span>                    
+                  </div>
+                  <input type="hidden" name="psAction" value="createTopic">
+                  <input type="hidden" name="psURL" value="${request.get_full_path()}">                  
+                  <button type="button" class="btn btn-default" data-dismiss="modal">${ _('Cancel') }</button>                  
+                  <button type="button" id="btnSubmit" class="btn btn-primary" onclick="create_topic()">${ _('Create') }</button>
+                  <img id="imgLoading" src="/static/art/spinner.gif" class="hide"/>
+               </div>
+            </div>   
+         </form>      
+      </div>
+   </div>
+</%def>

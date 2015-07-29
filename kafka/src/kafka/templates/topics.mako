@@ -54,6 +54,85 @@ ${commonheader("%s > Topics" % (cluster['nice_name']), app_name, user) | n,unico
 	    } );
 	} );
 	
+	function create_topic() {
+		var sError = "";
+		var sHostName = document.getElementById("sHostName").value;
+		var sZookeepers = document.getElementById("sZookeepers").value;
+		var iReplicationFactor = document.getElementById("iReplicationFactor").value;
+		var iPartitions = document.getElementById("iPartitions").value;
+		var sTopicName = document.getElementById("sTopicName").value;
+
+		$("#divResult").hide();
+		$("#divError").hide();
+		$("#divErrorHostname").hide();
+		$("#divErrorTopic").hide();
+		$("#divErrorZookeeper").hide();
+		$("#divErrorReplication").hide();
+		$("#divErrorPartition").hide();
+
+		if (sHostName == "") {
+			$("#divErrorHostname").show();
+		}
+		else if (sTopicName == "") {
+			$("#divErrorTopic").show();
+		}
+		else if (sZookeepers == "") {
+			$("#divErrorZookeeper").show();
+		}   
+		else if (iReplicationFactor == "") {
+			$("#divErrorReplication").show();
+		}
+		else if (iPartitions == "") {
+			$("#divErrorPartition").show();
+		}
+		else  {
+			$("#imgLoading").show();
+			$("#btnSubmit").hide();
+
+			$.ajax({
+	              url: "/kafka/_create_topic/",           
+	              dataType: 'json',   
+	              data: {   psHostname: sHostName,
+	              			psZookeepers: sZookeepers,
+							piReplicationFactor: iReplicationFactor,
+							piPartitions: iPartitions,
+							psTopicName: sTopicName },
+	              method: 'POST',
+	              success: function(response) {
+	              			$("#imgLoading").hide();
+	              			$("#btnSubmit").show();
+
+	              			console.log(response.status);
+
+							if (response.status != 0) {   
+								$("#divError").show();
+								$("#spnError").text(response.output);
+							}
+							else {
+								$("#divResult").show();
+								sError = response.output +
+										 "\n" +
+										 "";
+								$("#spnResult").text(sError);
+								window.location.reload();
+							};
+
+							$("#imgLoading").hide();
+	              			$("#btnSubmit").show(); 
+							$("#divErrorHostname").hide();
+							$("#divErrorTopic").hide();
+							$("#divErrorZookeeper").hide();
+							$("#divErrorReplication").hide();
+							$("#divErrorPartition").hide();  
+	                       },
+	              error: function(xhr, status, error) {                        
+	              			$("#imgLoading").hide();
+	              			$("#btnSubmit").show(); 
+	                        $("#divError").show();                         
+	                     }    
+	          });
+		};
+	}; //self.create_topic
 </script>
 
 <%
@@ -78,14 +157,23 @@ ${commonheader("%s > Topics" % (cluster['nice_name']), app_name, user) | n,unico
     </div>
   </div>
 % else:
-${ kafka.header(_breadcrumbs) }
+	${Templates.tblCreateTopic()}
+	${ kafka.header(_breadcrumbs) }
 % endif 
 
 ${ kafka.menubar(section='Topics',c_id=cluster['id']) }
 
 <div class="container-fluid">
   <div class="card">
-    <h2 class="card-heading simple">${ _('Topics of Kakfa cluster:') } ${ cluster['nice_name'] }</h2>
+
+  	<div id="create-topic" class="btn-group pull-right" style="vertical-align: top; right: 10px;">
+    	<button id="btnCreateTopic" data-target="#tblCreateTopic" class="btn" data-toggle="modal">
+              <i class="fa fa-plus-circle"></i>
+              ${ _('Create topic') } 
+            </button>
+    </div>
+
+    <h2 class="card-heading simple">${ _('Topics of Kakfa cluster:') } ${ cluster['nice_name'] }</h2>    
     <div class="card-body">
 
     	% if error == 1 :
