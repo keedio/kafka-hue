@@ -133,10 +133,10 @@ ${ kafka.menubar(section='Topology',c_id=clusters[0]['cluster']['id']) }
 			<div class="card-body">
 
 				% if cluster['error'] == 0 :
-			  		<div class="alert alert-info">${ _('The zookeper REST server:') } <b>${cluster['cluster']['zk_rest_url']}</b></div>
+			  		<div class="alert alert-info">${ _('Zookeper server(s):') } <b>${cluster['cluster']['zk_host_ports']}</b></div>
 			  	% else:
 			  		<div class="alert alert-error">
-			  			${ _('Error connecting to the zookeper REST server:') } <b>${cluster['cluster']['zk_rest_url']}</b><br>
+			  			${ _('Error connecting to zookeper server(s):') } <b>${cluster['cluster']['zk_host_ports']}</b><br>
 			  			${ _('Please contact your administrator to solve this.') }
 			  		</div>	
 			  	% endif

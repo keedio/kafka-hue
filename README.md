@@ -13,7 +13,7 @@ Requirements
 ------------
 - [HUE 3.7.1](http://www.gethue.com)
 - [Ganglia](http://ganglia.sourceforge.net/)
-- Zookeeper REST
+- [Kazoo 2.2.1](http://github.com/python-zk/kazoo)
 
 Main Stack
 ----------
@@ -27,6 +27,7 @@ Installation
 ------------
 To get the Kafka-HUE app integrated and running in your HUE deployment:
 
+    $ sudo $HUE_HOME/build/env/bin/python $HUE_HOME/build/env/bin/pip install kazoo
     $ git clone https://github.com/keedio/kafka-hue.git
     $ mv kafka-hue/kafka $HUE_HOME/apps
     $ cd $HUE_HOME/apps
@@ -47,9 +48,6 @@ Configs needed in hue.ini config file.
         # Zookeeper ensemble. Comma separated list of Host/Port.
         # e.g. localhost:2181,localhost:2182,localhost:2183
         zk_host_ports=localhost:2181,localhost:2182,localhost:2183
-  
-        # The URL of the REST contrib service (required for znode browsing)
-        zk_rest_url=http://localhost:9998
   
         # Path to brokers info in Zookeeper Znode hierarchy
         brokers_path=/brokers/ids

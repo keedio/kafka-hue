@@ -34,13 +34,7 @@ CLUSTERS = UnspecifiedConfigSection(
           help="Zookeeper ensemble. Comma separated list of Host/Port, e.g. localhost:2181,localhost:2182,localhost:2183",
           default="localhost:2181",
           type=coerce_string,
-        ),
-        ZK_REST_URL=Config(
-          "zk_rest_url",
-          help="The URL of the REST contrib service.",
-          default="http://localhost:9998",
-          type=str,
-        ),
+        ),       
         BROKERS_PATH=Config(
           "brokers_path",
           help="Path to brokers info in Zookeeper Znode hierarchy, e.g. /brokers/ids",

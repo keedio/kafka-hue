@@ -90,7 +90,7 @@ ${ kafka.menubar(section='Topics',c_id=cluster['id']) }
 
     	% if error == 1 :
 			<div class="alert alert-error">
-	  			${ _('Error connecting to the zookeper REST server:') } <b>${cluster['zk_rest_url']}</b><br>
+	  			${ _('Error connecting to zookeper server(s):') } <b>${cluster['zk_host_ports']}</b><br>
 	  			${ _('Please contact your administrator to solve this.') }
 	  		</div>		
 

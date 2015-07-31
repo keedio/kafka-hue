@@ -549,7 +549,7 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
      <h2 class="card-heading simple">${ _('Dashboard of Kakfa cluster:') } ${ cluster['id'] }</h2>
      <div class="card-body">
           % if error_zk_topics == 0 and error_zk_brokers == 0:
-            <div class="alert alert-info">${ _('The zookeper REST server:') } <b>${cluster['zk_rest_url']}</b></div>
+            <div class="alert alert-info">${ _('Zookeper server(s):') } <b>${cluster['zk_host_ports']}</b></div>
             % if not brokers:
               <div class="alert alert-error">
                 ${ _('Can\'t retrive brokers list.') } <br>
@@ -567,7 +567,7 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
             % endif    
           % else:
             <div class="alert alert-error">
-              ${ _('Error connecting to the zookeper REST server:') } <b>${cluster['zk_rest_url']}</b><br>
+              ${ _('Error connecting to zookeper server(s):') } <b>${cluster['zk_host_ports']}</b><br>
               % if error_zk_brokers == 1:
                 ${ _('Can\'t retrive brokers list.') } <br>
               % endif
