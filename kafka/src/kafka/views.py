@@ -15,10 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import csv
 import logging
 
-#ZookeeperError: Zookeeper exception for errors originating from the Zookeeper server
+import sys
+import subprocess
+
 #NoNodeError: If the parent node does not exist in ZooKeeper or If the zNode has expired before the zk.get() can be called.
 from kazoo.client import KazooClient, KazooState
 from kazoo.exceptions import NoNodeError, ZookeeperError
@@ -46,13 +49,17 @@ def _get_topology():
 	""" Method to get the entire Kafka clusters (defined in hue.ini) topology """
 	topology = CLUSTERS.get()
 	clusters = []
+	error = 0
+	error_brokers = 0
+	error_consumer_groups = 0
+
 	for c in topology:
 		cluster = get_cluster_or_404(c)
 		try:
 			zk = KazooClient(hosts=CLUSTERS[c].ZK_HOST_PORTS.get())
 			zk.start()
-			brokers = _get_brokers(zk,cluster['id'])
-			consumer_groups = _get_consumer_groups(zk,cluster['id'])
+			brokers, error_brokers = _get_brokers(zk,cluster['id'])
+			consumer_groups, error_consumer_groups = _get_consumer_groups(zk,cluster['id'])
 			consumer_groups_status = {} 
 
 			for consumer_group in consumer_groups:
@@ -65,21 +72,43 @@ def _get_topology():
 				else:
 					consumer_groups_status[consumer_group]=len(consumers)
 			
-			c = {'cluster':cluster,'brokers':brokers,'consumer_groups':consumer_groups,'consumer_groups_status':consumer_groups_status, 'error':0}
+			c = {'cluster':cluster,
+				'brokers':brokers,
+				'consumer_groups':consumer_groups,
+				'consumer_groups_status':consumer_groups_status,
+				'error_brokers':error_brokers,
+				'error_consumer_groups':error_consumer_groups,
+				'error':0}
 			
-		except ZookeeperError:
-			c = {'cluster':cluster,'brokers':[],'consumer_groups':[],'consumer_groups_status':[], 'error':1}
+		except NoNodeError:
+			c = {'cluster':cluster,'brokers':[],
+				'consumer_groups':[],
+				'consumer_groups_status':[],
+				'error_brokers':error_brokers,
+				'error_consumer_groups':error_consumer_groups,
+				'error':2}
+		except:
+			c = {'cluster':cluster,
+				'brokers':[],
+				'consumer_groups':[],
+				'consumer_groups_status':[],
+				'error_brokers':error_brokers,
+				'error_consumer_groups':error_consumer_groups,
+				'error':1}
+
 		clusters.append(c)
 		zk.stop()
 	return clusters
 
 def _get_cluster_topology(cluster):
 	""" Method to get the topology of a given cluster """
+	error_brokers = 0
+	error_consumer_groups = 0
 	try:
 		zk = KazooClient(hosts=cluster['zk_host_ports'])
 		zk.start()
-		brokers = _get_brokers(zk,cluster['id'])
-		consumer_groups = _get_consumer_groups(zk,cluster['id'])
+		brokers, error_brokers = _get_brokers(zk,cluster['id'])
+		consumer_groups, error_consumer_groups = _get_consumer_groups(zk,cluster['id'])
 		consumer_groups_status = {} 
 		for consumer_group in consumer_groups:
 			# 0 = offline, (not 0) =  online
@@ -91,15 +120,37 @@ def _get_cluster_topology(cluster):
 			else:
 				consumer_groups_status[consumer_group]=len(consumers) # (not 0) =  online
 
-		cluster_topology = {'cluster':cluster,'brokers':brokers,'consumer_groups':consumer_groups, 'consumer_groups_status':consumer_groups_status,'error':0}
-	except ZookeeperError:
-		cluster_topology = {'cluster':cluster,'brokers':[],'consumer_groups':[], 'consumer_groups_status':[],'error':1}
+		cluster_topology = {'cluster':cluster,
+							'brokers':brokers,
+							'consumer_groups':consumer_groups,
+							'consumer_groups_status':consumer_groups_status,
+							'error_brokers':error_brokers,
+							'error_consumer_groups':error_consumer_groups,
+							'error':0}
+	except NoNodeError:
+		cluster_topology = {'cluster':cluster,
+							'brokers':[],
+							'consumer_groups':[],
+							'consumer_groups_status':[],
+							'error_brokers':error_brokers,
+							'error_consumer_groups':error_consumer_groups,
+							'error':2}
+	except:
+		cluster_topology = {'cluster':cluster,
+							'brokers':[],
+							'consumer_groups':[],
+							'consumer_groups_status':[],
+							'error_brokers':error_brokers,
+							'error_consumer_groups':error_consumer_groups,
+							'error':1}
+	
 	return cluster_topology
 
 def _get_brokers(zk,cluster):
 	""" Method to get the brokers of a given cluster """
 	brokers=[]
-	try:
+	error = 0
+	try:		
 		children = zk.get_children(CLUSTERS[cluster].BROKERS_PATH.get())	
 		for child in children:
 			path = CLUSTERS[cluster].BROKERS_PATH.get() + "/" + child
@@ -108,17 +159,24 @@ def _get_brokers(zk,cluster):
 			broker = {'host':d['host'],'port':d['port'], 'id':child}
 			brokers.append(broker)
 	except NoNodeError:
-		return brokers
-	return brokers
+		error = 2
+	except:
+		error = 1
+
+	return brokers, error
 
 def _get_consumer_groups(zk, cluster):
 	""" Method to get the consumers groups ids of a given cluster """
 	consumer_groups =[]
+	error = 0
 	try:
 		consumer_groups = zk.get_children(CLUSTERS[cluster].CONSUMERS_PATH.get())
 	except NoNodeError:
-		return consumer_groups
-	return consumer_groups
+		error = 2
+	except:
+		error = 1
+
+	return consumer_groups, error
 
 def _get_topics(cluster):
 	""" Method to get the topic list of a given cluster """
@@ -129,6 +187,7 @@ def _get_topics(cluster):
 		zk.start()
 		topics = zk.get_children(cluster['topics_path'])
 	except NoNodeError:
+		error = 2
 		return topic_list, error
 	except:
 		error = 1
@@ -140,24 +199,35 @@ def _get_topics(cluster):
 			data, stat = zk.get(topic_path)
 			d=json.loads(data)
 			t['topic_partitions_data']=d['partitions']
-			partitions_path = topic_path + "/partitions"
-			partitions = zk.get_children(partitions_path)
-			t['partitions']=partitions
-			tpp = {}
-			p =[]
-			for partition in partitions:
-				tps = {}
-				p.append(partition.encode('ascii'))
-				partition_path = partitions_path + "/" + partition + "/state"
-				data, stat = zk.get(partition_path)
-				d = json.loads(data)
-				tps['isr'] = d['isr']
-				tps['leader'] = d['leader']
-				tpp[partition.encode('ascii')]=tps
+			partitions_path = topic_path + "/partitions"			
 			
-			t['partitions']=p	
-			t['topic_partitions_states']=tpp
-			topic_list.append(t)
+			try:
+				partitions = zk.get_children(partitions_path)
+				t['partitions']=partitions
+				tpp = {}
+				p =[]
+				for partition in partitions:
+					tps = {}
+					p.append(partition.encode('ascii'))
+					partition_path = partitions_path + "/" + partition + "/state"
+					data, stat = zk.get(partition_path)
+					d = json.loads(data)
+					tps['isr'] = d['isr']
+					tps['leader'] = d['leader']
+					tpp[partition.encode('ascii')]=tps
+				
+				t['partitions']=p	
+				t['topic_partitions_states']=tpp
+				topic_list.append(t)
+			except NoNodeError:
+				topic_list = []
+				error = 2
+				return topic_list, error 
+			except:
+				topic_list = []
+				error = 1
+				return topic_list, error
+
 	zk.stop()
 	return topic_list, error 
 
@@ -165,14 +235,18 @@ def _get_consumers(cluster):
 	""" Method to get the consumers of a given cluster """
 	consumer_groups = []
 	error=0
+
 	try:
 		zk = KazooClient(hosts=cluster['zk_host_ports'])
 		zk.start()
-		groups = _get_consumer_groups(zk,cluster['id'])
+		groups, error = _get_consumer_groups(zk,cluster['id'])
 		for group in groups:
 			consumer_groups.append(_get_consumer_group(zk=zk,cluster=cluster,group_id=group))
 	except NoNodeError:
+		error = 2
+	except:
 		error = 1
+	
 	zk.stop()
 	return consumer_groups,error
 
@@ -180,6 +254,7 @@ def _get_offsets(zk, cluster, group):
 	""" Method to get the offsets of a given cluster and consumers group """
 	offsets_path = cluster['consumers_path'] + "/" + group + "/offsets"
 	offsets = []
+	
 	try:
 	    topics = zk.get_children(offsets_path)
 	except NoNodeError:
@@ -226,11 +301,10 @@ def _get_consumer_group(zk,cluster,group_id):
 	consumers_path = cluster['consumers_path'] + "/" + group_id + "/ids"
 	try:
 		consumers = zk.get_children(consumers_path)
-
 	except NoNodeError:
 		consumer_group['consumers']=""
 	else:
-		consumer_subscription = {}
+		consumer_subscription = {}		
 		for consumer in consumers:
 			data,stat = zk.get(consumers_path+"/"+consumer)
 			d = json.loads(data)
@@ -275,20 +349,22 @@ def _get_options_ini(section):
 		try:
 			dict = Config.get(section, option)
 		except:
-			print("exception on %s!" % option)
+			logger.exception("Exception on %s!" % option)
 			dict = []
 
 	return dict
 
 def _get_json_type(request, cluster_id, type):
 	data = []
+	error_brokers = 0
 	try:	
 		cluster = get_cluster_or_404(id=cluster_id)
 
-		if type == "broker":
-			zk = KazooClient(hosts=cluster['zk_host_ports'])
-			zk.start()
-			brokers = _get_brokers(zk,cluster_id)
+		zk = KazooClient(hosts=cluster['zk_host_ports'])
+		zk.start()
+
+		if type == "broker":			
+			brokers, error_brokers = _get_brokers(zk,cluster_id)
 			for broker in brokers:
 				data.append(broker['host'])
 		if type == "topic":
@@ -302,6 +378,32 @@ def _get_json_type(request, cluster_id, type):
 
 	zk.stop()
 	return HttpResponse(_get_dumps(data), content_type = "application/json")
+
+def _create_topic(request):
+	sCmd = ''
+
+	if request.method == 'POST' and request.is_ajax():
+		sZookeepers = request.POST['psZookeepers']
+		iReplicationFactor = request.POST['piReplicationFactor']
+		iPartitions = request.POST['piPartitions']
+		sTopicName = request.POST['psTopicName']
+		response = {'status': -1, 'output': "", 'error': ""}		
+		sCmd = ('%s/scripts/bin/kafka-topics.sh --create ' 
+				'--zookeeper %s '
+				'--replication-factor %s '
+				'--partitions %s '
+				'--topic %s' % (settings.PROJECT_ROOT, sZookeepers, iReplicationFactor, iPartitions, sTopicName))
+
+		output,err = subprocess.Popen([sCmd], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()		
+		response['output'] = output
+		response['error'] = err
+
+		if response['error'] == "":
+			response['status'] = 0
+
+		return HttpResponse(json.dumps(response), content_type = "text/plain")
+
+	return render('topics.mako', request, {})
 
 def download(request):  
 	if request.method == 'POST':
@@ -429,7 +531,10 @@ def consumer_group(request, cluster_id, group_id):
 		consumer_group = _get_consumer_group(zk=zk,cluster=cluster,group_id=group_id)
 	except NoNodeError:
 		error = 1
+	except:
+		error = 2
 	zk.stop()
+
 	return render('consumer_group.mako', request, {'cluster': cluster, 'consumer_group':consumer_group, 'error':error})
 
 def dashboard(request, cluster_id):
@@ -442,6 +547,7 @@ def dashboard(request, cluster_id):
 	sMetricComplete = ""
 	sGranularity = ""
 	sDataSource = ""
+	error_brokers = 0
 
 	cluster = get_cluster_or_404(id=cluster_id)
 	topics, error_zk_topics = _get_topics(cluster)
@@ -451,7 +557,7 @@ def dashboard(request, cluster_id):
 	try:	
 		zk = KazooClient(hosts=cluster['zk_host_ports'])
 		zk.start()
-		brokers = _get_brokers(zk,cluster['id'])
+		brokers, error_brokers = _get_brokers(zk,cluster['id'])
 		zk.stop()
 	except NoNodeError:
 		error_zk_brokers = 1

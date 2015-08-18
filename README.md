@@ -14,6 +14,7 @@ Requirements
 - [HUE 3.7.1](http://www.gethue.com)
 - [Ganglia](http://ganglia.sourceforge.net/)
 - [Kazoo 2.2.1](http://github.com/python-zk/kazoo)
+- [ReportLab 2.X](http://www.reportlab.com/) for Python 2.5 or 2.6. ReportLab 3.X requires Python versions 2.7 or higher.
 
 Main Stack
 ----------
@@ -32,7 +33,7 @@ To get the Kafka-HUE app integrated and running in your HUE deployment:
     $ mv kafka-hue/kafka $HUE_HOME/apps
     $ cd $HUE_HOME/apps
     $ sudo ../tools/app_reg/app_reg.py --install kafka --relative-paths
-    $ chown -R hue: storm/
+    $ chown -R hue: kafka/
 
 Modify the hue.ini config file as follows and restart HUE. 
 

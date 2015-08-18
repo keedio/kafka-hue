@@ -54,6 +54,71 @@ ${commonheader("%s > Topics" % (cluster['nice_name']), app_name, user) | n,unico
 	    } );
 	} );
 	
+	function create_topic() {
+		var sError = "";
+		var sZookeepers = document.getElementById("sZookeepers").value;
+		var iReplicationFactor = document.getElementById("iReplicationFactor").value;
+		var iPartitions = document.getElementById("iPartitions").value;
+		var sTopicName = document.getElementById("sTopicName").value;
+		
+		$("#divResult").hide();
+		$("#divError").hide();
+		$("#divErrorTopic").hide();
+		$("#divErrorZookeeper").hide();
+		$("#divErrorReplication").hide();
+		$("#divErrorPartition").hide();
+		
+		if (sTopicName == "") {
+			$("#divErrorTopic").show();
+		}
+		else if (sZookeepers == "") {
+			$("#divErrorZookeeper").show();
+		}   
+		else if (iReplicationFactor == "") {
+			$("#divErrorReplication").show();
+		}
+		else if (iPartitions == "") {
+			$("#divErrorPartition").show();
+		}
+		else  {
+			$("#imgLoading").show();
+			$("#btnSubmit").hide();
+			$.ajax({
+	              url: "/kafka/_create_topic/",           
+	              dataType: 'json',   
+	              data: {   psZookeepers: sZookeepers,
+							piReplicationFactor: iReplicationFactor,
+							piPartitions: iPartitions,
+							psTopicName: sTopicName },
+	              method: 'POST',
+	              success: function(response) {
+	              			$("#imgLoading").hide();
+	              			$("#btnSubmit").show();
+	              			console.log(response.status);
+							if (response.status == 0) {   
+								$("#divResult").show();								
+								$("#spnResult").text(response.output);
+								window.location.reload();
+							}
+							else {
+								$("#divError").show();
+								$("#spnError").text("ERROR in create topic \n" + response.output);
+							};
+							$("#imgLoading").hide();
+	              			$("#btnSubmit").show(); 
+							$("#divErrorTopic").hide();
+							$("#divErrorZookeeper").hide();
+							$("#divErrorReplication").hide();
+							$("#divErrorPartition").hide();  
+	                       },
+	              error: function(xhr, status, error) {                        
+	              			$("#imgLoading").hide();
+	              			$("#btnSubmit").show(); 
+	                        $("#divError").show();                         
+	                     }    
+	          });
+		};
+	}; //function create_topic
 </script>
 
 <%
@@ -78,22 +143,26 @@ ${commonheader("%s > Topics" % (cluster['nice_name']), app_name, user) | n,unico
     </div>
   </div>
 % else:
-${ kafka.header(_breadcrumbs) }
+	${Templates.tblCreateTopic()}
+	${ kafka.header(_breadcrumbs) }
 % endif 
 
 ${ kafka.menubar(section='Topics',c_id=cluster['id']) }
 
 <div class="container-fluid">
   <div class="card">
+    <div id="create-topic" class="btn-group pull-right" style="vertical-align: top; right: 10px;">
+    	<button id="btnCreateTopic" data-target="#tblCreateTopic" class="btn" data-toggle="modal">
+			<i class="fa fa-plus-circle"></i>
+			${ _('Create topic') } 
+		</button>
+    </div>
     <h2 class="card-heading simple">${ _('Topics of Kakfa cluster:') } ${ cluster['nice_name'] }</h2>
     <div class="card-body">
-
     	% if error == 1 :
-			<div class="alert alert-error">
-	  			${ _('Error connecting to zookeper server(s):') } <b>${cluster['zk_host_ports']}</b><br>
-	  			${ _('Please contact your administrator to solve this.') }
-	  		</div>		
-
+			${Templates.divConnectionError(cluster['topics_path'])}
+	  	% elif error == 2 :
+			${Templates.divNoNodeError(cluster['zk_host_ports'])}
 		% else:
 	    	<div class="alert alert-info">${ _('Searching topics from path:') } <b>${cluster['topics_path']}</b></div>
 	    	

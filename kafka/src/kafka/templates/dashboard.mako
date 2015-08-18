@@ -61,8 +61,6 @@ ${ graphsHUE.import_charts() }
         });
     });
 
-   
-
    $(document).ready(function () {
       $("a.btn-date").click(function () {
           $("a.btn-date").not(this).removeClass("active");

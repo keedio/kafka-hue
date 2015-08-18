@@ -130,10 +130,9 @@ ${ kafka.menubar(section='Consumer Groups',c_id=cluster['id']) }
     <div class="card-body">
 
     	% if error == 1 :
-			<div class="alert alert-error">
-	  			${ _('Error connecting to zookeper server(s):') } <b>${cluster['zk_host_ports']}</b><br>
-	  			${ _('Please contact your administrator to solve this.') }
-	  		</div>		
+			${Templates.divConnectionError(cluster['topics_path'])}		
+	  	% elif error == 2 :
+			${Templates.divNoNodeError(cluster['zk_host_ports'])}
 	  	% else:
 
 	    	<div class="alert alert-info">${ _('Searching Consumer Groups from path:') } <b>${cluster['consumers_path']}/${consumer_group['id']}</b></div>
