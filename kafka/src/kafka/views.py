@@ -18,6 +18,9 @@
 import csv
 import logging
 
+import sys
+import subprocess
+
 from reportlab.lib.pagesizes import A4, inch, portrait, landscape
 from reportlab.platypus import SimpleDocTemplate, Table
 from reportlab.lib import colors
@@ -269,6 +272,32 @@ def _get_json_type(request, cluster_id, type):
 
 	return HttpResponse(_get_dumps(data), content_type = "application/json")
 
+def _create_topic(request):
+	sCmd = ''
+
+	if request.method == 'POST' and request.is_ajax():
+		sZookeepers = request.POST['psZookeepers']
+		iReplicationFactor = request.POST['piReplicationFactor']
+		iPartitions = request.POST['piPartitions']
+		sTopicName = request.POST['psTopicName']
+		response = {'status': -1, 'output': "", 'error': ""}		
+		sCmd = ('%s/scripts/bin/kafka-topics.sh --create ' 
+				'--zookeeper %s '
+				'--replication-factor %s '
+				'--partitions %s '
+				'--topic %s' % (settings.PROJECT_ROOT, sZookeepers, iReplicationFactor, iPartitions, sTopicName))
+
+		output,err = subprocess.Popen([sCmd], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()		
+		response['output'] = output
+		response['error'] = err
+
+		if response['error'] == "":
+			response['status'] = 0
+
+		return HttpResponse(json.dumps(response), content_type = "text/plain")
+
+	return render('topics.mako', request, {})
+	
 def download(request):  
 	if request.method == 'POST':
 		aHeaders = []

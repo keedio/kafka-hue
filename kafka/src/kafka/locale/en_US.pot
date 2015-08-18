@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hue VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-06-22 17:29+0200\n"
+"POT-Creation-Date: 2015-08-18 14:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -127,7 +127,7 @@ msgstr ""
 #: src/kafka/templates/consumer_group.mako:109
 #: src/kafka/templates/consumer_groups.mako:70
 #: src/kafka/templates/dashboard.mako:507 src/kafka/templates/index.mako:112
-#: src/kafka/templates/topics.mako:70
+#: src/kafka/templates/topics.mako:135
 msgid "There are currently no clusters to browse."
 msgstr ""
 
@@ -138,8 +138,8 @@ msgstr ""
 #: src/kafka/templates/consumer_groups.mako:93
 #: src/kafka/templates/dashboard.mako:510
 #: src/kafka/templates/dashboard.mako:577 src/kafka/templates/index.mako:115
-#: src/kafka/templates/index.mako:140 src/kafka/templates/topics.mako:73
-#: src/kafka/templates/topics.mako:94
+#: src/kafka/templates/index.mako:140 src/kafka/templates/topics.mako:138
+#: src/kafka/templates/topics.mako:166
 msgid "Please contact your administrator to solve this."
 msgstr ""
 
@@ -156,7 +156,7 @@ msgstr ""
 #: src/kafka/templates/consumer_group.mako:134
 #: src/kafka/templates/consumer_groups.mako:92
 #: src/kafka/templates/dashboard.mako:570 src/kafka/templates/index.mako:139
-#: src/kafka/templates/topics.mako:93
+#: src/kafka/templates/topics.mako:165
 msgid "Error connecting to the zookeper REST server:"
 msgstr ""
 
@@ -180,7 +180,7 @@ msgstr ""
 #: src/kafka/templates/consumer_group.mako:198
 #: src/kafka/templates/consumer_groups.mako:116
 #: src/kafka/templates/index.mako:162 src/kafka/templates/index.mako:205
-#: src/kafka/templates/index.mako:246 src/kafka/templates/topics.mako:122
+#: src/kafka/templates/index.mako:246 src/kafka/templates/topics.mako:194
 msgid "Status"
 msgstr ""
 
@@ -220,7 +220,7 @@ msgstr ""
 #: src/kafka/templates/cluster.mako:223
 #: src/kafka/templates/consumer_group.mako:157
 #: src/kafka/templates/consumer_groups.mako:115
-#: src/kafka/templates/index.mako:245 src/kafka/templates/topics.mako:116
+#: src/kafka/templates/index.mako:245 src/kafka/templates/topics.mako:188
 msgid "Name"
 msgstr ""
 
@@ -241,11 +241,12 @@ msgstr ""
 
 #: src/kafka/templates/consumer_group.mako:172
 #: src/kafka/templates/consumer_group.mako:221
-#: src/kafka/templates/topics.mako:147
+#: src/kafka/templates/topics.mako:220
 msgid "OK"
 msgstr ""
 
 #: src/kafka/templates/consumer_group.mako:195
+#: src/kafka/templates/templates.mako:54
 msgid "Topic"
 msgstr ""
 
@@ -335,7 +336,7 @@ msgstr ""
 
 #: src/kafka/templates/dashboard.mako:614
 #: src/kafka/templates/navigation_bar.mako:82
-#: src/kafka/templates/topics.mako:63 src/kafka/templates/topics.mako:103
+#: src/kafka/templates/topics.mako:128 src/kafka/templates/topics.mako:175
 msgid "Topics"
 msgstr ""
 
@@ -443,31 +444,91 @@ msgstr ""
 msgid "Download as PDF"
 msgstr ""
 
-#: src/kafka/templates/topics.mako:88
+#: src/kafka/templates/templates.mako:37
+msgid "ERROR in form. "
+msgstr ""
+
+#: src/kafka/templates/templates.mako:48
+msgid "Create a Topic"
+msgstr ""
+
+#: src/kafka/templates/templates.mako:55
+msgid "Name of the topic"
+msgstr ""
+
+#: src/kafka/templates/templates.mako:57
+msgid "Select a name for the topic. "
+msgstr ""
+
+#: src/kafka/templates/templates.mako:63
+msgid "Zookeepers"
+msgstr ""
+
+#: src/kafka/templates/templates.mako:64
+msgid "List of zookeepers. E.G. localhost:2181"
+msgstr ""
+
+#: src/kafka/templates/templates.mako:66
+msgid "Select a zookeeper(s). "
+msgstr ""
+
+#: src/kafka/templates/templates.mako:72
+msgid "Set Replication Factor"
+msgstr ""
+
+#: src/kafka/templates/templates.mako:75
+msgid "Select a replication factor. By default is 1. "
+msgstr ""
+
+#: src/kafka/templates/templates.mako:79
+msgid "Set Partitions"
+msgstr ""
+
+#: src/kafka/templates/templates.mako:82
+msgid "Select partition(s). By default is 1. "
+msgstr ""
+
+#: src/kafka/templates/templates.mako:90
+msgid "ERROR when create topic "
+msgstr ""
+
+#: src/kafka/templates/templates.mako:97
+msgid "Cancel"
+msgstr ""
+
+#: src/kafka/templates/templates.mako:98
+msgid "Create"
+msgstr ""
+
+#: src/kafka/templates/topics.mako:157
+msgid "Create topic"
+msgstr ""
+
+#: src/kafka/templates/topics.mako:160
 msgid "Topics of Kakfa cluster:"
 msgstr ""
 
-#: src/kafka/templates/topics.mako:98
+#: src/kafka/templates/topics.mako:170
 msgid "Searching topics from path:"
 msgstr ""
 
-#: src/kafka/templates/topics.mako:117
+#: src/kafka/templates/topics.mako:189
 msgid "Partitions"
 msgstr ""
 
-#: src/kafka/templates/topics.mako:118
+#: src/kafka/templates/topics.mako:190
 msgid "Partitions ids"
 msgstr ""
 
-#: src/kafka/templates/topics.mako:119
+#: src/kafka/templates/topics.mako:191
 msgid "Replicas / Partition"
 msgstr ""
 
-#: src/kafka/templates/topics.mako:120
+#: src/kafka/templates/topics.mako:192
 msgid "Partition - Replicas ids in isr"
 msgstr ""
 
-#: src/kafka/templates/topics.mako:121
+#: src/kafka/templates/topics.mako:193
 msgid "Partition - Leader"
 msgstr ""
 
