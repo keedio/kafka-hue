@@ -1,6 +1,15 @@
 Changelog
 =========
 
+3.0.0 (20-08-2015)
+----------------
+
+Features
+********
+
+- Kafka topics administration (add).
+- Kazoo Higher Level Zookeeper Client usage.
+
 2.1.0 (23-06-2015)
 ----------------
 
