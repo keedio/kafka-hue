@@ -15,6 +15,7 @@ Requirements
 - [Ganglia](http://ganglia.sourceforge.net/)
 - Zookeeper REST
 - [ReportLab 2.X](http://www.reportlab.com/) for Python 2.5 or 2.6. ReportLab 3.X requires Python versions 2.7 or higher.
+- [Apache Kafka](http://kafka.apache.org/) local installation is needed. It is not necessary that kafka services are up. It only needs kafka scripts
 
 Main Stack
 ----------
