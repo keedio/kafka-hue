@@ -388,11 +388,11 @@ def _create_topic(request):
 		iPartitions = request.POST['piPartitions']
 		sTopicName = request.POST['psTopicName']
 		response = {'status': -1, 'output': "", 'error': ""}		
-		sCmd = ('%s/scripts/bin/kafka-topics.sh --create ' 
+		sCmd = ('/usr/lib/kafka/bin/kafka-topics.sh --create ' 
 				'--zookeeper %s '
 				'--replication-factor %s '
 				'--partitions %s '
-				'--topic %s' % (settings.PROJECT_ROOT, sZookeepers, iReplicationFactor, iPartitions, sTopicName))
+				'--topic %s' % (sZookeepers, iReplicationFactor, iPartitions, sTopicName))
 
 		output,err = subprocess.Popen([sCmd], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()		
 		response['output'] = output
@@ -400,7 +400,9 @@ def _create_topic(request):
 
 		if response['error'] == "":
 			response['status'] = 0
-
+		else:
+			logger.exception(response['error'])
+			
 		return HttpResponse(json.dumps(response), content_type = "text/plain")
 
 	return render('topics.mako', request, {})

@@ -7,6 +7,7 @@ Features
 --------
    * Multi cluster support
    * Cluster Overview (Brokers, Topics, Consumers, etc.)
+   * Kafka topics administration (add)
    * Custom Dashboards based on Ganglia metrics. Configure Kafka to export JMX metrics to Ganglia and Kafka-HUE will be able to show all of those metrics specifiying them in a config file (metrics.ini).
 
 Requirements
@@ -15,6 +16,7 @@ Requirements
 - [Ganglia](http://ganglia.sourceforge.net/)
 - [Kazoo 2.2.1](http://github.com/python-zk/kazoo)
 - [ReportLab 2.X](http://www.reportlab.com/) for Python 2.5 or 2.6. ReportLab 3.X requires Python versions 2.7 or higher.
+- [Apache Kafka](http://kafka.apache.org/) local installation is needed. It is not necessary that kafka services are up. It only needs kafka scripts
 
 Main Stack
 ----------
