@@ -53,7 +53,6 @@ def is_selected(section, matcher):
         %else:
           ${crumb[0]}
         %endif
-
         %if idx < len(breadcrumbs) - 1:
           &gt;
         %endif
