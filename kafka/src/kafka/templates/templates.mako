@@ -122,7 +122,7 @@
                   <button type="button" id="btnSubmit" class="btn btn-primary" onclick="create_topic()">${ _('Create') }</button>
                   <div id="imgLoading" class="widget-spinner" style="display:none">
                      <!--[if !IE]> --><i class="fa fa-spinner fa-spin fa-2x"></i><!-- <![endif]-->
-                     <!--[if IE]><img src="${ static('storm/art/spinner.gif') }" /><![endif]-->
+                     <!--[if IE]><img src="${ static('kafka/art/spinner.gif') }" /><![endif]-->
                   </div>
                </div>
             </div>   
