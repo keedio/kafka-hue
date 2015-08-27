@@ -699,7 +699,10 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
            <tr valign="top" align="right">
               <td colspan="4">
                  <button id="btnSubmit" type="button" class="btn btn-primary" onclick="SetFilterMetric()">${ _('Submit') }</button>                 
-                 <img id="imgLoading" src="${ static('kafka/art/spinner.gif') }" class="hide"/>
+                 <div id="imgLoading" class="widget-spinner" style="display:none">
+                     <!--[if !IE]> --><i class="fa fa-spinner fa-spin fa-2x"></i><!-- <![endif]-->
+                     <!--[if IE]><img src="${ static('storm/art/spinner.gif') }" /><![endif]-->
+                  </div>
               </td>
            </tr> 
            </table>   
