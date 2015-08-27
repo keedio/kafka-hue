@@ -12,7 +12,7 @@ Features
 
 Requirements
 ------------
-- [HUE 3.7.1](http://www.gethue.com)
+- [HUE 3.8](http://www.gethue.com) or higher.
 - [Ganglia](http://ganglia.sourceforge.net/)
 - [Kazoo 2.2.1](http://github.com/python-zk/kazoo)
 - [ReportLab 2.X](http://www.reportlab.com/) for Python 2.5 or 2.6. ReportLab 3.X requires Python versions 2.7 or higher.
