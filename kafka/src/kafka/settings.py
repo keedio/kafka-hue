@@ -19,8 +19,11 @@ import os
 DJANGO_APPS = [ "kafka" ]
 REQUIRES_HADOOP = False
 MENU_INDEX = 100
-ICON = "/kafka/static/art/icon_kafka_24.png"
+ICON = "kafka/art/icon_kafka_24.png"
 IS_URL_NAMESPACED = True
+
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 METRICS_INI = os.path.join(PROJECT_ROOT, 'metrics.ini')

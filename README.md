@@ -31,6 +31,13 @@ Installation
 To get the Kafka-HUE app integrated and running in your HUE deployment:
 
     $ sudo $HUE_HOME/build/env/bin/python $HUE_HOME/build/env/bin/pip install kazoo
+
+    For Python 2.5 or 2.6
+    $ sudo $HUE_HOME/build/env/bin/python $HUE_HOME/build/env/bin/pip install "reportlab<3.0"
+    
+    For Python 2.7 or higher.
+    $ sudo $HUE_HOME/build/env/bin/python $HUE_HOME/build/env/bin/pip install reportlab
+
     $ git clone https://github.com/keedio/kafka-hue.git
     $ mv kafka-hue/kafka $HUE_HOME/apps
     $ cd $HUE_HOME/apps

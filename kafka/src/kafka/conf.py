@@ -22,47 +22,42 @@ def coerce_string(value):
   else:
     return value
 
-
 CLUSTERS = UnspecifiedConfigSection(
-  "clusters",
+  key="clusters",
   help="One entry for each Zookeeper cluster",
   each=ConfigSection(
     help="Information about a single Zookeeper cluster",
     members=dict(
         ZK_HOST_PORTS=Config(
-          "zk_host_ports",
+          key="zk_host_ports",
           help="Zookeeper ensemble. Comma separated list of Host/Port, e.g. localhost:2181,localhost:2182,localhost:2183",
           default="localhost:2181",
-          type=coerce_string,
-        ),       
+          type=coerce_string),       
         BROKERS_PATH=Config(
-          "brokers_path",
+          key="brokers_path",
           help="Path to brokers info in Zookeeper Znode hierarchy, e.g. /brokers/ids",
           default="/brokers/ids",
-          type=str,
-        ),
+          type=str),
         CONSUMERS_PATH=Config(
-          "consumers_path",
+          key="consumers_path",
           help="Path to consumers info in Zookeeper Znode hierarchy, e.g. /consumers",
           default="/consumers",
-          type=str,
-        ),
+          type=str),
         TOPICS_PATH=Config(
-          "topics_path",
+          key="topics_path",
           help="Path to topics info in Zookeeper Znode hierarchy, e.g. /brokers/topics",
           default="/brokers/topics",
-          type=str,
-        ),
-        GANGLIA_SERVER = Config( "ganglia_server",
+          type=str),
+        GANGLIA_SERVER = Config(
+          key="ganglia_server",
           help="GANGLIA Server",
           default="http://localhost",
-          type=str,
-        ),
-        GANGLIA_DATA_SOURCE = Config( "ganglia_data_source",
+          type=str),
+        GANGLIA_DATA_SOURCE = Config(
+          key="ganglia_data_source",
           help="Ganglia Data Source",
           default="my cluster",
-          type=str,
-        ),
+          type=str),
     )
   )
 )

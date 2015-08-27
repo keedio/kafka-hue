@@ -24,8 +24,8 @@
 
 ${commonheader("Dashboard", app_name, user) | n,unicode}
 
-<link href="/kafka/static/css/kafka.css" rel="stylesheet">
-<script type="text/javascript" src="/kafka/static/js/jquery.smart_autocomplete.js"></script>
+<link href="${ static('kafka/css/kafka.css') }" rel="stylesheet" >
+<script src="${ static('kafka/js/jquery.smart_autocomplete.js') }" type="text/javascript" charset="utf-8"></script>
 
 ${ graphsHUE.import_charts() }
 
@@ -698,8 +698,8 @@ ${ kafka.menubar(section='Dashboard',c_id=cluster['id']) }
            </tr>
            <tr valign="top" align="right">
               <td colspan="4">
-                 <button id="btnSubmit" type="button" class="btn btn-primary" onclick="SetFilterMetric()">${ _('Submit') }</button>   
-                 <img id="imgLoading" src="/static/art/spinner.gif" class="hide"/>                         
+                 <button id="btnSubmit" type="button" class="btn btn-primary" onclick="SetFilterMetric()">${ _('Submit') }</button>                 
+                 <img id="imgLoading" src="${ static('kafka/art/spinner.gif') }" class="hide"/>
               </td>
            </tr> 
            </table>   
