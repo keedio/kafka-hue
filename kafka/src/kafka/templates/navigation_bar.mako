@@ -71,10 +71,7 @@ def is_selected(section, matcher):
         <div class="nav-collapse">
           <ul class="nav">
             <li class="currentApp">
-              <a href="/${app_name}">
-                <img src="/kafka/static/art/icon_kafka_24.png" />
-                Kafka
-              </a>
+              <a href="/${app_name}"><img src="${ static('kafka/art/icon_kafka_24.png') }" /> Kafka </a>
              </li>
              <li class="${is_selected(section, 'Topology')}"><a href="${ url('kafka:cluster', cluster_id=c_id) }">${ _('Topology') }</a></li>
              <li class="${is_selected(section, 'Consumer Groups')}"><a href="${url('kafka:consumer_groups', cluster_id=c_id)}">${ _('Consumer Groups') }</a></li>
