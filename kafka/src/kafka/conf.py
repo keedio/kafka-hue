@@ -15,6 +15,7 @@
 # limitations under the License.
 
 from desktop.lib.conf import Config, UnspecifiedConfigSection, ConfigSection
+from django.utils.translation import ugettext_lazy as _t, ugettext as _
 
 def coerce_string(value):
   if type(value) == list:
@@ -61,3 +62,27 @@ CLUSTERS = UnspecifiedConfigSection(
     )
   )
 )
+
+def config_validator(user):
+  res = []
+  
+  for cluster in CLUSTERS:
+    if not CLUSTERS[cluster].ZK_HOST_PORTS.get():
+      res.append((CLUSTERS[cluster].ZK_HOST_PORTS, _("You must to specify Zookeeper ensemble.")))
+
+    if not CLUSTERS[cluster].BROKERS_PATH.get():
+      res.append((CLUSTERS[cluster].BROKERS_PATH, _("You must to specify path to brokers info.")))
+
+    if not CLUSTERS[cluster].CONSUMERS_PATH.get():
+      res.append((CLUSTERS[cluster].CONSUMERS_PATH, _("You must to specify path to consumers info.")))
+
+    if not CLUSTERS[cluster].TOPICS_PATH.get():
+      res.append((CLUSTERS[cluster].TOPICS_PATH, _("You must to specify path to topics info.")))
+
+    if not CLUSTERS[cluster].GANGLIA_SERVER.get():
+      res.append((CLUSTERS[cluster].GANGLIA_SERVER, _("You must to specify Ganglia Server I.P. or Ganglia Server HostName.")))
+
+    if not CLUSTERS[cluster].GANGLIA_DATA_SOURCE.get():
+      res.append((CLUSTERS[cluster].GANGLIA_DATA_SOURCE, _("You must to specify Ganglia Data Source name.")))
+
+  return res
