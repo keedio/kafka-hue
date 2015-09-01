@@ -22,6 +22,7 @@
 <%def name="frmExport(pData)">
   <div class="pull-right">
     <form id="frmDownload" method="post" enctype="application/json" action="/kafka/download/">
+        ${ csrf_token(request) | n,unicode }
         <button type="submit" name="json" title="${ _('Download as JSON') }"><i class="fa fa-file-code-o fa-1x"></i></button>
         <button type="submit" name="csv" title="${ _('Download as CSV') }"><i class="fa fa-file-text-o"></i></button>
         <button type="submit" name="xls" title="${ _('Download as XLS') }"><i class="fa fa-file-excel-o fa-1x"></i></button>
@@ -65,6 +66,7 @@
    <div class="modal hide fade" id="tblCreateTopic" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
          <form id="frmCreateTopic" method="post" enctype="multipart/form-data" action="/kafka/_create_topic/">
+            ${ csrf_token(request) | n,unicode }
             <div class="modal-content">
                <div class="modal-header">
                   <h3>${ _('Create a Topic') } </b></h3>
@@ -118,7 +120,10 @@
                   <input type="hidden" name="psURL" value="${request.get_full_path()}">                  
                   <button type="button" class="btn btn-default" data-dismiss="modal">${ _('Cancel') }</button>                  
                   <button type="button" id="btnSubmit" class="btn btn-primary" onclick="create_topic()">${ _('Create') }</button>
-                  <img id="imgLoading" src="/static/art/spinner.gif" class="hide"/>
+                  <div id="imgLoading" class="widget-spinner" style="display:none">
+                     <!--[if !IE]> --><i class="fa fa-spinner fa-spin fa-2x"></i><!-- <![endif]-->
+                     <!--[if IE]><img src="${ static('kafka/art/spinner.gif') }" /><![endif]-->
+                  </div>
                </div>
             </div>   
          </form>      

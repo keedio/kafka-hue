@@ -9,10 +9,11 @@ Features
    * Cluster Overview (Brokers, Topics, Consumers, etc.)
    * Kafka topics administration (add)
    * Custom Dashboards based on Ganglia metrics. Configure Kafka to export JMX metrics to Ganglia and Kafka-HUE will be able to show all of those metrics specifiying them in a config file (metrics.ini).
+   * Config validator at HUE start.
 
 Requirements
 ------------
-- [HUE 3.7.1](http://www.gethue.com)
+- [HUE 3.8](http://www.gethue.com) or higher.
 - [Ganglia](http://ganglia.sourceforge.net/)
 - [Kazoo 2.2.1](http://github.com/python-zk/kazoo)
 - [ReportLab 2.X](http://www.reportlab.com/) for Python 2.5 or 2.6. ReportLab 3.X requires Python versions 2.7 or higher.
@@ -31,6 +32,13 @@ Installation
 To get the Kafka-HUE app integrated and running in your HUE deployment:
 
     $ sudo $HUE_HOME/build/env/bin/python $HUE_HOME/build/env/bin/pip install kazoo
+
+    For Python 2.5 or 2.6
+    $ sudo $HUE_HOME/build/env/bin/python $HUE_HOME/build/env/bin/pip install "reportlab<3.0"
+    
+    For Python 2.7 or higher.
+    $ sudo $HUE_HOME/build/env/bin/python $HUE_HOME/build/env/bin/pip install reportlab
+
     $ git clone https://github.com/keedio/kafka-hue.git
     $ mv kafka-hue/kafka $HUE_HOME/apps
     $ cd $HUE_HOME/apps

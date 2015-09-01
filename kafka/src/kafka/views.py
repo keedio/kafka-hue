@@ -30,7 +30,7 @@ from reportlab.lib.pagesizes import A4, inch, portrait, landscape
 from reportlab.platypus import SimpleDocTemplate, Table
 from reportlab.lib import colors
 
-from desktop.lib.django_util import render
+from desktop.lib.django_util import render, JsonResponse
 import json
 from kafka.conf import CLUSTERS
 from kafka.utils import get_cluster_or_404
@@ -377,7 +377,8 @@ def _get_json_type(request, cluster_id, type):
 		error_zk_brokers = 1
 
 	zk.stop()
-	return HttpResponse(_get_dumps(data), content_type = "application/json")
+
+	return JsonResponse(data, safe=False)
 
 def _create_topic(request):
 	sCmd = ''
@@ -403,7 +404,7 @@ def _create_topic(request):
 		else:
 			logger.exception(response['error'])
 			
-		return HttpResponse(json.dumps(response), content_type = "text/plain")
+		return JsonResponse(response, safe=False)
 
 	return render('topics.mako', request, {})
 
@@ -416,6 +417,9 @@ def download(request):
 		tmpDict = []
 		bIsString = False
 		response = HttpResponse('')
+
+		if request.POST['pData'][:2] != "[{":
+			bIsString = True
 
 		data = request.POST['pData'] \
 			.replace("u", "") \
@@ -434,7 +438,6 @@ def download(request):
 			else:
 				jsonData = json.loads(data)
 
-				
 				for element in jsonData[0]:
 					aHeaders.append(element)
 		except Exception, e:
@@ -594,8 +597,8 @@ def dashboard(request, cluster_id):
 		data['jsonDumps3'] =  _get_dumps(_get_json(aURL[3]))
 		data['jsonDumps4'] =  _get_dumps(_get_json(aURL[4]))
 		data['status'] = 0
-
-		return HttpResponse(json.dumps(data), content_type = "application/json")
+		
+		return JsonResponse(data, safe=False)
     
 	return render('dashboard.mako', request, {'cluster': cluster,
 												'topics': topics,
