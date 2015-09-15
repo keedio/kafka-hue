@@ -183,11 +183,13 @@ ${ graphsHUE.import_charts() }
    
       if (jsonValues.length > 0) {  
          for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
-            var data0 = new Date(1000 * jsonValues[0].datapoints[i][1]);
-            aValues0.push({x: data0, y: jsonValues[0].datapoints[i][0].toFixed(2)});
-            if (jsonValues[0].datapoints[i][0] > iMax0) {
-              iMax0 = jsonValues[0].datapoints[i][0];
-            }
+            var data0 = new Date(1000 * jsonValues[0].datapoints[i][1]);            
+            if (!isNaN(jsonValues[0].datapoints[i][0])) {
+              aValues0.push({x: data0, y: jsonValues[0].datapoints[i][0].toFixed(2)});
+              if (jsonValues[0].datapoints[i][0] > iMax0) {
+                iMax0 = jsonValues[0].datapoints[i][0];
+              };
+            };
          };
       };
    
@@ -243,10 +245,12 @@ ${ graphsHUE.import_charts() }
       if (jsonValues.length > 0) {
          for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
             var data1 = new Date(1000 * jsonValues[0].datapoints[i][1]);
-            aValues1.push({x: data1, y: jsonValues[0].datapoints[i][0].toFixed(2)});
-            if (jsonValues[0].datapoints[i][0] > iMax1) {
-              iMax1 = jsonValues[0].datapoints[i][0];
-            }
+            if (!isNaN(jsonValues[0].datapoints[i][0])) {
+              aValues1.push({x: data1, y: jsonValues[0].datapoints[i][0].toFixed(2)});
+              if (jsonValues[0].datapoints[i][0] > iMax1) {
+                iMax1 = jsonValues[0].datapoints[i][0];
+              };
+            };
          };
       };
 
@@ -302,10 +306,12 @@ ${ graphsHUE.import_charts() }
       if (jsonValues.length > 0) {
          for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
             var data2 = new Date(1000 * jsonValues[0].datapoints[i][1]);
-            aValues2.push({x: data2, y: jsonValues[0].datapoints[i][0].toFixed(2)});
-            if (jsonValues[0].datapoints[i][0] > iMax2) {
-              iMax2 = jsonValues[0].datapoints[i][0];
-            }
+            if (!isNaN(jsonValues[0].datapoints[i][0])) {
+              aValues2.push({x: data2, y: jsonValues[0].datapoints[i][0].toFixed(2)});
+              if (jsonValues[0].datapoints[i][0] > iMax2) {
+                iMax2 = jsonValues[0].datapoints[i][0];
+              };
+            };
          };
       };
    
@@ -361,10 +367,12 @@ ${ graphsHUE.import_charts() }
       if (jsonValues.length > 0) {
          for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
             var data3 = new Date(1000 * jsonValues[0].datapoints[i][1]);
-            aValues3.push({x: data3, y: jsonValues[0].datapoints[i][0].toFixed(2)});             
-            if (jsonValues[0].datapoints[i][0] > iMax3) {
-              iMax3 = jsonValues[0].datapoints[i][0];
-            }    
+            if (!isNaN(jsonValues[0].datapoints[i][0])) {
+              aValues3.push({x: data3, y: jsonValues[0].datapoints[i][0].toFixed(2)});             
+              if (jsonValues[0].datapoints[i][0] > iMax3) {
+                iMax3 = jsonValues[0].datapoints[i][0];
+              };
+            };    
          };
       };
 
@@ -421,10 +429,12 @@ ${ graphsHUE.import_charts() }
       if (jsonValues.length > 0) {
          for (var i=0; i<Object.keys(jsonValues[0].datapoints).length; i++) {
             var data4 = new Date(1000 * jsonValues[0].datapoints[i][1]);
-            aValues4.push({x: data4, y: jsonValues[0].datapoints[i][0].toFixed(2)});
-            if (jsonValues[0].datapoints[i][0] > iMax4) {
-              iMax4 = jsonValues[0].datapoints[i][0];
-            }
+            if (!isNaN(jsonValues[0].datapoints[i][0])) {
+              aValues4.push({x: data4, y: jsonValues[0].datapoints[i][0].toFixed(2)});
+              if (jsonValues[0].datapoints[i][0] > iMax4) {
+                iMax4 = jsonValues[0].datapoints[i][0];
+              };
+            };
          };
       }; 
    

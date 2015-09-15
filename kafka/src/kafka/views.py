@@ -408,6 +408,10 @@ def _create_topic(request):
 
 	return render('topics.mako', request, {})
 
+def system_tools(request):
+	sURL = ''
+	return HttpResponseRedirect(sURL)
+
 def download(request):  
 	if request.method == 'POST':
 		aHeaders = []
@@ -502,6 +506,56 @@ def download(request):
 
 	return response 
 
+def _get_system_tools(request, cluster_id):
+	data = {}
+	sCmd = "";
+	data['cluster'] = get_cluster_or_404(id=cluster_id)
+	data['topics'], data['error_zk_topics'] = _get_topics(data['cluster'])
+
+	try:	
+		zk = KazooClient(hosts=data['cluster']['zk_host_ports'])
+		zk.start()
+		data['brokers'], data['error_zk_brokers'] = _get_brokers(zk,data['cluster']['id'])
+		zk.stop()
+
+		if request.method == 'POST' and request.is_ajax():			
+			sOption = request.POST['txtOption']
+			sBroker = request.POST['txtBroker']
+			sTopic = request.POST['txtTopic']
+			sTime = request.POST['txtTime']
+			iWaitTime = request.POST['numWaitTime']
+			sNumOffset = request.POST['numOffset']
+			sPartitions = request.POST['txtPartitions']
+
+			sCmd = ('/usr/lib/kafka/bin/kafka-run-class.sh %s ' 
+					'--broker-list %s:9092 '
+					'--topic %s '
+					'--time %s ' % (sOption, sBroker, sTopic, sTime))
+
+			if iWaitTime <> "1000":
+				sCmd += '--max-wait-ms %s ' % (iWaitTime)
+
+			if sNumOffset <> "1":
+				sCmd += '--offsets %s ' % (sNumOffset)
+
+			if sPartitions <> "":
+				sCmd += '--partitions %s ' % (sPartitions)
+			
+			output,err = subprocess.Popen([sCmd], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()		
+			data['output'] = output
+			data['error'] = err
+
+	except NoNodeError:
+		data = {'cluster': get_cluster_or_404(id=cluster_id),
+				'topics': [], 
+				'brokers': [], 
+				'error_zk_topics': 1, 
+				'error_zk_brokers': 1 ,
+				'output': "",
+				'error': -1 }
+
+	return data
+
 def index(request):
 	""" Main view. Returns the topology of every kafka cluster defined in the hue.ini file """
 	#return render('index.mako', request, {'cluster':_get_topology()[0]})
@@ -541,6 +595,9 @@ def consumer_group(request, cluster_id, group_id):
 	zk.stop()
 
 	return render('consumer_group.mako', request, {'cluster': cluster, 'consumer_group':consumer_group, 'error':error})
+
+def _system_tools(request, cluster_id):
+	return render('system_tools.mako', request, {'Data': _get_system_tools(request, cluster_id)})
 
 def dashboard(request, cluster_id):
 	aURL = []
@@ -597,7 +654,7 @@ def dashboard(request, cluster_id):
 		data['jsonDumps3'] =  _get_dumps(_get_json(aURL[3]))
 		data['jsonDumps4'] =  _get_dumps(_get_json(aURL[4]))
 		data['status'] = 0
-		
+
 		return JsonResponse(data, safe=False)
     
 	return render('dashboard.mako', request, {'cluster': cluster,
