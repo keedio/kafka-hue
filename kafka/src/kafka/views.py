@@ -408,10 +408,6 @@ def _create_topic(request):
 
 	return render('topics.mako', request, {})
 
-def system_tools(request):
-	sURL = ''
-	return HttpResponseRedirect(sURL)
-
 def download(request):  
 	if request.method == 'POST':
 		aHeaders = []
@@ -521,6 +517,10 @@ def _get_system_tools(request, cluster_id):
 		if request.method == 'POST' and request.is_ajax():			
 			sOption = request.POST['txtOption']
 			sBroker = request.POST['txtBroker']
+			sBrokers = ""
+			for element in sBroker.split(","):
+				if element <> "":
+					sBrokers += element + ":9092, "
 			sTopic = request.POST['txtTopic']
 			sTime = request.POST['txtTime']
 			iWaitTime = request.POST['numWaitTime']
@@ -528,9 +528,9 @@ def _get_system_tools(request, cluster_id):
 			sPartitions = request.POST['txtPartitions']
 
 			sCmd = ('/usr/lib/kafka/bin/kafka-run-class.sh %s ' 
-					'--broker-list %s:9092 '
+					'--broker-list %s '
 					'--topic %s '
-					'--time %s ' % (sOption, sBroker, sTopic, sTime))
+					'--time %s ' % (sOption, sBrokers[:-2], sTopic, sTime))
 
 			if iWaitTime <> "1000":
 				sCmd += '--max-wait-ms %s ' % (iWaitTime)
@@ -542,13 +542,15 @@ def _get_system_tools(request, cluster_id):
 				sCmd += '--partitions %s ' % (sPartitions)
 			
 			output,err = subprocess.Popen([sCmd], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()		
+			data['cmd'] = sCmd
 			data['output'] = output
 			data['error'] = err
 
 	except NoNodeError:
 		data = {'cluster': get_cluster_or_404(id=cluster_id),
 				'topics': [], 
-				'brokers': [], 
+				'brokers': [],
+				'cmd': "", 
 				'error_zk_topics': 1, 
 				'error_zk_brokers': 1 ,
 				'output': "",
@@ -596,7 +598,7 @@ def consumer_group(request, cluster_id, group_id):
 
 	return render('consumer_group.mako', request, {'cluster': cluster, 'consumer_group':consumer_group, 'error':error})
 
-def _system_tools(request, cluster_id):
+def system_tools(request, cluster_id):
 	return render('system_tools.mako', request, {'Data': _get_system_tools(request, cluster_id)})
 
 def dashboard(request, cluster_id):

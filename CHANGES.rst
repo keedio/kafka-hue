@@ -1,13 +1,15 @@
 Changelog
 =========
 
-4.0.1 (16-09-2015)
+4.1.0 (16-09-2015)
 ----------------
 
 Features
 ********
 
 - View offset ranges by topic.
+- Add KnockoutJS.
+- Fix bug in dashboard.mako template.
 
 4.0.0 (01-09-2015)
 ----------------

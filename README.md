@@ -26,6 +26,7 @@ Main Stack
    * Django 
    * Mako
    * jQuery
+   * Knockout.js
    * Bootstrap
 
 Installation

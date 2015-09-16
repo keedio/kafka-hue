@@ -76,7 +76,7 @@ def is_selected(section, matcher):
              <li class="${is_selected(section, 'Topology')}"><a href="${ url('kafka:cluster', cluster_id=c_id) }">${ _('Topology') }</a></li>
              <li class="${is_selected(section, 'Consumer Groups')}"><a href="${url('kafka:consumer_groups', cluster_id=c_id)}">${ _('Consumer Groups') }</a></li>
              <li class="${is_selected(section, 'Topics')}"><a href="${url('kafka:topics', cluster_id=c_id)}">${ _('Topics') }</a></li>
-             <li class="${is_selected(section, 'SystemTools')}"><a href="${url('kafka:_system_tools', cluster_id=c_id)}">${ _('System Tools') }</a></li>
+             <li class="${is_selected(section, 'SystemTools')}"><a href="${url('kafka:system_tools', cluster_id=c_id)}">${ _('System Tools') }</a></li>
              <li class="${is_selected(section, 'Dashboard')}"><a href="${url('kafka:dashboard', cluster_id=c_id)}">${ _('Dashboard') }</a></li>
           </ul>
         </div>
