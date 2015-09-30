@@ -33,7 +33,6 @@ def get_cluster_or_404(id):
     'id': id,
     'nice_name': id,
     'zk_host_ports': cluster.ZK_HOST_PORTS.get(),
-    'zk_rest_url': cluster.ZK_REST_URL.get(),
     'brokers_path' : cluster.BROKERS_PATH.get(),
     'consumers_path' : cluster.CONSUMERS_PATH.get(),
     'topics_path' : cluster.TOPICS_PATH.get(),

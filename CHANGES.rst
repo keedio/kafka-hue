@@ -1,6 +1,34 @@
 Changelog
 =========
 
+4.1.0 (16-09-2015)
+----------------
+
+Features
+********
+
+- View offset ranges by topic.
+- Add KnockoutJS.
+- Fix bug in dashboard.mako template.
+
+4.0.0 (01-09-2015)
+----------------
+
+Features
+********
+
+- Support for HUE 3.8 or higher.
+- Config validator at HUE start.
+
+3.0.0 (20-08-2015)
+----------------
+
+Features
+********
+
+- Kafka topics administration (add).
+- Kazoo Higher Level Zookeeper Client usage.
+
 2.1.0 (23-06-2015)
 ----------------
 
