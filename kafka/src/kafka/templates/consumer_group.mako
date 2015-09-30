@@ -18,7 +18,9 @@
   from desktop.views import commonheader, commonfooter 
   from django.utils.translation import ugettext as _
 %>
+
 <%namespace name="kafka" file="navigation_bar.mako" />
+<%namespace name="Templates" file="templates.mako" />
 
 % if error == 0:
 		${commonheader("%s > Consumer Group > %s" % (cluster['nice_name'], consumer_group['id'] ), app_name, user) | n,unicode}
@@ -28,9 +30,8 @@
 
 ## DATATABLE SECTION FOR CONSUMERS
 
-<link href="/kafka/static/css/kafka.css" rel="stylesheet">
-
-<script src="/static/ext/js/datatables-paging-0.1.js" type="text/javascript" charset="utf-8"></script>
+<link href="${ static('kafka/css/kafka.css') }" rel="stylesheet" >
+<script src="${ static('desktop/ext/js/datatables-paging-0.1.js') }" type="text/javascript" charset="utf-8"></script>
 
 <script type="text/javascript" charset="utf-8">
 	$(document).ready(function() {
@@ -128,76 +129,101 @@ ${ kafka.menubar(section='Consumer Groups',c_id=cluster['id']) }
     <div class="card-body">
 
     	% if error == 1 :
-			<div class="alert alert-error">
-	  			${ _('Error connecting to the zookeper REST server:') } <b>${cluster['zk_rest_url']}</b><br>
-	  			${ _('Please contact your administrator to solve this.') }
-	  		</div>		
+			${Templates.divConnectionError(cluster['topics_path'])}		
+	  	% elif error == 2 :
+			${Templates.divNoNodeError(cluster['zk_host_ports'])}
 	  	% else:
 
 	    	<div class="alert alert-info">${ _('Searching Consumer Groups from path:') } <b>${cluster['consumers_path']}/${consumer_group['id']}</b></div>
-	    	<h4 class="card-heading simple">${ _('Consumers') }</h4>
-	    	</br>
-	    	<table class="table datatables table-striped table-hover table-condensed" id="consumerGroupTable" data-tablescroller-disable="true">
-			    	<thead>
-				      <tr>
-				        <th>${ _('Name') }</th>
-				        <th>${ _('Topics Subscribed') }</th>
-				        <th>${ _('Status') }</th>
-				      </tr>
-				    </thead>
-				    <tbody>
-				    	% if consumer_group['consumers']:
-					    	% for consumer in consumer_group['consumers'].keys():
-					    		<tr>
-					    			<td>${consumer}</td>
-					    			<td>
-					    				% for topic_subscribed in consumer_group['consumers'][consumer]:
-					    					${topic_subscribed}<br>
-					    				% endfor
-					    			</td>
-					    			<td><span class="label label-success">${ _('OK') }</span></td>
-					    		</tr>
-							% endfor
-						% endif
-				    </tbody>
-			    </table>
-			</br>
-			<h4 class="card-heading simple">${ _('Topics Subscribed') }</h4>
-	    	</br>
-			<table class="table datatables table-striped table-hover table-condensed" id="consumerGroupTopicsTable" data-tablescroller-disable="true">
-			    	<thead>
-				      <tr>
-				        <th>${ _('Topic') }</th>
-				        <th>${ _('Partition - Offset') }</th>
-				        <th>${ _('Partition - Owner') }</th>
-				        <th>${ _('Status') }</th>
-				      </tr>
-				    </thead>
-				    <tbody>
-				    	% for topic_offset in consumer_group['offsets']:
-				    		<tr>
-				    			<td>${topic_offset['topic']}</td>
-				    			<td>
-				    				% for partition in topic_offset['offsets'].keys():
-				    					${partition} - ${topic_offset['offsets'][partition]}<br>
-				    				% endfor
-				    			</td>
-				    			<td>
-				    				% for topic_owner in consumer_group['owners']:
-				    					% if topic_offset['topic'] == topic_owner['topic']:
-				    						% for partition in topic_owner['owners']:
-				    							${partition} - ${topic_owner['owners'][partition]}<br>
-				    						% endfor
-				    					% else:
-				    						<% continue %>
-				    					% endif
-				    				% endfor
-				    			</td>
-				    			<td><span class="label label-success">${ _('OK') }</span></td>
-				    		</tr>
-						% endfor
-				    </tbody>
-		    </table>
+
+	    	<table style="width: 100%">
+		  		<tr>
+		  			<td>
+						<h4 class="card-heading simple">${ _('Consumers') }</h4>		  				
+					<td>
+				</tr>
+				<tr>
+		  			<td>
+		  				${Templates.frmExport(consumer_group['consumers'].keys())}
+					<td>
+				</tr>
+				<tr>
+		  			<td>
+		  				<table class="table datatables table-striped table-hover table-condensed" id="consumerGroupTable" data-tablescroller-disable="true">
+					    	<thead>
+						      <tr>
+						        <th>${ _('Name') }</th>
+						        <th>${ _('Topics Subscribed') }</th>
+						        <th>${ _('Status') }</th>
+						      </tr>
+						    </thead>
+						    <tbody>
+						    	% if consumer_group['consumers']:
+							    	% for consumer in consumer_group['consumers'].keys():
+							    		<tr>
+							    			<td>${consumer}</td>
+							    			<td>
+							    				% for topic_subscribed in consumer_group['consumers'][consumer]:
+							    					${topic_subscribed}<br>
+							    				% endfor
+							    			</td>
+							    			<td><span class="label label-success">${ _('OK') }</span></td>
+							    		</tr>
+									% endfor
+								% endif
+						    </tbody>
+					    </table>
+					<td>
+				</tr>
+				<tr>
+		  			<td>
+		  				<h4 class="card-heading simple">${ _('Topics Subscribed') }</h4>
+					<td>
+				</tr>
+				<tr>
+		  			<td>
+		  				${Templates.frmExport(consumer_group['offsets'])}
+					<td>
+				</tr>
+				<tr>
+		  			<td>
+		  				<table class="table datatables table-striped table-hover table-condensed" id="consumerGroupTopicsTable" data-tablescroller-disable="true">
+					    	<thead>
+						      <tr>
+						        <th>${ _('Topic') }</th>
+						        <th>${ _('Partition - Offset') }</th>
+						        <th>${ _('Partition - Owner') }</th>
+						        <th>${ _('Status') }</th>
+						      </tr>
+						    </thead>
+						    <tbody>
+						    	% for topic_offset in consumer_group['offsets']:
+						    		<tr>
+						    			<td>${topic_offset['topic']}</td>
+						    			<td>
+						    				% for partition in topic_offset['offsets'].keys():
+						    					${partition} - ${topic_offset['offsets'][partition]}<br>
+						    				% endfor
+						    			</td>
+						    			<td>
+						    				% for topic_owner in consumer_group['owners']:
+						    					% if topic_offset['topic'] == topic_owner['topic']:
+						    						% for partition in topic_owner['owners']:
+						    							${partition} - ${topic_owner['owners'][partition]}<br>
+						    						% endfor
+						    					% else:
+						    						<% continue %>
+						    					% endif
+						    				% endfor
+						    			</td>
+						    			<td><span class="label label-success">${ _('OK') }</span></td>
+						    		</tr>
+								% endfor
+						    </tbody>
+				    	</table>
+					<td>
+				</tr>
+			</table>
 
 		% endif
 	</div>

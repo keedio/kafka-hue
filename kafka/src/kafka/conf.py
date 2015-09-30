@@ -15,6 +15,7 @@
 # limitations under the License.
 
 from desktop.lib.conf import Config, UnspecifiedConfigSection, ConfigSection
+from django.utils.translation import ugettext_lazy as _t, ugettext as _
 
 def coerce_string(value):
   if type(value) == list:
@@ -22,53 +23,66 @@ def coerce_string(value):
   else:
     return value
 
-
 CLUSTERS = UnspecifiedConfigSection(
-  "clusters",
+  key="clusters",
   help="One entry for each Zookeeper cluster",
   each=ConfigSection(
     help="Information about a single Zookeeper cluster",
     members=dict(
         ZK_HOST_PORTS=Config(
-          "zk_host_ports",
+          key="zk_host_ports",
           help="Zookeeper ensemble. Comma separated list of Host/Port, e.g. localhost:2181,localhost:2182,localhost:2183",
           default="localhost:2181",
-          type=coerce_string,
-        ),
-        ZK_REST_URL=Config(
-          "zk_rest_url",
-          help="The URL of the REST contrib service.",
-          default="http://localhost:9998",
-          type=str,
-        ),
+          type=coerce_string),       
         BROKERS_PATH=Config(
-          "brokers_path",
+          key="brokers_path",
           help="Path to brokers info in Zookeeper Znode hierarchy, e.g. /brokers/ids",
           default="/brokers/ids",
-          type=str,
-        ),
+          type=str),
         CONSUMERS_PATH=Config(
-          "consumers_path",
+          key="consumers_path",
           help="Path to consumers info in Zookeeper Znode hierarchy, e.g. /consumers",
           default="/consumers",
-          type=str,
-        ),
+          type=str),
         TOPICS_PATH=Config(
-          "topics_path",
+          key="topics_path",
           help="Path to topics info in Zookeeper Znode hierarchy, e.g. /brokers/topics",
           default="/brokers/topics",
-          type=str,
-        ),
-        GANGLIA_SERVER = Config( "ganglia_server",
+          type=str),
+        GANGLIA_SERVER = Config(
+          key="ganglia_server",
           help="GANGLIA Server",
           default="http://localhost",
-          type=str,
-        ),
-        GANGLIA_DATA_SOURCE = Config( "ganglia_data_source",
+          type=str),
+        GANGLIA_DATA_SOURCE = Config(
+          key="ganglia_data_source",
           help="Ganglia Data Source",
           default="my cluster",
-          type=str,
-        ),
+          type=str),
     )
   )
 )
+
+def config_validator(user):
+  res = []
+  
+  for cluster in CLUSTERS:
+    if not CLUSTERS[cluster].ZK_HOST_PORTS.get():
+      res.append((CLUSTERS[cluster].ZK_HOST_PORTS, _("You must to specify Zookeeper ensemble.")))
+
+    if not CLUSTERS[cluster].BROKERS_PATH.get():
+      res.append((CLUSTERS[cluster].BROKERS_PATH, _("You must to specify path to brokers info.")))
+
+    if not CLUSTERS[cluster].CONSUMERS_PATH.get():
+      res.append((CLUSTERS[cluster].CONSUMERS_PATH, _("You must to specify path to consumers info.")))
+
+    if not CLUSTERS[cluster].TOPICS_PATH.get():
+      res.append((CLUSTERS[cluster].TOPICS_PATH, _("You must to specify path to topics info.")))
+
+    if not CLUSTERS[cluster].GANGLIA_SERVER.get():
+      res.append((CLUSTERS[cluster].GANGLIA_SERVER, _("You must to specify Ganglia Server I.P. or Ganglia Server HostName.")))
+
+    if not CLUSTERS[cluster].GANGLIA_DATA_SOURCE.get():
+      res.append((CLUSTERS[cluster].GANGLIA_DATA_SOURCE, _("You must to specify Ganglia Data Source name.")))
+
+  return res

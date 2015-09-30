@@ -53,7 +53,6 @@ def is_selected(section, matcher):
         %else:
           ${crumb[0]}
         %endif
-
         %if idx < len(breadcrumbs) - 1:
           &gt;
         %endif
@@ -72,14 +71,12 @@ def is_selected(section, matcher):
         <div class="nav-collapse">
           <ul class="nav">
             <li class="currentApp">
-              <a href="/${app_name}">
-                <img src="/kafka/static/art/icon_kafka_24.png" />
-                Kafka
-              </a>
+              <a href="/${app_name}"><img src="${ static('kafka/art/icon_kafka_24.png') }" /> Kafka </a>
              </li>
              <li class="${is_selected(section, 'Topology')}"><a href="${ url('kafka:cluster', cluster_id=c_id) }">${ _('Topology') }</a></li>
              <li class="${is_selected(section, 'Consumer Groups')}"><a href="${url('kafka:consumer_groups', cluster_id=c_id)}">${ _('Consumer Groups') }</a></li>
              <li class="${is_selected(section, 'Topics')}"><a href="${url('kafka:topics', cluster_id=c_id)}">${ _('Topics') }</a></li>
+             <li class="${is_selected(section, 'SystemTools')}"><a href="${url('kafka:system_tools', cluster_id=c_id)}">${ _('System Tools') }</a></li>
              <li class="${is_selected(section, 'Dashboard')}"><a href="${url('kafka:dashboard', cluster_id=c_id)}">${ _('Dashboard') }</a></li>
           </ul>
         </div>
