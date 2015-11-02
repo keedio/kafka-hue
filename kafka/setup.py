@@ -18,7 +18,7 @@ from setuptools import setup, find_packages
 
 setup(
       name = "kafka",
-      version = "4.1.0",
+      version = "4.1.1",
       author = "KEEDIO",
       url = 'http://www.keedio.com',
       description = "Kafka-HUE is a HUE application to admin and manage a pool of Apache Kafka clusters.",

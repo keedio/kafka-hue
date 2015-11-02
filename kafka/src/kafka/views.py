@@ -36,13 +36,12 @@ from kafka.conf import CLUSTERS
 from kafka.utils import get_cluster_or_404
 
 import base64
-from kafka import settings
+from kafka.settings import METRICS_INI
 import requests
 import ConfigParser
+from django.conf import settings
 from django.http import HttpResponse
 
-
-METRICS_INI = settings.METRICS_INI
 logger = logging.getLogger(__name__)
 
 def _get_topology():
@@ -80,8 +79,11 @@ def _get_topology():
 				'error_consumer_groups':error_consumer_groups,
 				'error':0}
 			
+			zk.stop()
+
 		except NoNodeError:
-			c = {'cluster':cluster,'brokers':[],
+			c = {'cluster':cluster,
+				'brokers':[],
 				'consumer_groups':[],
 				'consumer_groups_status':[],
 				'error_brokers':error_brokers,
@@ -96,8 +98,7 @@ def _get_topology():
 				'error_consumer_groups':error_consumer_groups,
 				'error':1}
 
-		clusters.append(c)
-		zk.stop()
+		clusters.append(c)		
 	return clusters
 
 def _get_cluster_topology(cluster):
@@ -507,6 +508,7 @@ def _get_system_tools(request, cluster_id):
 	sCmd = "";
 	data['cluster'] = get_cluster_or_404(id=cluster_id)
 	data['topics'], data['error_zk_topics'] = _get_topics(data['cluster'])
+	data['version'] = settings.HUE_DESKTOP_VERSION
 
 	try:	
 		zk = KazooClient(hosts=data['cluster']['zk_host_ports'])
@@ -551,6 +553,7 @@ def _get_system_tools(request, cluster_id):
 				'topics': [], 
 				'brokers': [],
 				'cmd': "", 
+				'version': settings.HUE_DESKTOP_VERSION,
 				'error_zk_topics': 1, 
 				'error_zk_brokers': 1 ,
 				'output': "",
