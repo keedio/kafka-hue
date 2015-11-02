@@ -24,7 +24,6 @@
 ${commonheader("SystemTools", app_name, user) | n,unicode}
 
 <link href="${ static('kafka/css/kafka.css') }" rel="stylesheet" >
-<script src="${ static('desktop/ext/js/knockout.min.js') }" type="text/javascript" charset="utf-8"></script>
 <script src="${ static('kafka/js/jquery.smart_autocomplete.js') }" type="text/javascript" charset="utf-8"></script>
 <script src="${ static('desktop/ext/js/datatables-paging-0.1.js') }" type="text/javascript" charset="utf-8"></script>
 
@@ -44,7 +43,7 @@ ${commonheader("SystemTools", app_name, user) | n,unicode}
   
     function ViewModel(data) {
      var self = this;     
-     
+
      self.sBroker = ko.observable();     
      self.selectedValue = ko.observable(); 
 
@@ -222,21 +221,24 @@ ${commonheader("SystemTools", app_name, user) | n,unicode}
 % if not Data['cluster']:
   <div class="container-fluid">
     <div class="card">
-      <h1 class="card-heading simple">${ _('There are currently no clusters to browse.') }</h1>
-    <div class="card-body">
-      <p>
-        ${ _('Please contact your administrator to solve this.') }
-        <br/>
-        <br/>
-      </p>
-    </div>
+      <div class="card-body">
+        <div class="alert alert-error">
+          <h2>${ _('There are currently no clusters to browse.') }</h2>
+          <h3>${ _('Please contact your administrator to solve this.') }</h3>
+        </div>
+      </div>
     </div>
   </div>
 % else:
   ${ kafka.header(_breadcrumbs) }
-% endif 
+  ${ kafka.menubar(section='SystemTools',c_id=Data['cluster']['id']) }
 
-${ kafka.menubar(section='SystemTools',c_id=Data['cluster']['id']) }
+  % if '3.8' in Data['version']:
+    <script src="${ static('desktop/ext/js/knockout-min.js') }" type="text/javascript" charset="utf-8"></script>
+  % else:
+    <script src="${ static('desktop/ext/js/knockout.min.js') }" type="text/javascript" charset="utf-8"></script>    
+  % endif
+% endif 
 
 <div class="container-fluid">
   <div class="card">

@@ -26,7 +26,7 @@ def get_cluster_or_404(id):
   try:
     name = id
     cluster = CLUSTERS.get()[name]
-  except (TypeError, ValueError):
+  except (TypeError, ValueError, KeyError):
     raise Http404()
 
   cluster = {

@@ -1,6 +1,15 @@
 Changelog
 =========
 
+4.1.1 (07-10-2015)
+----------------
+
+Bug Handling
+************
+
+- Show more informative error when cluster is not configure in hue.ini.
+- Show a Http404 when incorrect URL.
+
 4.1.0 (16-09-2015)
 ----------------
 

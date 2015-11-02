@@ -131,22 +131,19 @@ ${commonheader("%s > Topics" % (cluster['nice_name']), app_name, user) | n,unico
 % if not cluster:
   <div class="container-fluid">
     <div class="card">
-      <h1 class="card-heading simple">${ _('There are currently no clusters to browse.') }</h1>
-    <div class="card-body">
-      <p>
-        ${ _('Please contact your administrator to solve this.') }
-        <br/>
-        <br/>
-      </p>
-    </div>
+      <div class="card-body">
+        <div class="alert alert-error">
+          <h2>${ _('There are currently no clusters to browse.') }</h2>
+          <h3>${ _('Please contact your administrator to solve this.') }</h3>
+        </div>
+      </div>
     </div>
   </div>
 % else:
 	${Templates.tblCreateTopic()}
 	${ kafka.header(_breadcrumbs) }
+	${ kafka.menubar(section='Topics',c_id=cluster['id']) }
 % endif 
-
-${ kafka.menubar(section='Topics',c_id=cluster['id']) }
 
 <div class="container-fluid">
   <div class="card">
