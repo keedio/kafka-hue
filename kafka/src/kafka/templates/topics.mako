@@ -222,4 +222,4 @@ ${commonheader("%s > Topics" % (cluster['nice_name']), app_name, user) | n,unico
 	</div>
   </div>
 </div>
-${commonfooter(messages) | n,unicode}
+${commonfooter(request, messages) | n,unicode}

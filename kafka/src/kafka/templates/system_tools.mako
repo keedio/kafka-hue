@@ -434,4 +434,4 @@ ${commonheader("SystemTools", app_name, user) | n,unicode}
     </div>     
   </div>
 </div>
-${commonfooter(messages) | n,unicode}
+${commonfooter(request, messages) | n,unicode}

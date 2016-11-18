@@ -287,4 +287,4 @@ ${commonheader("Topology", app_name, user) | n,unicode}
 	  	</div>
 	</div>
 % endfor
-${commonfooter(messages) | n,unicode}
+${commonfooter(request, messages) | n,unicode}
