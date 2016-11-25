@@ -794,4 +794,4 @@ ${ graphsHUE.import_charts() }
      </div>
   </div>
 </div>
-${commonfooter(messages) | n,unicode}
+${commonfooter(request, messages) | n,unicode}

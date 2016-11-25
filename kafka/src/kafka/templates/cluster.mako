@@ -266,4 +266,4 @@ ${commonheader("Kafka > %s" % (cluster['cluster']['nice_name']), app_name, user)
 	</div>
   </div>
 </div>
-${commonfooter(messages) | n,unicode}
+${commonfooter(request, messages) | n,unicode}
